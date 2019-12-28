@@ -353,7 +353,7 @@ public class Level_1 extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT
+        //testCOMMIT234
         // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
