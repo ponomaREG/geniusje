@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textSize_24">24sp</dimen> <!-- Размер текстов кнопок -->
+    <dimen name="marginBottomForStartButton">25dp</dimen> <!-- Внешний отступ кнопки "Начать" снизу -->
+    <dimen name="blockLevelSize">50dp</dimen> <!-- Ширина и высота блоков уровней -->
+    <dimen name="margin_10">10dp</dimen> <!-- Внешние отступы блоков уровней -->
+    <dimen name="marginLayoutDefault">12dp</dimen> <!-- Отступ между "Назад" и "Уровень" -->
+    <dimen name="textSizeDefault_24">24sp</dimen> <!-- Размер текстов кнопок -->
+    <dimen name="pointsHeightDefault">12dp</dimen> <!-- Высота пойнтов -->
+    <dimen name="blockAnswerHeightDefault">300dp</dimen> <!-- Высота блоков выбора -->
+    <dimen name="dialogImageSize">140dp</dimen>
+</resources>

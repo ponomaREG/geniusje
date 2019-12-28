@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Geniusje</string>
+
+    <string name="start">Начать</string>
+    <string name="back">Назад</string>
+    <string name="left">Левый</string>
+    <string name="right">Правый</string>
+    <string name="repeat">Повторить</string>
+    <string name="Continue">Продолжить</string>
+    <string name="level">Уровень</string>
+
+    <string name="toastExit">Нажмите еще раз для выхода</string>
+    <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorMainBackground"
+    tools:context=".MainActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:src="@drawable/icon"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/black_95" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        android:textSize="@dimen/textSize_24"
+        android:textColor="@color/black_95"
+        android:textAllCaps="false"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginBottom="@dimen/marginBottomForStartButton"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_selection" />
+
+</RelativeLayout>

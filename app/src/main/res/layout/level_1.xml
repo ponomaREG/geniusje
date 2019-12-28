@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/colorMainBackground"
+    android:orientation="vertical"
+    tools:context=".Levels.Level_1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"
+                android:textSize="@dimen/textSizeDefault_24"
+                android:textAllCaps="false"
+                android:textColor="@color/black_95"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/button_selection"/>
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/level"
+                android:textSize="@dimen/textSizeDefault_24"
+                android:textColor="@color/black_95"
+                android:gravity="end"
+                android:padding="10dp"
+                android:layout_marginStart="@dimen/marginLayoutDefault" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/marginLayoutDefault">
+
+            <TextView
+                android:id="@+id/point_1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_3"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_4"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_5"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_6"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_7"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_8"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_9"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_10"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_11"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_12"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_13"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_14"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_15"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_16"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_17"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_18"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_19"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+            <TextView
+                android:id="@+id/point_20"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/pointsHeightDefault"
+                android:layout_weight="1"
+                android:background="@drawable/points_style" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/marginLayoutDefault"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/answer_left"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/blockAnswerHeightDefault"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black_95"
+                android:fontFamily="@font/black_ops_one"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/answer_style" />
+
+            <TextView
+                android:id="@+id/answer_right"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/blockAnswerHeightDefault"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black_95"
+                android:fontFamily="@font/black_ops_one"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/answer_style" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/marginLayoutDefault"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/left"
+                android:textSize="@dimen/textSizeDefault_24"
+                android:textColor="@color/black_95"
+                android:layout_marginEnd="5dp" />
+
+            <TextView
+                android:id="@+id/text_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/right"
+                android:textSize="@dimen/textSizeDefault_24"
+                android:textColor="@color/black_95"
+                android:layout_marginEnd="5dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
