@@ -42,7 +42,7 @@ public class Level_1 extends AppCompatActivity {
 
         answerLeft = findViewById(R.id.answer_left);
         answerRight = findViewById(R.id.answer_right);
-
+        //dsadsa
         // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
