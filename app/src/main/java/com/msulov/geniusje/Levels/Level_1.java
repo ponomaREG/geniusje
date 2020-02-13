@@ -83,6 +83,7 @@ public class Level_1 extends AppCompatActivity {
 
         answerLeft.setTextSize(196);
         answerLeft.setText(String.valueOf((left = random.nextInt(((count + 1) * 10) - 1))));
+
         answerRight.setTextSize(196);
         answerRight.setText(String.valueOf((right = random.nextInt(((count + 1) * 10) - 1))));
 
@@ -111,198 +112,213 @@ public class Level_1 extends AppCompatActivity {
                 answerLeft.setText(String.valueOf((left = random.nextInt(((count + 1) * 10) - 1))));
                 answerRight.setText(String.valueOf((right = random.nextInt(((count + 1) * 10) - 1))));
 
-                if (left == right)
-                    answerRight.setText(String.valueOf(++right));
+                if (left == right)  answerRight.setText(String.valueOf(++right));
 
-                switch (count) {
-                    case 1:
+                if (count==1){
                         point = findViewById(R.id.point_1);
                         answerLeft.setTextSize(108);
                         answerRight.setTextSize(108);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 2:
-                        point = findViewById(R.id.point_2);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 3:
-                        point = findViewById(R.id.point_3);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 4:
-                        point = findViewById(R.id.point_4);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 5:
-                        point = findViewById(R.id.point_5);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 6:
-                        point = findViewById(R.id.point_6);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 7:
-                        point = findViewById(R.id.point_7);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 8:
-                        point = findViewById(R.id.point_8);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 9:
-                        answerLeft.setTextSize(78);
-                        answerRight.setTextSize(78);
-                        point = findViewById(R.id.point_9);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 10:
-                        point = findViewById(R.id.point_10);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 11:
-                        point = findViewById(R.id.point_11);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 12:
-                        point = findViewById(R.id.point_12);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 13:
-                        point = findViewById(R.id.point_13);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 14:
-                        point = findViewById(R.id.point_14);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 15:
-                        point = findViewById(R.id.point_15);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 16:
-                        point = findViewById(R.id.point_16);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 17:
-                        point = findViewById(R.id.point_17);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 18:
-                        point = findViewById(R.id.point_18);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 19:
-                        point = findViewById(R.id.point_19);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        break;
-                    case 20:
-                        point = findViewById(R.id.point_20);
-                        if (hasCorrect) {
-                            point.setBackgroundResource(R.drawable.points_green_style);
-                        }
-                        else  {
-                            point.setBackgroundResource(R.drawable.points_red_style);
-                        }
-                        // Остановим поток времени
-                        t.stopTime();
-                        startResultsDialog();
-                        break;
+                    }else {
+                    point = findViewById(getResources().getIdentifier("point_" + count, "id", getPackageName()));
                 }
+                CheckCorrect(hasCorrect,point);
+                if (count==20){
+                    t.stopTime();
+                    startResultsDialog();
+                }
+
+
+
+//                switch (count) {
+//                    case 1:
+//                        point = findViewById(R.id.point_1);
+//                        answerLeft.setTextSize(108);
+//                        answerRight.setTextSize(108);
+//
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 2:
+//                        point = findViewById(R.id.point_2);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 3:
+//                        point = findViewById(R.id.point_3);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 4:
+//                        point = findViewById(R.id.point_4);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 5:
+//                        point = findViewById(R.id.point_5);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 6:
+//                        point = findViewById(R.id.point_6);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 7:
+//                        point = findViewById(R.id.point_7);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 8:
+//                        point = findViewById(R.id.point_8);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 9:
+//                        answerLeft.setTextSize(78);
+//                        answerRight.setTextSize(78);
+//                        point = findViewById(R.id.point_9);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 10:
+//                        point = findViewById(R.id.point_10);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 11:
+//                        point = findViewById(R.id.point_11);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 12:
+//                        point = findViewById(R.id.point_12);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 13:
+//                        point = findViewById(R.id.point_13);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 14:
+//                        point = findViewById(R.id.point_14);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 15:
+//                        point = findViewById(R.id.point_15);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 16:
+//                        point = findViewById(R.id.point_16);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 17:
+//                        point = findViewById(R.id.point_17);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 18:
+//                        point = findViewById(R.id.point_18);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 19:
+//                        point = findViewById(R.id.point_19);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        break;
+//                    case 20:
+//                        point = findViewById(R.id.point_20);
+//                        if (hasCorrect) {
+//                            point.setBackgroundResource(R.drawable.points_green_style);
+//                        }
+//                        else  {
+//                            point.setBackgroundResource(R.drawable.points_red_style);
+//                        }
+//                        // Остановим поток времени
+//                        t.stopTime();
+//                        startResultsDialog();
+//                        break;
+//                }
             }
         };
 
@@ -358,4 +374,18 @@ public class Level_1 extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
     // Обработчик нажатия системной кнопки "Назад" - (Конец)
+
+
+    private void CheckCorrect(boolean hasCorrect,TextView point){
+        if (hasCorrect) {
+            point.setBackgroundResource(R.drawable.points_green_style);
+        }
+        else  {
+            point.setBackgroundResource(R.drawable.points_red_style);
+        }
+    }
+
+
+
+
 }
