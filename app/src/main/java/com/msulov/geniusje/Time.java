@@ -18,6 +18,8 @@ public class Time implements Runnable {
     }
 
     public void stopTime() {
+
         hasContinue = false;
+
     }
 }

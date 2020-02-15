@@ -1,33 +1,34 @@
 package com.msulov.geniusje.Levels;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
 import java.util.Random;
-import java.util.logging.Level;
 
-public class Level_1 extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class Level_2 extends AppCompatActivity {
+
 
     private Random random;
     private Toast toast;
     private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
-    private TextView answerLeft, answerRight, point,task;
+    private CircleImageView icon;
+    private TextView answerLeft, answerRight, point,task ;
     private Time t;
     private long pressedTime;
     private int left, right, count, correctAnswer;
@@ -35,20 +36,19 @@ public class Level_1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_1);
-
+        setContentView(R.layout.level_2);
         random = new Random(System.currentTimeMillis());
-
         t = new Time();
 
         answerLeft = findViewById(R.id.answer_left);
         answerRight = findViewById(R.id.answer_right);
-        //dsadsa
         // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_1));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_2));
+        icon = dialog.findViewById(R.id.iconTask);
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
         // Делаем задний фон прозрачным
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Убираем возможность закрывать системной кнопкой "Назад"
@@ -60,7 +60,7 @@ public class Level_1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_1.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_2.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -101,13 +101,13 @@ public class Level_1 extends AppCompatActivity {
                 boolean hasCorrect = false;
 
                 if (v.getId() == R.id.answer_left) {
-                    if (left > right) {
+                    if (left < right) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
                 }
                 if (v.getId() == R.id.answer_right) {
-                    if (right > left) {
+                    if (right < left) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
@@ -118,10 +118,10 @@ public class Level_1 extends AppCompatActivity {
                 if (left == right)  answerRight.setText(String.valueOf(++right));
 
                 if (count==1){
-                        point = findViewById(R.id.point_1);
-                        answerLeft.setTextSize(108);
-                        answerRight.setTextSize(108);
-                    }else {
+                    point = findViewById(R.id.point_1);
+                    answerLeft.setTextSize(108);
+                    answerRight.setTextSize(108);
+                }else {
                     point = findViewById(getResources().getIdentifier("point_" + count, "id", getPackageName()));
                 }
                 CheckCorrect(hasCorrect,point);
@@ -153,12 +153,9 @@ public class Level_1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_1.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_2.this, LevelsActivity.class));
                     finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_1.this, Level_2.class));
-                    finish();
-                }
+                } else if (v.getId() == R.id.ContinueResultsDialog) {}
             }
         };
 
@@ -201,6 +198,5 @@ public class Level_1 extends AppCompatActivity {
     }
 
 
-
-
 }
+

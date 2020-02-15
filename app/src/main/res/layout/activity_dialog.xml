@@ -20,6 +20,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="@dimen/dialogImageSize"
             android:layout_height="@dimen/dialogImageSize"
+            android:id="@+id/iconTask"
             android:src="@drawable/icon"
             android:layout_marginTop="@dimen/margin_10"
             app:civ_border_width="2dp"
@@ -28,8 +29,8 @@
         <TextView
             android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:text="@string/startDialogWindowForLevel_1"
             android:textSize="@dimen/textSize_24"
+            android:id="@+id/dialogTask"
             android:textColor="@color/black_95"
             android:layout_marginTop="@dimen/margin_10" />
 

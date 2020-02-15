@@ -10,5 +10,8 @@
     <string name="level">Уровень</string>
 
     <string name="toastExit">Нажмите еще раз для выхода</string>
+
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
+    <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>
+    <string name="startDialogWindowForLevel_3"></string>
 </resources>
