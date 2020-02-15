@@ -13,5 +13,5 @@
 
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
     <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>
-    <string name="startDialogWindowForLevel_3"></string>
+    <string name="startDialogWindowForLevel_3">Выбери правильный ответ</string>
 </resources>

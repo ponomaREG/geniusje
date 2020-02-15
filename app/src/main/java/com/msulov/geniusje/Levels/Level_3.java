@@ -51,7 +51,7 @@ public class Level_3 extends AppCompatActivity {
         dialog.setContentView(R.layout.activity_dialog);
         //Находим текст задания и устанавливаем его на свой
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_2));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_3));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
@@ -209,7 +209,7 @@ public class Level_3 extends AppCompatActivity {
         answer = Equation.getAnswerOfEquation(number_1,number_2,sign);
         int another_number = Equation.getNumberWithP(answer);
 
-        equation.setText(Equation.makeEquation(number_1,number_2,sign)[0]);
+
 
         if (((answer>=100)||(another_number>=100))||((answer<=-10)||(another_number<=-10))){
             answerLeft.setTextSize(68);
@@ -231,7 +231,7 @@ public class Level_3 extends AppCompatActivity {
             answerLeft.setText(String.valueOf(another_number));
             answerRight.setText(String.valueOf(answer));
         }
-        task.setText(equation_str);
 
+        equation.setText(Equation.makeEquation(number_1,number_2,sign)[0]);
     }
 }
