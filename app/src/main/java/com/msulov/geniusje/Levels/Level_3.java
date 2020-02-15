@@ -3,14 +3,18 @@ package com.msulov.geniusje.Levels;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.audiofx.DynamicsProcessing;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.msulov.geniusje.Levels.Managers.Equation;
 
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
@@ -30,7 +34,7 @@ public class Level_3 extends AppCompatActivity {
     private TextView answerLeft, answerRight, point,task,equation;
     private Time t;
     private long pressedTime;
-    private int left, right, count, correctAnswer;
+    private int left, right, count, correctAnswer, answer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class Level_3 extends AppCompatActivity {
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_2));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
         // Делаем задний фон прозрачным
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Убираем возможность закрывать системной кнопкой "Назад"
@@ -87,17 +91,8 @@ public class Level_3 extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
         // Обработчик нажатия на "Назад" - (Конец)
+        makeTask();
 
-        equation.setTex;
-
-        answerLeft.setTextSize(196);
-        answerLeft.setText(String.valueOf(0));
-
-        answerRight.setTextSize(196);
-        answerRight.setText(String.valueOf(0));
-
-        if (left == right)
-            answerRight.setText(String.valueOf(++right));
 
         // Уровень -1
         View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -107,21 +102,20 @@ public class Level_3 extends AppCompatActivity {
                 boolean hasCorrect = false;
 
                 if (v.getId() == R.id.answer_left) {
-                    if (left < right) {
+                    if (Integer.parseInt(answerLeft.getText().toString())==answer) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
                 }
                 if (v.getId() == R.id.answer_right) {
-                    if (right < left) {
+                    if (Integer.parseInt(answerRight.getText().toString())==answer) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
                 }
-                answerLeft.setText(String.valueOf((left = random.nextInt(((count + 1) * 10) - 1))));
-                answerRight.setText(String.valueOf((right = random.nextInt(((count + 1) * 10) - 1))));
 
-                if (left == right)  answerRight.setText(String.valueOf(++right));
+                makeTask();
+
 
                 if (count==1){
                     point = findViewById(R.id.point_1);
@@ -159,7 +153,7 @@ public class Level_3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_2.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_3.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {}
             }
@@ -201,6 +195,35 @@ public class Level_3 extends AppCompatActivity {
         else  {
             point.setBackgroundResource(R.drawable.points_red_style);
         }
+
+    }
+
+    private void makeTask(){
+        int number_1 = Equation.getRandomNumber(count);
+        int number_2 = Equation.getRandomNumber(count);
+        String sign = Equation.getRandomSign();
+        String equation_str = Equation.makeEquation(number_1,number_2,sign)[0];
+        answer = Equation.getAnswerOfEquation(number_1,number_2,sign);
+        int another_number = Equation.getNumberWithP(answer);
+
+        equation.setText(Equation.makeEquation(number_1,number_2,sign)[0]);
+        if ((answer>=100)||(another_number>=100)){
+            answerLeft.setTextSize(68);
+            answerRight.setTextSize(68);
+        }else {
+
+            answerLeft.setTextSize(108);
+            answerRight.setTextSize(108);
+        }
+        if (Math.random()>0.5){
+            answerLeft.setText(String.valueOf(answer));
+            answerRight.setText(String.valueOf(another_number));
+        }
+        else {
+            answerLeft.setText(String.valueOf(another_number));
+            answerRight.setText(String.valueOf(answer));
+        }
+        task.setText(equation_str);
 
     }
 }

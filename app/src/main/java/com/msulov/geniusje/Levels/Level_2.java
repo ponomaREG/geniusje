@@ -155,7 +155,10 @@ public class Level_2 extends AppCompatActivity {
                 if (v.getId() == R.id.repeatResultsDialog) {
                     startActivity(new Intent(Level_2.this, LevelsActivity.class));
                     finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {}
+                } else if (v.getId() == R.id.ContinueResultsDialog) {
+                    startActivity(new Intent(Level_2.this,Level_3.class));
+                    finish();
+                }
             }
         };
 
