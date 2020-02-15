@@ -1,13 +1,15 @@
 package com.msulov.geniusje.Levels.Managers;
 
 
+import android.util.Log;
+
 import java.util.HashSet;
 import java.util.Random;
 
 public class Equation {
 
     public static String getRandomSign(){
-        Random random = new Random(System.currentTimeMillis());
+        Random random = new Random();
         int sign_key = random.nextInt(4);
         switch (sign_key){
             case 0:
@@ -24,10 +26,11 @@ public class Equation {
     }
 
     public static int getRandomNumber(int count){
-        Random random = new Random(System.currentTimeMillis());
+        Random random = new Random();
         int random_number = 0;
         while (random_number==0) {
-            random_number = random.nextInt((int) (count * 1.5+5));
+            random_number = random.nextInt((int) (count * 1.5+30));
+            Log.d("rand_numb",String.valueOf(random_number));
         }
         return random_number;
 

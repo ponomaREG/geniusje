@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.audiofx.DynamicsProcessing;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -201,15 +202,22 @@ public class Level_3 extends AppCompatActivity {
     private void makeTask(){
         int number_1 = Equation.getRandomNumber(count);
         int number_2 = Equation.getRandomNumber(count);
+        Log.d("numb_1",String.valueOf(number_1));
+        Log.d("numb_2",String.valueOf(number_2));
         String sign = Equation.getRandomSign();
         String equation_str = Equation.makeEquation(number_1,number_2,sign)[0];
         answer = Equation.getAnswerOfEquation(number_1,number_2,sign);
         int another_number = Equation.getNumberWithP(answer);
 
         equation.setText(Equation.makeEquation(number_1,number_2,sign)[0]);
-        if ((answer>=100)||(another_number>=100)){
+
+        if (((answer>=100)||(another_number>=100))||((answer<=-10)||(another_number<=-10))){
             answerLeft.setTextSize(68);
             answerRight.setTextSize(68);
+            if((answer>=1000)||(another_number>=1000)||(answer<=-100)||(another_number<=-100)){
+                answerLeft.setTextSize(42);
+                answerRight.setTextSize(42);
+            }
         }else {
 
             answerLeft.setTextSize(108);
