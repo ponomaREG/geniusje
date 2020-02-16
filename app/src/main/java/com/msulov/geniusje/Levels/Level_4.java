@@ -3,44 +3,44 @@ package com.msulov.geniusje.Levels;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.app.IntentService;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.media.audiofx.DynamicsProcessing;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msulov.geniusje.Levels.Managers.Equation;
-
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
+import com.msulov.geniusje.Levels.Managers.Color_task;
 import com.msulov.geniusje.Time;
 
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_3 extends AppCompatActivity {
+public class Level_4 extends AppCompatActivity {
 
     private Random random;
     private Toast toast;
     private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
     private CircleImageView icon;
-    private TextView answerLeft, answerRight, point,task,equation;
+    private String correct_text_of_color;
+    private TextView answerLeft, answerRight, point,task, color_task;
     private Time t;
     private long pressedTime;
     private int left, right, count, correctAnswer, answer;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_3);
+        setContentView(R.layout.level_4);
         random = new Random(System.currentTimeMillis());
         t = new Time();
 
@@ -51,7 +51,7 @@ public class Level_3 extends AppCompatActivity {
         dialog.setContentView(R.layout.activity_dialog);
         //Находим текст задания и устанавливаем его на свой
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_3));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_4));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
@@ -66,7 +66,7 @@ public class Level_3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_3.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_4.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -86,12 +86,14 @@ public class Level_3 extends AppCompatActivity {
         // Обработчик нажатия на "Назад" в диалоговом окне - (Конец)
 
         //Уравнение
-        equation = findViewById(R.id.equation);
+        color_task = findViewById(R.id.color_task);
 
         // Обработчик нажатия на "Назад" - (Начало)
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
         // Обработчик нажатия на "Назад" - (Конец)
+        answerLeft.setTextSize(38);
+        answerRight.setTextSize(38);
         makeTask();
 
 
@@ -103,13 +105,13 @@ public class Level_3 extends AppCompatActivity {
                 boolean hasCorrect = false;
 
                 if (v.getId() == R.id.answer_left) {
-                    if (Integer.parseInt(answerLeft.getText().toString())==answer) {
+                    if (answerLeft.getText().toString().equals(correct_text_of_color)) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
                 }
                 if (v.getId() == R.id.answer_right) {
-                    if (Integer.parseInt(answerRight.getText().toString())==answer) {
+                    if (answerRight.getText().toString().equals(correct_text_of_color)) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
@@ -120,8 +122,6 @@ public class Level_3 extends AppCompatActivity {
 
                 if (count==1){
                     point = findViewById(R.id.point_1);
-                    answerLeft.setTextSize(108);
-                    answerRight.setTextSize(108);
                 }else {
                     point = findViewById(getResources().getIdentifier("point_" + count, "id", getPackageName()));
                 }
@@ -154,10 +154,10 @@ public class Level_3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_3.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_4.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_3.this,Level_4.class));
+                    startActivity(new Intent(Level_4.this,Level_4.class));
                     finish();
                 }
             }
@@ -203,38 +203,22 @@ public class Level_3 extends AppCompatActivity {
     }
 
     private void makeTask(){
-        int number_1 = Equation.getRandomNumber(count);
-        int number_2 = Equation.getRandomNumber(count);
-        Log.d("numb_1",String.valueOf(number_1));
-        Log.d("numb_2",String.valueOf(number_2));
-        String sign = Equation.getRandomSign();
-        String equation_str = Equation.makeEquation(number_1,number_2,sign)[0];
-        answer = Equation.getAnswerOfEquation(number_1,number_2,sign);
-        int another_number = Equation.getNumberWithP(answer);
+        int random_color = Color_task.getRandomColor();
+        String random_text_of_color = Color_task.getRandomTextOfColor();
+        correct_text_of_color = Color_task.getTextOfColor(random_color);
+        answerLeft.setTextColor(Color_task.getRandomColor());
+        answerRight.setTextColor(Color_task.getRandomColor());
 
-
-
-        if (((answer>=100)||(another_number>=100))||((answer<=-10)||(another_number<=-10))){
-            answerLeft.setTextSize(68);
-            answerRight.setTextSize(68);
-            if((answer>=1000)||(another_number>=1000)||(answer<=-100)||(another_number<=-100)){
-                answerLeft.setTextSize(42);
-                answerRight.setTextSize(42);
-            }
-        }else {
-
-            answerLeft.setTextSize(108);
-            answerRight.setTextSize(108);
-        }
         if (Math.random()>0.5){
-            answerLeft.setText(String.valueOf(answer));
-            answerRight.setText(String.valueOf(another_number));
+            answerLeft.setText(String.valueOf(correct_text_of_color));
+            answerRight.setText(String.valueOf(Color_task.getRandomTextOfColor()));
         }
         else {
-            answerLeft.setText(String.valueOf(another_number));
-            answerRight.setText(String.valueOf(answer));
+            answerLeft.setText(String.valueOf(Color_task.getRandomTextOfColor()));
+            answerRight.setText(String.valueOf(correct_text_of_color));
         }
-
-        equation.setText(Equation.makeEquation(number_1,number_2,sign)[0]);
+        color_task.setText(random_text_of_color);
+        color_task.setTextColor(random_color);
     }
+
 }
