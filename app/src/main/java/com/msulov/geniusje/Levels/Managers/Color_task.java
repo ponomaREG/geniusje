@@ -71,4 +71,23 @@ public class Color_task {
 
 
 
+    public static int getColorOfText(String text_of_color){
+        switch (text_of_color){
+            case "черный":
+                return Color.BLACK;
+            case "синий":
+                return Color.BLUE;
+            case "красный":
+                return Color.RED;
+            case "серый":
+                return Color.GRAY;
+            case "зеленый":
+                return Color.GREEN;
+            default:
+                return -1;
+        }
+    }
+
+
+
 }

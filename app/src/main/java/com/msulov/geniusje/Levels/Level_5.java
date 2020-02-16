@@ -7,41 +7,38 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Equation;
+import com.msulov.geniusje.Levels.Managers.Color_task;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
-import com.msulov.geniusje.Levels.Managers.Color_task;
 import com.msulov.geniusje.Time;
 
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_4 extends AppCompatActivity {
+public class Level_5 extends AppCompatActivity {
+
+
 
     private Random random;
     private Toast toast;
     private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
     private CircleImageView icon;
-    private String correct_text_of_color;
     private TextView answerLeft, answerRight, point,task, color_task;
     private Time t;
     private long pressedTime;
-    private int left, right, count, correctAnswer, answer;
-
+    private int count, correctAnswer, correct_color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_4);
-        random = new Random(System.currentTimeMillis());
+        setContentView(R.layout.level_5);
         t = new Time();
 
         answerLeft = findViewById(R.id.answer_left);
@@ -51,10 +48,10 @@ public class Level_4 extends AppCompatActivity {
         dialog.setContentView(R.layout.activity_dialog);
         //Находим текст задания и устанавливаем его на свой
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_4));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_5));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
         // Делаем задний фон прозрачным
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Убираем возможность закрывать системной кнопкой "Назад"
@@ -66,7 +63,7 @@ public class Level_4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_4.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_5.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -105,13 +102,13 @@ public class Level_4 extends AppCompatActivity {
                 boolean hasCorrect = false;
 
                 if (v.getId() == R.id.answer_left) {
-                    if (answerLeft.getText().toString().equals(correct_text_of_color)) {
+                    if (answerLeft.getCurrentTextColor()==correct_color) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
                 }
                 if (v.getId() == R.id.answer_right) {
-                    if (answerRight.getText().toString().equals(correct_text_of_color)) {
+                    if (answerRight.getCurrentTextColor()==correct_color) {
                         correctAnswer++;
                         hasCorrect = true;
                     }
@@ -154,10 +151,10 @@ public class Level_4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_4.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_5.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_4.this,Level_5.class));
+                    startActivity(new Intent(Level_5.this,Level_4.class));
                     finish();
                 }
             }
@@ -205,20 +202,25 @@ public class Level_4 extends AppCompatActivity {
     private void makeTask(){
         int random_color = Color_task.getRandomColor();
         String random_text_of_color = Color_task.getRandomTextOfColor();
-        correct_text_of_color = Color_task.getTextOfColor(random_color);
+        //correct_text_of_color = random_text_of_color;
+        correct_color = Color_task.getColorOfText(random_text_of_color);
+
         answerLeft.setTextColor(Color_task.getRandomColor());
         answerRight.setTextColor(Color_task.getRandomColor());
 
         if (Math.random()>0.5){
-            answerLeft.setText(String.valueOf(correct_text_of_color));
-            answerRight.setText(String.valueOf(Color_task.getRandomTextOfColor()));
+            answerLeft.setTextColor(correct_color);
+            answerRight.setTextColor(Color_task.getRandomColor());
         }
         else {
-            answerLeft.setText(String.valueOf(Color_task.getRandomTextOfColor()));
-            answerRight.setText(String.valueOf(correct_text_of_color));
+            answerLeft.setTextColor(Color_task.getRandomColor());
+            answerRight.setTextColor(correct_color);
         }
+
+        answerLeft.setText(String.valueOf(Color_task.getRandomTextOfColor()));
+        answerRight.setText(String.valueOf(Color_task.getRandomTextOfColor()));
+
         color_task.setText(random_text_of_color);
         color_task.setTextColor(random_color);
     }
-
 }

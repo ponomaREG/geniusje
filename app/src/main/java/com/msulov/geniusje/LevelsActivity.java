@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.msulov.geniusje.Levels.Level_1;
 import com.msulov.geniusje.Levels.Level_4;
+import com.msulov.geniusje.Levels.Level_5;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -72,6 +73,9 @@ public class LevelsActivity extends AppCompatActivity {
                         break;
                     case R.id.level_4:
                         startActivity(new Intent(LevelsActivity.this, Level_4.class));
+                        break;
+                    case R.id.level_5:
+                        startActivity(new Intent(LevelsActivity.this, Level_5.class));
                         break;
                 }
             }
