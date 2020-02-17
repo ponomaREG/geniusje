@@ -12,6 +12,7 @@ import com.msulov.geniusje.Levels.Level_1;
 import com.msulov.geniusje.Levels.Level_4;
 import com.msulov.geniusje.Levels.Level_5;
 import com.msulov.geniusje.Levels.Level_6;
+import com.msulov.geniusje.Levels.Level_7;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -80,6 +81,9 @@ public class LevelsActivity extends AppCompatActivity {
                         break;
                     case R.id.level_6:
                         startActivity(new Intent(LevelsActivity.this, Level_6.class));
+                        break;
+                    case R.id.level_7:
+                        startActivity(new Intent(LevelsActivity.this, Level_7.class));
                         break;
                 }
             }

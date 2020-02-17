@@ -17,13 +17,12 @@ import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
-import org.w3c.dom.Text;
-
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_6 extends AppCompatActivity {
+public class Level_7 extends AppCompatActivity {
+
 
 
     private Random random;
@@ -37,10 +36,11 @@ public class Level_6 extends AppCompatActivity {
     private int count, correctAnswer, correct_color;
     private int[] array_of_numbers;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_6);
+        setContentView(R.layout.level_7);
 
         showBeginningDialog();
 
@@ -48,7 +48,7 @@ public class Level_6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_6.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_7.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -68,7 +68,7 @@ public class Level_6 extends AppCompatActivity {
         // Обработчик нажатия на "Назад" в диалоговом окне - (Конец)
 
         //Уравнение
-        color_task = findViewById(R.id.color_task);
+
 
         // Обработчик нажатия на "Назад" - (Начало)
         backButton = findViewById(R.id.backButton);
@@ -83,7 +83,7 @@ public class Level_6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (Integer.parseInt(v.getTag().toString()) == count) {
-                    if (Integer.parseInt(v.getTag().toString()) != 9) {
+                    if (Integer.parseInt(v.getTag().toString()) != 16) {
                         count++;
                         v.setBackground(getDrawable(R.drawable.answer_style_checked));
                     } else {
@@ -96,9 +96,11 @@ public class Level_6 extends AppCompatActivity {
         };
 
         // Добавляем обработчик к кнопкам
-        for (int i = 1; i < 10; i++) {
+        for (int i = 1; i < 17; i++) {
             findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName())).setOnClickListener(onClickListener);
-            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(68);
+            int size = 48;
+//            if (i>=10) size = 58;
+            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(size);
         }
     }
 
@@ -117,10 +119,10 @@ public class Level_6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_6.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_7.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_6.this, Level_7.class));
+                    startActivity(new Intent(Level_7.this, Level_8.class));
                     finish();
                 }
             }
@@ -166,8 +168,8 @@ public class Level_6 extends AppCompatActivity {
     }
 
     private void makeTask() {
-        array_of_numbers = Cells.getRandomArrayOfNumbers(9);
-        for (int i = 1; i < 10; i++) {
+        array_of_numbers = Cells.getRandomArrayOfNumbers(16);
+        for (int i = 1; i < 17; i++) {
             cell = findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()));
             cell.setText(String.valueOf(array_of_numbers[i - 1]));
             cell.setTag(array_of_numbers[i - 1]);
@@ -192,11 +194,9 @@ public class Level_6 extends AppCompatActivity {
 
     private void setIconAndTask() {
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_6));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_7));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
     }
 }
-
-
