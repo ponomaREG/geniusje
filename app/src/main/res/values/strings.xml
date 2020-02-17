@@ -16,4 +16,6 @@
     <string name="startDialogWindowForLevel_3">Выбери правильный ответ</string>
     <string name="startDialogWindowForLevel_4">Укажите какого цвета надпись</string>
     <string name="startDialogWindowForLevel_5">Укажите какой цвет соответствует надписи</string>
+    <string name="startDialogWindowForLevel_6">Укажите все числа по возрастанию</string>
+
 </resources>

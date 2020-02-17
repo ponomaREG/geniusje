@@ -12,17 +12,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Color_task;
+import com.msulov.geniusje.Levels.Managers.Cells;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
+
+import org.w3c.dom.Text;
 
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_5 extends AppCompatActivity {
-
+public class Level_6 extends AppCompatActivity {
 
 
     private Random random;
@@ -30,40 +31,24 @@ public class Level_5 extends AppCompatActivity {
     private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
     private CircleImageView icon;
-    private TextView answerLeft, answerRight, point,task, color_task;
+    private TextView answerLeft, answerRight, point, task, color_task, cell;
     private Time t;
     private long pressedTime;
     private int count, correctAnswer, correct_color;
+    private int[] array_of_numbers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_5);
-        t = new Time();
+        setContentView(R.layout.level_6);
 
-        answerLeft = findViewById(R.id.answer_left);
-        answerRight = findViewById(R.id.answer_right);
-        // Вызов диалогового окна - (Начало)
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_5));
-        //Находим аватар задания и устанавливаем свой
-        icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
-        // Делаем задний фон прозрачным
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
-        dialog.setCancelable(false);
-        dialog.show();
-        // Вызов диалогового окна - (Конец)
+        showBeginningDialog();
 
         View.OnClickListener OnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_5.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_6.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -95,45 +80,27 @@ public class Level_5 extends AppCompatActivity {
 
 
         // Уровень -1
+        count = 1;
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
-                boolean hasCorrect = false;
-
-                if (v.getId() == R.id.answer_left) {
-                    if (answerLeft.getCurrentTextColor()==correct_color) {
-                        correctAnswer++;
-                        hasCorrect = true;
+                if (v.getTag() == count) {
+                    if (v.getTag() != 20) {
+                        count++;
+                        v.setBackground(getDrawable(R.drawable.answer_style_checked));
+                    } else {
+                        t.stopTime();
+                        startResultsDialog();
                     }
-                }
-                if (v.getId() == R.id.answer_right) {
-                    if (answerRight.getCurrentTextColor()==correct_color) {
-                        correctAnswer++;
-                        hasCorrect = true;
-                    }
-                }
-
-                makeTask();
-
-
-                if (count==1){
-                    point = findViewById(R.id.point_1);
-                }else {
-                    point = findViewById(getResources().getIdentifier("point_" + count, "id", getPackageName()));
-                }
-                CheckCorrect(hasCorrect,point);
-                if (count==20){
-                    t.stopTime();
-                    startResultsDialog();
                 }
 
             }
         };
 
         // Добавляем обработчик к кнопкам
-        answerLeft.setOnClickListener(onClickListener);
-        answerRight.setOnClickListener(onClickListener);
+        for (int i = 1; i < 10; i++) {
+            findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName())).setOnClickListener(onClickListener);
+        }
     }
 
     public void startResultsDialog() {
@@ -151,10 +118,10 @@ public class Level_5 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_5.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_6.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_5.this,Level_6.class));
+                    startActivity(new Intent(Level_6.this, Level_4.class));
                     finish();
                 }
             }
@@ -166,7 +133,7 @@ public class Level_5 extends AppCompatActivity {
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
-        textResultsDialog.setText("Time: " + String.format("%.1f", t.time) + "\nCorrect: " + correctAnswer);
+        textResultsDialog.setText("Time: " + String.format("%.1f", t.time));
     }
 
     // Обработчик нажатия системной кнопки "Назад" - (Начало)
@@ -189,38 +156,47 @@ public class Level_5 extends AppCompatActivity {
     // Обработчик нажатия системной кнопки "Назад" - (Конец)
 
 
-    private void CheckCorrect(boolean hasCorrect,TextView point){
+    private void CheckCorrect(boolean hasCorrect, TextView point) {
         if (hasCorrect) {
             point.setBackgroundResource(R.drawable.points_green_style);
-        }
-        else  {
+        } else {
             point.setBackgroundResource(R.drawable.points_red_style);
         }
 
     }
 
-    private void makeTask(){
-        int random_color = Color_task.getRandomColor();
-        String random_text_of_color = Color_task.getRandomTextOfColor();
-        //correct_text_of_color = random_text_of_color;
-        correct_color = Color_task.getColorOfText(random_text_of_color);
-
-        answerLeft.setTextColor(Color_task.getRandomColor());
-        answerRight.setTextColor(Color_task.getRandomColor());
-
-        if (Math.random()>0.5){
-            answerLeft.setTextColor(correct_color);
-            answerRight.setTextColor(Color_task.getRandomColor());
+    private void makeTask() {
+        array_of_numbers = Cells.getRandomArrayOfNumbers(9);
+        for (int i = 1; i < 10; i++) {
+            cell = findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()));
+            cell.setText(array_of_numbers[i - 1]);
+            cell.setTag(array_of_numbers[i - 1]);
         }
-        else {
-            answerLeft.setTextColor(Color_task.getRandomColor());
-            answerRight.setTextColor(correct_color);
-        }
+    }
 
-        answerLeft.setText(String.valueOf(Color_task.getRandomTextOfColor()));
-        answerRight.setText(String.valueOf(Color_task.getRandomTextOfColor()));
+    private void showBeginningDialog() {
+        t = new Time();
 
-        color_task.setText(random_text_of_color);
-        color_task.setTextColor(random_color);
+        // Вызов диалогового окна - (Начало)
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_dialog);
+        //Находим текст задания и устанавливаем его на свой
+        // Делаем задний фон прозрачным
+        setIconAndTask();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // Убираем возможность закрывать системной кнопкой "Назад"
+        dialog.setCancelable(false);
+        dialog.show();
+        // Вызов диалогового окна - (Конец)
+    }
+
+    private void setIconAndTask() {
+        task = dialog.findViewById(R.id.dialogTask);
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_6));
+        //Находим аватар задания и устанавливаем свой
+        icon = dialog.findViewById(R.id.iconTask);
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
 }
+
+
