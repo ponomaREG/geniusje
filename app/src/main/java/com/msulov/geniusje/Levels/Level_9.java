@@ -42,7 +42,7 @@ public class Level_9 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_8.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_9.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -112,10 +112,10 @@ public class Level_9 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_8.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_9.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_8.this, Level_7.class));
+                    startActivity(new Intent(Level_9.this, Level_7.class));
                     finish();
                 }
             }
@@ -187,7 +187,7 @@ public class Level_9 extends AppCompatActivity {
 
     private void setIconAndTask() {
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_8));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_9));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
