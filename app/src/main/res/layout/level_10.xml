@@ -7,7 +7,7 @@
     android:gravity="center"
     android:background="@color/colorMainBackground"
     android:orientation="vertical"
-    tools:context=".Levels.Level_9">
+    tools:context=".Levels.Level_10">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -265,6 +265,14 @@
                     android:fontFamily="@font/black_ops_one"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/answer_style" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/marginLayoutDefault">
+
+
                 <TextView
                     android:id="@+id/cell_5"
                     android:layout_width="match_parent"
@@ -276,15 +284,6 @@
                     android:fontFamily="@font/black_ops_one"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/answer_style" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/marginLayoutDefault">
-
-
-
                 <TextView
                     android:id="@+id/cell_6"
                     android:layout_width="match_parent"
@@ -318,6 +317,14 @@
                     android:fontFamily="@font/black_ops_one"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/answer_style" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/marginLayoutDefault">
+
+
                 <TextView
                     android:id="@+id/cell_9"
                     android:layout_width="match_parent"
@@ -340,15 +347,6 @@
                     android:fontFamily="@font/black_ops_one"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/answer_style" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/marginLayoutDefault">
-
-
-
                 <TextView
                     android:id="@+id/cell_11"
                     android:layout_width="match_parent"
@@ -371,6 +369,14 @@
                     android:fontFamily="@font/black_ops_one"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/answer_style" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/marginLayoutDefault">
+
+
                 <TextView
                     android:id="@+id/cell_13"
                     android:layout_width="match_parent"
@@ -404,125 +410,8 @@
                     android:fontFamily="@font/black_ops_one"
                     android:layout_marginStart="5dp"
                     android:background="@drawable/answer_style" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/marginLayoutDefault">
-
-
-
                 <TextView
                     android:id="@+id/cell_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_17"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:tag="null"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_18"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_19"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_20"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/marginLayoutDefault">
-
-
-
-                <TextView
-                    android:id="@+id/cell_21"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:tag="null"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_22"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_23"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_24"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightSmall"
-                    android:layout_weight="1"
-                    android:tag="null"
-                    android:gravity="center"
-                    android:textColor="@color/black_95"
-                    android:fontFamily="@font/black_ops_one"
-                    android:layout_marginStart="5dp"
-                    android:background="@drawable/answer_style" />
-                <TextView
-                    android:id="@+id/cell_25"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/blockAnswerHeightSmall"
                     android:layout_weight="1"

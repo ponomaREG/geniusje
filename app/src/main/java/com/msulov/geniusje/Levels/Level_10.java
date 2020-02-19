@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msulov.geniusje.Levels.Managers.Cells;
+import com.msulov.geniusje.Levels.Managers.Memory_game;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
@@ -20,27 +22,31 @@ import com.msulov.geniusje.Time;
 import org.w3c.dom.Text;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_6 extends AppCompatActivity {
-
+public class Level_10 extends AppCompatActivity {
 
     private Random random;
     private Toast toast;
     private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
     private CircleImageView icon;
-    private TextView answerLeft, answerRight, point, task, color_task, cell;
+    private TextView answerLeft, answerRight, point, task, color_task, cell, second_choosed_cell;
     private Time t;
     private long pressedTime;
+    private TextView chossedCell;
+    private boolean hasChoosed = false;
     private int count, correctAnswer, correct_color;
     private int[] array_of_numbers;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_6);
+        setContentView(R.layout.level_10);
 
         showBeginningDialog();
 
@@ -48,11 +54,12 @@ public class Level_6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_6.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_10.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
                     new Thread(t, "Time").start();
+                    showCells();
                 }
             }
         };
@@ -68,43 +75,44 @@ public class Level_6 extends AppCompatActivity {
         // Обработчик нажатия на "Назад" в диалоговом окне - (Конец)
 
         //Уравнение
-        color_task = findViewById(R.id.color_task);
+
 
         // Обработчик нажатия на "Назад" - (Начало)
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
         // Обработчик нажатия на "Назад" - (Конец)
-        makeTask();
+//        makeTask();
 
 
         // Уровень -1
         count = 1;
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (Integer.parseInt(v.getTag().toString()) == count) {
-                    if (Integer.parseInt(v.getTag().toString()) != 9) {
-                        count++;
-                        v.setBackground(getDrawable(R.drawable.answer_style_checked));
-                    } else {
-                        t.stopTime();
-                        startResultsDialog();
-                    }
-                }
-
-            }
-        };
+//        View.OnClickListener onClickListener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (Integer.parseInt(v.getTag().toString()) == count) {
+//                    if (Integer.parseInt(v.getTag().toString()) != 16) {
+//                        count++;
+//                        v.setBackground(getDrawable(R.drawable.answer_style_checked));
+//                    } else {
+//                        t.stopTime();
+//                        startResultsDialog();
+//                    }
+//                }
+//
+//            }
+//        };
 
         // Добавляем обработчик к кнопкам
-        for (int i = 1; i < 10; i++) {
-            findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName())).setOnClickListener(onClickListener);
-            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(68);
-        }
+//        for (int i = 1; i < 17; i++) {
+//            findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName())).setOnClickListener(onClickListener);
+//            int size = 48;
+////            if (i>=10) size = 58;
+//            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(size);
+//        }
     }
 
     public void startResultsDialog() {
         // Вызов диалогового окна с результатами - (Начало)
-        t.stopTime();
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog_results);
         // Делаем задний фон прозрачным
@@ -118,10 +126,10 @@ public class Level_6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_6.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_10.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_6.this, Level_7.class));
+                    startActivity(new Intent(Level_10.this, Level_8.class));
                     finish();
                 }
             }
@@ -166,14 +174,11 @@ public class Level_6 extends AppCompatActivity {
 
     }
 
-    private void makeTask() {
-        array_of_numbers = Cells.getRandomArrayOfNumbers(9);
-        for (int i = 1; i < 10; i++) {
-            cell = findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()));
-            cell.setText(String.valueOf(array_of_numbers[i - 1]));
-            cell.setTag(array_of_numbers[i - 1]);
-        }
-    }
+//
+//    private void makeTask() {
+//        array_of_numbers = Cells.getRandomArrayOfNumbers(16);
+//
+//    }
 
     private void showBeginningDialog() {
         t = new Time();
@@ -193,11 +198,108 @@ public class Level_6 extends AppCompatActivity {
 
     private void setIconAndTask() {
         task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_6));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_7));
         //Находим аватар задания и устанавливаем свой
         icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
     }
-}
 
+    private void showCells(){
+        int[] cells = Memory_game.getShakedArray(Memory_game.getArrayOfNumbersForGame(16));
+        t = new Time();
+        new Thread(t,"time");
+
+        for (int i = 1;i<17;i++){
+            cell = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
+            cell.setTextSize(48);
+            cell.setTag(R.string.tagClosed,0);
+            cell.setTag(R.string.tagCellNumber,cells[i-1]);
+            Log.d("array",String.valueOf(i));
+            cell.setText(String.valueOf(cells[i-1]));
+            Timer timer = new Timer();
+            timer.schedule(new MyTimerTask(),3000);
+        }
+
+    }
+
+
+
+    private void closeCells(){
+        for (int i = 1;i<17;i++){
+            cell = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
+            cell.setText("");
+            setOclOnCells(cell);
+        }
+    }
+
+    private View.OnClickListener getOnClickListener(){
+        View.OnClickListener ocl = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView textView = (TextView) view;
+                if (!hasChoosed) {
+                    if (Integer.parseInt(view.getTag(R.string.tagClosed).toString()) == 0){
+                        chossedCell = textView;
+                        textView.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
+                        hasChoosed = true;
+
+                    }
+                }else{
+                    hasChoosed = false;
+                    if (textView.getTag(R.string.tagCellNumber).toString().equals(chossedCell.getTag(R.string.tagCellNumber).toString())){
+                        textView.setTag(R.string.tagClosed,1);
+                        chossedCell.setTag(R.string.tagClosed,1);
+                        count++;
+                        textView.setText(textView.getTag(R.string.tagCellNumber).toString());
+                        chossedCell.setText(textView.getTag(R.string.tagCellNumber).toString());
+                        if (count==5){
+                            startResultsDialog();
+                        }
+
+
+                    }else{
+                        textView.setText(textView.getTag(R.string.tagCellNumber).toString());
+                        chossedCell.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
+                        second_choosed_cell = textView;
+                        Timer timer = new Timer();
+                        timer.schedule(new AnotherTimerTask(),1500);
+
+                    }
+
+                }
+            }
+        };
+        return ocl;
+    }
+
+    private void setOclOnCells(TextView cell){
+        View.OnClickListener ocl = getOnClickListener();
+        cell.setOnClickListener(ocl);
+    }
+
+    private void closeCurrentCells(){
+        chossedCell.setText("");
+        second_choosed_cell.setText("");
+    }
+
+    class MyTimerTask extends TimerTask{
+
+        @Override
+        public void run() {
+            closeCells();
+        }
+    }
+
+    class AnotherTimerTask extends TimerTask{
+
+        @Override
+        public void run() {
+            closeCurrentCells();
+        }
+    }
+
+
+
+
+}
 

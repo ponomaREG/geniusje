@@ -11,6 +11,10 @@
 
     <string name="toastExit">Нажмите еще раз для выхода</string>
 
+
+    <string name="tagClosed">0</string>
+    <string name="tagCellNumber">2</string>
+
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
     <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>
     <string name="startDialogWindowForLevel_3">Выбери правильный ответ</string>
@@ -19,6 +23,7 @@
     <string name="startDialogWindowForLevel_6">Укажите все числа по возрастанию</string>
     <string name="startDialogWindowForLevel_7">Теперь 4х4)00))0)))</string>
     <string name="startDialogWindowForLevel_8">Ничего нового. Давай 5х5</string>
-    <string name="startDialogWindowForLevel_9">Теперб давай в обратном порядке</string>
+    <string name="startDialogWindowForLevel_9">Теперь давай в обратном порядке</string>
+    <string name="startDialogWindowForLevel_10">Так! А теперь давай проверим твою память. Укажи все совпадающие таблички</string>
 
 </resources>

@@ -96,7 +96,7 @@ public class Level_8 extends AppCompatActivity {
             findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName())).setOnClickListener(onClickListener);
 //            int size = 48;
 ////            if (i>=10) size = 58;
-            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(48);
+            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(42);
         }
     }
 
@@ -118,7 +118,7 @@ public class Level_8 extends AppCompatActivity {
                     startActivity(new Intent(Level_8.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_8.this, Level_7.class));
+                    startActivity(new Intent(Level_8.this, Level_9.class));
                     finish();
                 }
             }
