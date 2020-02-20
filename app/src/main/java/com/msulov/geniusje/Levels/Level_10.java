@@ -38,9 +38,12 @@ public class Level_10 extends AppCompatActivity {
     private Time t;
     private long pressedTime;
     private TextView chossedCell;
+    private View.OnClickListener ocl;
     private boolean hasChoosed = false;
+    private boolean hasPair = false;
     private int count, correctAnswer, correct_color;
     private int[] array_of_numbers;
+
 
 
     @Override
@@ -216,9 +219,11 @@ public class Level_10 extends AppCompatActivity {
             cell.setTag(R.string.tagCellNumber,cells[i-1]);
             Log.d("array",String.valueOf(i));
             cell.setText(String.valueOf(cells[i-1]));
-            Timer timer = new Timer();
-            timer.schedule(new MyTimerTask(),3000);
+
         }
+        Timer timer = new Timer();
+        timer.schedule(new MyTimerTask(),3000);
+
 
     }
 
@@ -237,34 +242,58 @@ public class Level_10 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 TextView textView = (TextView) view;
+                log("1 ds",view.isEnabled());
+                log("2 ds",view.isClickable());
+                log("3 ds",view.isFocusableInTouchMode());
+                log("4 ds",view.isFocusable());
                 if (!hasChoosed) {
+
                     if (Integer.parseInt(view.getTag(R.string.tagClosed).toString()) == 0){
                         chossedCell = textView;
                         textView.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
                         hasChoosed = true;
+                        Log.d("CHOOSED","1");
+                        chossedCell.setClickable(false);
+                        log("1",chossedCell.isEnabled());
+                        log("2",chossedCell.isClickable());
+                        log("3",chossedCell.isFocusableInTouchMode());
+                        log("4",chossedCell.isFocusable());
 
                     }
                 }else{
-                    hasChoosed = false;
-                    if (textView.getTag(R.string.tagCellNumber).toString().equals(chossedCell.getTag(R.string.tagCellNumber).toString())){
-                        textView.setTag(R.string.tagClosed,1);
+                      second_choosed_cell = textView;
+//                    frozeViews();
+
+                    if (second_choosed_cell.getTag(R.string.tagCellNumber).toString().equals(chossedCell.getTag(R.string.tagCellNumber).toString())){
+                        second_choosed_cell.setTag(R.string.tagClosed,1);
                         chossedCell.setTag(R.string.tagClosed,1);
                         count++;
-                        textView.setText(textView.getTag(R.string.tagCellNumber).toString());
-                        chossedCell.setText(textView.getTag(R.string.tagCellNumber).toString());
+                        second_choosed_cell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
+                        chossedCell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
+                        Log.d("SUCCESS","1");
+                        Log.d("CHOOSSED",String.valueOf(chossedCell.isEnabled()));
+                        Log.d("TEXTVIEW",String.valueOf(second_choosed_cell.isEnabled()));
+                        second_choosed_cell.setClickable(false);
                         if (count==5){
                             startResultsDialog();
                         }
+                        hasChoosed = false;
 
 
                     }else{
-                        textView.setText(textView.getTag(R.string.tagCellNumber).toString());
+                        second_choosed_cell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
                         chossedCell.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
-                        second_choosed_cell = textView;
+//                        second_choosed_cell = textView;
+                        chossedCell.setClickable(true);
+                        hasChoosed = false;
+                        Log.d("CHOOSSED",String.valueOf(chossedCell.isEnabled()));
+                        Log.d("TEXTVIEW",String.valueOf(textView.isEnabled()));
                         Timer timer = new Timer();
                         timer.schedule(new AnotherTimerTask(),1500);
 
                     }
+
+                    unfrozeViews();
 
                 }
             }
@@ -282,13 +311,64 @@ public class Level_10 extends AppCompatActivity {
         second_choosed_cell.setText("");
     }
 
+
+    private void frozeViews(){
+        for (int i = 1; i < 17; i++){
+            TextView view = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
+            if (Integer.parseInt(view.getTag(R.string.tagClosed).toString()) == 0){
+                view.setClickable(false);
+                Log.d("VIEW ENABLED",String.valueOf(view.isClickable()));
+            }
+        }
+    }
+
+    private void unfrozeViews(){
+        for (int i = 1; i < 17; i++){
+            TextView view = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
+            if (Integer.parseInt(view.getTag(R.string.tagClosed).toString())==0){
+                view.setClickable(true);
+                Log.d("VIEW ENABLED 2",String.valueOf(view.isEnabled()));
+            }
+        }
+    }
+
+
+    private void log(String tag,String text){
+        Log.d(tag,text);
+    }
+    private void log(String tag,int text){
+        Log.d(tag,String.valueOf(text));
+    }
+    private void log(String tag,boolean text){
+        Log.d(tag,String.valueOf(text));
+    }
+
+
+
+
+
     class MyTimerTask extends TimerTask{
 
         @Override
         public void run() {
-            closeCells();
+            try {
+                synchronized (this){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeCells();
+                        }
+                    });
+                }
+
+            }catch (Exception e){
+                Log.d("ERROR",e.getStackTrace().toString());
+            }
         }
     }
+
+
+
 
     class AnotherTimerTask extends TimerTask{
 

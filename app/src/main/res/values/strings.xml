@@ -25,5 +25,6 @@
     <string name="startDialogWindowForLevel_8">Ничего нового. Давай 5х5</string>
     <string name="startDialogWindowForLevel_9">Теперь давай в обратном порядке</string>
     <string name="startDialogWindowForLevel_10">Так! А теперь давай проверим твою память. Укажи все совпадающие таблички</string>
+<!--    <string name="startDialogWindowForLevel_11"></string>-->
 
 </resources>
