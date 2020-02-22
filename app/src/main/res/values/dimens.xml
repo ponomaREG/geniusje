@@ -10,5 +10,6 @@
     <dimen name="blockAnswerHeightDefault">300dp</dimen> <!-- Высота блоков выбора -->
     <dimen name="dialogImageSize">140dp</dimen>
     <dimen name="blockAnswerHeightSmall">108dp</dimen>
+    <dimen name="blockCellHeightVerySmall">40dp</dimen>
     <dimen name="textSize_48">48dp</dimen>
 </resources>
