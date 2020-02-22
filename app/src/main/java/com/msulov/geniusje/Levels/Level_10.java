@@ -30,19 +30,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Level_10 extends AppCompatActivity {
 
-    private Random random;
     private Toast toast;
     private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
-    private CircleImageView icon;
-    private TextView answerLeft, answerRight, point, task, color_task, cell, second_choosed_cell;
+    private TextView second_choosed_cell;
     private Time t;
     private long pressedTime;
     private TextView chossedCell;
-    private View.OnClickListener ocl;
     private boolean hasChoosed = false;
-    private boolean hasPair = false;
-    private int count, correctAnswer, correct_color;
+    private int count;
     private int[] cells;
     private TextView[] cells_views;
     private Handler handler_for_timer;
@@ -87,36 +83,39 @@ public class Level_10 extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
         // Обработчик нажатия на "Назад" - (Конец)
-//        makeTask();
-
-
-        // Уровень -1
-        count = 1;
-//        View.OnClickListener onClickListener = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (Integer.parseInt(v.getTag().toString()) == count) {
-//                    if (Integer.parseInt(v.getTag().toString()) != 16) {
-//                        count++;
-//                        v.setBackground(getDrawable(R.drawable.answer_style_checked));
-//                    } else {
-//                        t.stopTime();
-//                        startResultsDialog();
-//                    }
-//                }
-//
-//            }
-//        };
-
-        // Добавляем обработчик к кнопкам
-//        for (int i = 1; i < 17; i++) {
-//            findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName())).setOnClickListener(onClickListener);
-//            int size = 48;
-////            if (i>=10) size = 58;
-//            ((TextView) findViewById(getResources().getIdentifier("cell_" + i, "id", getPackageName()))).setTextSize(size);
-//        }
     }
 
+
+
+
+    //BEGIN AND SETUP
+
+    private void showBeginningDialog() {
+        t = new Time();
+
+        // Вызов диалогового окна - (Начало)
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_dialog);
+        //Находим текст задания и устанавливаем его на свой
+        // Делаем задний фон прозрачным
+        setIconAndTask();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // Убираем возможность закрывать системной кнопкой "Назад"
+        dialog.setCancelable(false);
+        dialog.show();
+        // Вызов диалогового окна - (Конец)
+    }
+
+    private void setIconAndTask() {
+        TextView task = dialog.findViewById(R.id.dialogTask);
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_7));
+        //Находим аватар задания и устанавливаем свой
+        CircleImageView icon = dialog.findViewById(R.id.iconTask);
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
+    }
+
+
+    //SHOW RESULT
     public void startResultsDialog() {
         // Вызов диалогового окна с результатами - (Начало)
         dialog = new Dialog(this);
@@ -170,44 +169,7 @@ public class Level_10 extends AppCompatActivity {
     // Обработчик нажатия системной кнопки "Назад" - (Конец)
 
 
-
-//
-//    private void makeTask() {
-//        array_of_numbers = Cells.getRandomArrayOfNumbers(16);
-//
-//    }
-
-
-
-    //BEGIN AND SETUP
-
-    private void showBeginningDialog() {
-        t = new Time();
-
-        // Вызов диалогового окна - (Начало)
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
-        setIconAndTask();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
-        dialog.setCancelable(false);
-        dialog.show();
-        // Вызов диалогового окна - (Конец)
-    }
-
-    private void setIconAndTask() {
-        task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_7));
-        //Находим аватар задания и устанавливаем свой
-        icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
-    }
-
-
-
-    //START TASK
+    //TASK FUNCTIONS
     private void startTask(){
         initCells();
         showCells();
@@ -224,6 +186,7 @@ public class Level_10 extends AppCompatActivity {
 
     //INIT
     private void initCells(){
+        count = 0;
         cells = Memory_game.getArrayOfNumbersForGame(16);
         cells = Memory_game.getShakedArray(cells);
         cells_views = new TextView[16];
@@ -254,15 +217,36 @@ public class Level_10 extends AppCompatActivity {
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId()==R.id.cell_4){
-                    for (TextView cell_view:cells_views){
-                        if(!cell_view.getTag(R.string.tagCellNumber).toString().equals("8")) {
-                            cell_view.setClickable(false);
-                        }
-                    }
+                if(!hasChoosed){
+                        chossedCell = (TextView) v;
+                        chossedCell.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
+                        chossedCell.setClickable(false);
+                        hasChoosed = true;
                 }else{
-                    for(TextView cell_view:cells_views){
-                        cell_view.setClickable(true);
+                    frozeViews();
+                    second_choosed_cell = (TextView) v;
+                    second_choosed_cell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
+
+                    if (second_choosed_cell.getTag(R.string.tagCellNumber).toString().equals(chossedCell.getTag(R.string.tagCellNumber).toString())){
+                        count++;
+                        second_choosed_cell.setClickable(false);
+                        chossedCell.setTag(R.string.tagClosed,0);
+                        second_choosed_cell.setTag(R.string.tagClosed,0);
+                        unfrozeViews();
+                        hasChoosed = false;
+                        if(count==8){
+                            startResultsDialog();
+                        }
+                    } else{
+                        handler_for_timer.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                chossedCell.setText("");
+                                second_choosed_cell.setText("");
+                                unfrozeViews();
+                                hasChoosed = false;
+                            }
+                        },600);
                     }
                 }
                 log("VIEW",v.getTag(R.string.tagCellNumber).toString());
@@ -274,144 +258,30 @@ public class Level_10 extends AppCompatActivity {
         }
     }
 
+    private void frozeViews(){
+        for (TextView cell_view:cells_views){
+
+            cell_view.setClickable(false);
+        }
+    }
+
+    private void unfrozeViews(){
+        for (TextView cell_view:cells_views){
+            if(cell_view.getTag(R.string.tagClosed).toString().equals("1")) {
+                cell_view.setClickable(true);
+            }
+        }
+    }
+
+
+//TASK'S FUNCTIONS END
 
 
 
 
 
 
-
-
-
-
-//
-//
-//    private void showCells(){
-//        int[] cells = Memory_game.getShakedArray(Memory_game.getArrayOfNumbersForGame(16));
-//        t = new Time();
-//        new Thread(t,"time");
-//
-//        for (int i = 1;i<17;i++){
-//            cell = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
-//            cell.setTextSize(48);
-//            cell.setTag(R.string.tagClosed,0);
-//            cell.setTag(R.string.tagCellNumber,cells[i-1]);
-//            Log.d("array",String.valueOf(i));
-//            cell.setText(String.valueOf(cells[i-1]));
-//
-//        }
-//        Timer timer = new Timer();
-//        timer.schedule(new MyTimerTask(),3000);
-//
-//
-//    }
-//
-//
-//
-//    private void closeCells(){
-//        for (int i = 1;i<17;i++){
-//            cell = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
-//            cell.setText("");
-//            setOclOnCells(cell);
-//        }
-//    }
-//
-//    private View.OnClickListener getOnClickListener(){
-//        View.OnClickListener ocl = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                TextView textView = (TextView) view;
-//                log("1 ds",view.isEnabled());
-//                log("2 ds",view.isClickable());
-//                log("3 ds",view.isFocusableInTouchMode());
-//                log("4 ds",view.isFocusable());
-//                if (!hasChoosed) {
-//
-//                    if (Integer.parseInt(view.getTag(R.string.tagClosed).toString()) == 0){
-//                        chossedCell = textView;
-//                        textView.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
-//                        hasChoosed = true;
-//                        Log.d("CHOOSED","1");
-//                        chossedCell.setClickable(false);
-//                        log("1",chossedCell.isEnabled());
-//                        log("2",chossedCell.isClickable());
-//                        log("3",chossedCell.isFocusableInTouchMode());
-//                        log("4",chossedCell.isFocusable());
-//
-//                    }
-//                }else{
-//                      second_choosed_cell = textView;
-////                    frozeViews();
-//
-//                    if (second_choosed_cell.getTag(R.string.tagCellNumber).toString().equals(chossedCell.getTag(R.string.tagCellNumber).toString())){
-//                        second_choosed_cell.setTag(R.string.tagClosed,1);
-//                        chossedCell.setTag(R.string.tagClosed,1);
-//                        count++;
-//                        second_choosed_cell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
-//                        chossedCell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
-//                        Log.d("SUCCESS","1");
-//                        Log.d("CHOOSSED",String.valueOf(chossedCell.isEnabled()));
-//                        Log.d("TEXTVIEW",String.valueOf(second_choosed_cell.isEnabled()));
-//                        second_choosed_cell.setClickable(false);
-//                        if (count==5){
-//                            startResultsDialog();
-//                        }
-//                        hasChoosed = false;
-//
-//
-//                    }else{
-//                        second_choosed_cell.setText(second_choosed_cell.getTag(R.string.tagCellNumber).toString());
-//                        chossedCell.setText(chossedCell.getTag(R.string.tagCellNumber).toString());
-////                        second_choosed_cell = textView;
-//                        chossedCell.setClickable(true);
-//                        hasChoosed = false;
-//                        Log.d("CHOOSSED",String.valueOf(chossedCell.isEnabled()));
-//                        Log.d("TEXTVIEW",String.valueOf(textView.isEnabled()));
-//                        Timer timer = new Timer();
-//                        timer.schedule(new AnotherTimerTask(),1500);
-//
-//                    }
-//
-//                    unfrozeViews();
-//
-//                }
-//            }
-//        };
-//        return ocl;
-//    }
-//
-//    private void setOclOnCells(TextView cell){
-//        View.OnClickListener ocl = getOnClickListener();
-//        cell.setOnClickListener(ocl);
-//    }
-//
-//    private void closeCurrentCells(){
-//        chossedCell.setText("");
-//        second_choosed_cell.setText("");
-//    }
-//
-//
-//    private void frozeViews(){
-//        for (int i = 1; i < 17; i++){
-//            TextView view = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
-//            if (Integer.parseInt(view.getTag(R.string.tagClosed).toString()) == 0){
-//                view.setClickable(false);
-//                Log.d("VIEW ENABLED",String.valueOf(view.isClickable()));
-//            }
-//        }
-//    }
-//
-//    private void unfrozeViews(){
-//        for (int i = 1; i < 17; i++){
-//            TextView view = findViewById(getResources().getIdentifier("cell_"+i,"id",getPackageName()));
-//            if (Integer.parseInt(view.getTag(R.string.tagClosed).toString())==0){
-//                view.setClickable(true);
-//                Log.d("VIEW ENABLED 2",String.valueOf(view.isEnabled()));
-//            }
-//        }
-//    }
-
-
+//LOG FUNCTIONS
     private void log(String tag,String text){
         Log.d(tag,text);
     }
@@ -421,44 +291,5 @@ public class Level_10 extends AppCompatActivity {
     private void log(String tag,boolean text){
         Log.d(tag,String.valueOf(text));
     }
-
-
-
-
-
-    class MyTimerTask extends TimerTask{
-
-        @Override
-        public void run() {
-            try {
-                synchronized (this){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            closeCells();
-                        }
-                    });
-                }
-
-            }catch (Exception e){
-                Log.d("ERROR",e.getStackTrace().toString());
-            }
-        }
-    }
-
-
-
-
-    class AnotherTimerTask extends TimerTask{
-
-        @Override
-        public void run() {
-//            closeCurrentCells();
-        }
-    }
-
-
-
-
 }
 
