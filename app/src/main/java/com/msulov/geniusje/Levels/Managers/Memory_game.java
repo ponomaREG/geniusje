@@ -40,6 +40,25 @@ public class Memory_game {
 
         return array;
     }
+    public static String[] getShakedArray(String[] array){
+        int swap;
+        String word;
+
+        for (int i = 0; i < array.length; i++)
+        {
+            Random random = new Random();
+            swap = random.nextInt(i+1);
+            word = array[swap];
+//            Log.d("NUMBER",String.valueOf(number));
+            array[swap] = array[i];
+//            Log.d("ARRAY SWAP", String.valueOf(array[swap]));
+            array[i] = word;
+
+            Log.d("SHAKE",String.valueOf(array[i]));
+        }
+
+        return array;
+    }
 
 
 }

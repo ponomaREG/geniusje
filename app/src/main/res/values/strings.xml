@@ -26,5 +26,6 @@
     <string name="startDialogWindowForLevel_9">Теперь давай в обратном порядке</string>
     <string name="startDialogWindowForLevel_10">Так! А теперь давай проверим твою память. Укажи все совпадающие таблички</string>
     <string name="startDialogWindowForLevel_11">Теперь проверим внимательность! Найдите отличающийся символ</string>
+    <string name="startDialogWindowForLevel_12">Слова перемешаны.Найди лишнее слово. Группа остальных указана сверху</string>
 
 </resources>

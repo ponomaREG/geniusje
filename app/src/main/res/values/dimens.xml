@@ -8,8 +8,12 @@
     <dimen name="textSizeDefault_24">24sp</dimen> <!-- Размер текстов кнопок -->
     <dimen name="pointsHeightDefault">12dp</dimen> <!-- Высота пойнтов -->
     <dimen name="blockAnswerHeightDefault">300dp</dimen> <!-- Высота блоков выбора -->
+    <dimen name="blockAnswerHeightMedium">200dp</dimen>
+    <dimen name="blockAnswerHeightVerySmall">50dp</dimen>
     <dimen name="dialogImageSize">140dp</dimen>
     <dimen name="blockAnswerHeightSmall">108dp</dimen>
     <dimen name="blockCellHeightVerySmall">40dp</dimen>
     <dimen name="textSize_48">48dp</dimen>
+    <dimen name="blockAnswerMarginTopVerySmall">10dp</dimen>
+    <dimen name="taskCellTextSize">40dp</dimen>
 </resources>
