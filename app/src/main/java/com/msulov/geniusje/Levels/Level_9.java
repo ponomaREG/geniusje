@@ -115,7 +115,7 @@ public class Level_9 extends AppCompatActivity {
                     startActivity(new Intent(Level_9.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_9.this, Level_7.class));
+                    startActivity(new Intent(Level_9.this, Level_10.class));
                     finish();
                 }
             }

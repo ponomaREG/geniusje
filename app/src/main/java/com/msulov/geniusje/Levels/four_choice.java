@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class four_choice extends AppCompatActivity {
     private int[] array_of_numbers;
     private String type;
     private int taskdesc_id;
+    private View.OnClickListener ocl;
 
     private final int COUNT = 4;
 
@@ -62,6 +64,7 @@ public class four_choice extends AppCompatActivity {
         showBeginningDialog();
         initContAndBackButtons();
         makeTask(type);
+        initOclForAnswers();
 
 
 
@@ -141,9 +144,9 @@ public class four_choice extends AppCompatActivity {
     private void makeTask(String type){
         switch (type){
             case ("Shaked_words"):
-                String[][] words = (new Shaked_words()).getInfoForTask(COUNT);
+                String[][] words = (new Shaked_words()).getInfoForTask(COUNT,true);
                 desc.setText(words[0][0]);
-                setCellsTo(words[1],COUNT);
+                setCellsTo(words[1],Integer.parseInt(words[2][0]),COUNT);
 
 
         }
@@ -152,14 +155,19 @@ public class four_choice extends AppCompatActivity {
 
 
     private void initOclForAnswers(){
-        View.OnClickListener ocl;
         count = 0;
+        correctAnswer = 0;
+        Log.d("TYPE",type);
+
         switch (type){
             case("Shaked_words"):
                 ocl = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         count++;
+                        if((int)v.getTag(R.string.tagIsCorrect) == 1){
+                            correctAnswer++;
+                        }
                         if(count==5){
                             startResultsDialog();
                         }
@@ -167,12 +175,30 @@ public class four_choice extends AppCompatActivity {
 
                     }
                 };
+
+                break;
         }
+        for (int i = 1;i<(COUNT+1);i++){
+            TextView textView = findViewById(getResources().getIdentifier("answer_"+i,"id",getPackageName()));
+            textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSize));
+            textView.setOnClickListener(ocl);
+        }
+
     }
 
-    private void setCellsTo(String[] answers,int count){
-        for (int i =0;i<count;i++){
-            ((TextView) findViewById(getResources().getIdentifier("answer_"+i+1,"id",getPackageName()))).setText(answers[i]);
+
+
+    private void setCellsTo(String[] answers,int index_of_random_word,int count){
+        for (int i = 0;i<count;i++){
+            int tag;
+            ((TextView) findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setText(answers[i]);
+            tag = 0;
+            if(index_of_random_word == i){
+                tag = 1;
+                (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
+            }
+            (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
+
         }
     }
 
@@ -209,7 +235,26 @@ public class four_choice extends AppCompatActivity {
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
-        textResultsDialog.setText("Time: " + String.format("%.1f", t.time));
+        setResultsOnResultsDialog(textResultsDialog,true,true);
+
+    }
+
+    private void setResultsOnResultsDialog(TextView textResultsDialog,boolean hasCorrect,boolean hasPercent){
+        String result = "%s%.1f";
+        result = String.format(result,getString(R.string.resultDialogTime),t.time);
+
+        if(hasCorrect){
+            result = result + " %s%s";
+            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+        }
+
+        if(hasPercent){
+            result = result + " %s%d";
+            int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
+            result = String.format(result,getString(R.string.resultDialogPercent),percent);
+
+        }
+        textResultsDialog.setText(result);
     }
 
     // Обработчик нажатия системной кнопки "Назад" - (Начало)

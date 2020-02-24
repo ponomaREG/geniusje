@@ -42,20 +42,45 @@ public class Shaked_words {
 
 
 
-    public String[][] getInfoForTask(int count){
+    public String[][] getInfoForTask(int count,boolean getShaked){
 
         Random random = new Random();
         int current_group = random.nextInt(keywords.length);
 
         String[] words = getManyWordsFromRandomGroup(current_group,count-1);
-        words[count-1] = getRandomWordFromRandomGroup(current_group);
+        String random_word = getRandomWordFromRandomGroup(current_group);
+        words[count-1] = random_word;
 
-        String[][] returnement_array = {{getTitleOfGroup(current_group)}, Memory_game.getShakedArray(words)};
+        String[][] returnement_array = {{getTitleOfGroup(current_group)}, Memory_game.getShakedArray(words),{getIndexOfRandomWord(random_word,words)}};
+
+        if(getShaked){
+            return shuffleWordsIn(returnement_array);
+        }
         return returnement_array;
 
     }
 
 
+    private String[][] shuffleWordsIn(String[][] array){
+        for(int i = 0;i<array[1].length;i++){
+            array[1][i] = shakeWord(array[1][i]);
+        }
+        return  array;
+    }
+
+
+    private String getIndexOfRandomWord(String word,String[] array){
+        Log.d("WORD",word);
+        for (int i = 0;i<array.length;i++){
+            Log.d("ARRAY WORD",array[i]);
+            Log.d("INDEX","1");
+            if(array[i].equals(word)){
+                return String.valueOf(i);
+            }
+        }
+        Log.d("INDEX","0");
+        return null;
+    }
 
 
     private String getRandomWordFromRandomGroup(int index_of_current_group){
@@ -118,6 +143,18 @@ public class Shaked_words {
 
     private String getTitleOfGroup(int current_group){
         return themes[current_group];
+    }
+
+
+
+
+    private String shakeWord(String word){
+        StringBuilder new_word = new StringBuilder();
+        char[] char_word_array = Memory_game.getShakedArray(word.toCharArray());
+        for (char let:char_word_array){
+            new_word.append(let);
+        }
+        return new_word.toString();
     }
 
 }

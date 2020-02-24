@@ -12,8 +12,14 @@
     <string name="toastExit">Нажмите еще раз для выхода</string>
 
 
+    <string name="resultDialogTime">Время: </string>
+    <string name="resultDialogCorrect">Правильные: </string>
+    <string name="resultDialogPercent">Проценты: </string>
+
+
     <string name="tagClosed">0</string>
     <string name="tagCellNumber">2</string>
+    <string name="tagIsCorrect">0</string>
 
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
     <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>

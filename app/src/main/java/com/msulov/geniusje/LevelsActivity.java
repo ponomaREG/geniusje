@@ -11,10 +11,15 @@ import android.widget.TextView;
 import com.msulov.geniusje.Levels.Level_1;
 import com.msulov.geniusje.Levels.Level_10;
 import com.msulov.geniusje.Levels.Level_11;
+import com.msulov.geniusje.Levels.Level_2;
+import com.msulov.geniusje.Levels.Level_3;
 import com.msulov.geniusje.Levels.Level_4;
 import com.msulov.geniusje.Levels.Level_5;
 import com.msulov.geniusje.Levels.Level_6;
 import com.msulov.geniusje.Levels.Level_7;
+import com.msulov.geniusje.Levels.Level_8;
+import com.msulov.geniusje.Levels.Level_9;
+import com.msulov.geniusje.Levels.four_choice;
 
 public class LevelsActivity extends AppCompatActivity {
 
@@ -75,6 +80,12 @@ public class LevelsActivity extends AppCompatActivity {
                     case R.id.level_1:
                         startActivity(new Intent(LevelsActivity.this, Level_1.class));
                         break;
+                    case R.id.level_2:
+                        startActivity(new Intent(LevelsActivity.this, Level_2.class));
+                        break;
+                    case R.id.level_3:
+                        startActivity(new Intent(LevelsActivity.this, Level_3.class));
+                        break;
                     case R.id.level_4:
                         startActivity(new Intent(LevelsActivity.this, Level_4.class));
                         break;
@@ -87,11 +98,21 @@ public class LevelsActivity extends AppCompatActivity {
                     case R.id.level_7:
                         startActivity(new Intent(LevelsActivity.this, Level_7.class));
                         break;
+                    case R.id.level_8:
+                        startActivity(new Intent(LevelsActivity.this, Level_8.class));
+                        break;
+                    case R.id.level_9:
+                        startActivity(new Intent(LevelsActivity.this, Level_9.class));
+                        break;
                     case R.id.level_10:
                         startActivity(new Intent(LevelsActivity.this, Level_10.class));
                         break;
                     case R.id.level_11:
                         startActivity(new Intent(LevelsActivity.this, Level_11.class));
+                        break;
+                    case R.id.level_12:
+                        startActivity(new Intent(LevelsActivity.this, four_choice.class).putExtra("type","Shaked_words"));
+                        break;
                 }
             }
         };

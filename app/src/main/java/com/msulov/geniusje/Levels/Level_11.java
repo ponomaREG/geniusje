@@ -98,7 +98,7 @@ public class Level_11 extends AppCompatActivity {
                     startActivity(new Intent(Level_11.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_11.this, Level_7.class));
+                    startActivity(new Intent(Level_11.this, four_choice.class).putExtra("type","Shaked_words"));
                     finish();
                 }
             }

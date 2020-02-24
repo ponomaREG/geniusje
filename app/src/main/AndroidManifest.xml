@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Levels.four_choice"></activity>
-        <activity android:name=".Levels.Level_12" />
         <activity android:name=".Levels.Level_11" />
         <activity android:name=".Levels.Level_10" />
         <activity android:name=".Levels.Level_9" />

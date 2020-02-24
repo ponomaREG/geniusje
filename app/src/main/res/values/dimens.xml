@@ -15,5 +15,6 @@
     <dimen name="blockCellHeightVerySmall">40dp</dimen>
     <dimen name="textSize_48">48dp</dimen>
     <dimen name="blockAnswerMarginTopVerySmall">10dp</dimen>
-    <dimen name="taskCellTextSize">40dp</dimen>
+    <dimen name="taskCellTextSize">35dp</dimen>
+    <dimen name="answerCellTextSize">9dp</dimen>
 </resources>
