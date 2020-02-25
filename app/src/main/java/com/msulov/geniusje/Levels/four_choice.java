@@ -13,11 +13,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.Levels.Managers.Questions;
 import com.msulov.geniusje.Levels.Managers.Shaked_words;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
+import java.net.Inet4Address;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -58,6 +60,10 @@ public class four_choice extends AppCompatActivity {
         if((type.equals("Shaked_words"))||(type.isEmpty())){
             taskdesc_id = R.string.startDialogWindowForLevel_12;
             type = "Shaked_words";
+        }else{
+            if((type.equals("Question_1"))){
+                type = "Question_1";
+            }
         }
 
 
@@ -147,7 +153,12 @@ public class four_choice extends AppCompatActivity {
                 String[][] words = (new Shaked_words()).getInfoForTask(COUNT,true);
                 desc.setText(words[0][0]);
                 setCellsTo(words[1],Integer.parseInt(words[2][0]),COUNT);
-
+                break;
+            case ("Question_1"):
+                String[][] data = Questions.getRandomData(Questions.TYPE_MATH);
+                desc.setText(data[0][0]);
+                setCellsTo(data[1], Integer.parseInt(data[2][0]),COUNT);
+                break;
 
         }
     }
@@ -176,6 +187,21 @@ public class four_choice extends AppCompatActivity {
                     }
                 };
 
+                break;
+            case("Question_1"):
+                ocl = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        count++;
+                        if((int)v.getTag(R.string.tagIsCorrect) == 1){
+                            correctAnswer++;
+                        }
+                        if(count==3){
+                            startResultsDialog();
+                        }
+                        makeTask(type);
+                    }
+                };
                 break;
         }
         for (int i = 1;i<(COUNT+1);i++){

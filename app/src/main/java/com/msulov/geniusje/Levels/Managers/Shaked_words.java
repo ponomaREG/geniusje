@@ -69,7 +69,7 @@ public class Shaked_words {
     }
 
 
-    private String getIndexOfRandomWord(String word,String[] array){
+    public static String getIndexOfRandomWord(String word,String[] array){
         Log.d("WORD",word);
         for (int i = 0;i<array.length;i++){
             Log.d("ARRAY WORD",array[i]);
