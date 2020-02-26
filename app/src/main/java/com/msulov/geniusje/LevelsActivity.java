@@ -113,6 +113,15 @@ public class LevelsActivity extends AppCompatActivity {
                     case R.id.level_12:
                         startActivity(new Intent(LevelsActivity.this, four_choice.class).putExtra("type","Shaked_words"));
                         break;
+                    case R.id.level_13:
+                        startActivity(new Intent(LevelsActivity.this, four_choice.class).putExtra("type","Question_1"));
+                        break;
+                    case R.id.level_14:
+                        startActivity(new Intent(LevelsActivity.this, four_choice.class).putExtra("type","Question_2"));
+                        break;
+                    case R.id.level_15:
+                        startActivity(new Intent(LevelsActivity.this, four_choice.class).putExtra("type","Question_3"));
+                        break;
                 }
             }
         };

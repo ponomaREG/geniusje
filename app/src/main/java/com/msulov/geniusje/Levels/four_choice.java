@@ -60,17 +60,27 @@ public class four_choice extends AppCompatActivity {
         if((type.equals("Shaked_words"))||(type.isEmpty())){
             taskdesc_id = R.string.startDialogWindowForLevel_12;
             type = "Shaked_words";
-        }else{
-            if((type.equals("Question_1"))){
-                type = "Question_1";
-            }
         }
+        if((type.equals("Question_1"))){
+                type = "Question_1";
+                taskdesc_id = R.string.startDialogWindowForLevel_13;
+        }
+        if((type.equals("Question_2"))){
+            type = "Question_2";
+            taskdesc_id = R.string.startDialogWindowForLevel_14;
+        }
+        if((type.equals("Question_3"))){
+            type = "Question_3";
+            taskdesc_id = R.string.startDialogWindowForLevel_15;
+        }
+
 
 
         showBeginningDialog();
         initContAndBackButtons();
         makeTask(type);
         initOclForAnswers();
+
 
 
 
@@ -148,6 +158,7 @@ public class four_choice extends AppCompatActivity {
 
 
     private void makeTask(String type){
+        String[][] data;
         switch (type){
             case ("Shaked_words"):
                 String[][] words = (new Shaked_words()).getInfoForTask(COUNT,true);
@@ -155,7 +166,17 @@ public class four_choice extends AppCompatActivity {
                 setCellsTo(words[1],Integer.parseInt(words[2][0]),COUNT);
                 break;
             case ("Question_1"):
-                String[][] data = Questions.getRandomData(Questions.TYPE_MATH);
+                data = Questions.getRandomData(Questions.TYPE_MATH);
+                desc.setText(data[0][0]);
+                setCellsTo(data[1], Integer.parseInt(data[2][0]),COUNT);
+                break;
+            case ("Question_2"):
+                data = Questions.getRandomData(Questions.TYPE_CHEMIC);
+                desc.setText(data[0][0]);
+                setCellsTo(data[1], Integer.parseInt(data[2][0]),COUNT);
+                break;
+            case ("Question_3"):
+                data = Questions.getRandomData(Questions.TYPE_INF);
                 desc.setText(data[0][0]);
                 setCellsTo(data[1], Integer.parseInt(data[2][0]),COUNT);
                 break;
@@ -186,9 +207,9 @@ public class four_choice extends AppCompatActivity {
 
                     }
                 };
-
                 break;
-            case("Question_1"):
+
+            default:
                 ocl = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -249,7 +270,12 @@ public class four_choice extends AppCompatActivity {
                     startActivity(new Intent(four_choice.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(four_choice.this, Level_8.class));
+                    Intent intent = null;
+                    if(type.equals("Shaked_words")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_1");
+                    if(type.equals("Question_1")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_2");
+                    if(type.equals("Question_2")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_3");
+                    if(type.equals("Question_3")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","");
+                    startActivity(intent);
                     finish();
                 }
             }
