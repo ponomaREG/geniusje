@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/colorMainBackground"
+    android:orientation="vertical"
+    tools:context=".Levels.Level_16">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/back"
+                android:textSize="@dimen/textSizeDefault_24"
+                android:textAllCaps="false"
+                android:textColor="@color/black_95"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/button_selection"/>
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/level"
+                android:textSize="@dimen/textSizeDefault_24"
+                android:textColor="@color/black_95"
+                android:gravity="end"
+                android:padding="10dp"
+                android:layout_marginStart="@dimen/marginLayoutDefault" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/marginLayoutDefault"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2+10"
+                android:textSize="45dp"
+                android:textColor="@color/black_95"
+                android:fontFamily="@font/black_ops_one"
+                android:background="@drawable/answer_style"
+                android:gravity="center"
+                android:id="@+id/desc"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/blockAnswerHeightMedium"
+            android:layout_marginTop="@dimen/marginLayoutDefault"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/input_word"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/blockAnswerHeightSmall"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/black_95"
+                android:fontFamily="@font/black_ops_one"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/answer_style" />
+
+            <TextView
+                android:id="@+id/founded_words"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/blockAnswerHeightMedium"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/blockAnswerMarginTopVerySmall"
+                android:gravity="center"
+                android:textColor="@color/black_95"
+                android:fontFamily="@font/black_ops_one"
+                android:background="@drawable/answer_style" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Check"
+                android:id="@+id/buttonSend"
+                android:fontFamily="@font/black_ops_one"
+                android:layout_marginTop="@dimen/blockAnswerMarginTopVerySmall"
+                android:background="@drawable/answer_style_checked"
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

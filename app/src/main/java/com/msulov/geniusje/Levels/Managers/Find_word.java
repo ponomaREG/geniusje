@@ -18,8 +18,11 @@ public class Find_word {
     };
 
 
+    public static int COUNT = words.length;
 
-    private static String[] getWords(int index){
+
+
+    public static String[] getWords(int index){
         return words[index];
     }
 
@@ -27,16 +30,19 @@ public class Find_word {
         return koef_is_found[index];
     }
 
-    private static boolean hasFounded(int index,String word){
+    public static boolean isExistsAndNotFound(int index,String word){
         boolean hasFounded = false;
         for (int i = 0 ;i<words[index].length;i++){
-            if((words[index][i].equals(word))&&(koef_is_found[index][i]==1)){ hasFounded = true; return hasFounded;}
+            if((words[index][i].equals(word))&&(koef_is_found[index][i]==1)){
+                hasFounded = true;
+                return hasFounded;
+            }
         }
         return hasFounded;
     }
 
 
-    private static void setKoefhasFounded(int index,String word){
+    public static void setKoefhasFounded(int index,String word){
         for (int i = 0 ;i<words[index].length;i++){
             if(words[index][i].equals(word)) koef_is_found[index][i]=1;
         }
