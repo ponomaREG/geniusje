@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.msulov.geniusje.Levels.Level_1;
 import com.msulov.geniusje.Levels.Level_10;
 import com.msulov.geniusje.Levels.Level_11;
+import com.msulov.geniusje.Levels.Level_16;
 import com.msulov.geniusje.Levels.Level_2;
 import com.msulov.geniusje.Levels.Level_3;
 import com.msulov.geniusje.Levels.Level_4;
@@ -122,6 +123,8 @@ public class LevelsActivity extends AppCompatActivity {
                     case R.id.level_15:
                         startActivity(new Intent(LevelsActivity.this, four_choice.class).putExtra("type","Question_3"));
                         break;
+                    case R.id.level_16:
+                        startActivity(new Intent(LevelsActivity.this, Level_16.class).putExtra("type","Find_word"));
                 }
             }
         };

@@ -57,21 +57,28 @@ public class four_choice extends AppCompatActivity {
         Intent intent = getIntent();
 
         type = intent.getStringExtra("type");
-        if((type.equals("Shaked_words"))||(type.isEmpty())){
-            taskdesc_id = R.string.startDialogWindowForLevel_12;
+        if(type == null) {
             type = "Shaked_words";
+            taskdesc_id = R.string.startDialogWindowForLevel_12;
         }
-        if((type.equals("Question_1"))){
+        else if((type.equals("Shaked_words"))){
+            type = "Shaked_words";
+            taskdesc_id = R.string.startDialogWindowForLevel_12;
+        }
+        else if((type.equals("Question_1"))){
                 type = "Question_1";
                 taskdesc_id = R.string.startDialogWindowForLevel_13;
         }
-        if((type.equals("Question_2"))){
+        else if((type.equals("Question_2"))){
             type = "Question_2";
             taskdesc_id = R.string.startDialogWindowForLevel_14;
         }
-        if((type.equals("Question_3"))){
+        else if((type.equals("Question_3"))){
             type = "Question_3";
             taskdesc_id = R.string.startDialogWindowForLevel_15;
+        }else{
+            type = "Shaked_words";
+            taskdesc_id = R.string.startDialogWindowForLevel_12;
         }
 
 
@@ -274,7 +281,7 @@ public class four_choice extends AppCompatActivity {
                     if(type.equals("Shaked_words")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_1");
                     if(type.equals("Question_1")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_2");
                     if(type.equals("Question_2")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_3");
-                    if(type.equals("Question_3")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","");
+                    if(type.equals("Question_3")) intent = new Intent(four_choice.this,Level_16.class).putExtra("type","Find_word");
                     startActivity(intent);
                     finish();
                 }

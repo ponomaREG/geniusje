@@ -22,6 +22,8 @@
     <string name="tagDescTag">1</string>
     <string name="tagIsCorrect">0</string>
 
+    <string name="hintEditText">Вводи сюда</string>
+
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
     <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>
     <string name="startDialogWindowForLevel_3">Выбери правильный ответ</string>
@@ -37,7 +39,7 @@
     <string name="startDialogWindowForLevel_13">Отвечай на вопросы</string>
     <string name="startDialogWindowForLevel_14">Отвечай еще</string>
     <string name="startDialogWindowForLevel_15">Еще вопросы</string>
-    <string name="startDialogWindowForLevel_16">Составь слова из букв этого слова Длина слов:4 буквы</string>
+    <string name="startDialogWindowForLevel_16">Составь слова из букв этого слова.ДЛИНА СЛОВ:4 буквы</string>
 
 
 </resources>

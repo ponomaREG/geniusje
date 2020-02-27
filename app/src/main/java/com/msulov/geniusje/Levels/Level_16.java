@@ -2,6 +2,7 @@ package com.msulov.geniusje.Levels;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,13 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msulov.geniusje.Levels.Managers.Find_word;
-import com.msulov.geniusje.Levels.Managers.Questions;
-import com.msulov.geniusje.Levels.Managers.Shaked_words;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
-import java.net.Inet4Address;
+import java.util.Objects;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -30,22 +29,18 @@ public class Level_16 extends AppCompatActivity {
 
 
 
-    private Random random;
     private Toast toast;
     private EditText input_word;
-    private Button backButton, startButton, continueButton, repeatButton, sendButton;
+    private Button sendButton;
     private Dialog dialog;
-    private CircleImageView icon;
-    private TextView answerLeft, answerRight, point, task, color_task, cell,desc, founded_words;
+    private TextView desc;
+    private TextView founded_words;
     private Time t;
     private long pressedTime;
-    private int count, correctAnswer, correct_color;
-    private int[] array_of_numbers;
+    private int count, correctAnswer;
     private String type;
     private int taskdesc_id;
     private View.OnClickListener ocl;
-
-    private final int COUNT = 4;
 
 
 
@@ -55,15 +50,20 @@ public class Level_16 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.four_choice);
+        setContentView(R.layout.level_16);
 
         Intent intent = getIntent();
 
         type = intent.getStringExtra("type");
-        if((type.equals("Find_word"))||(type.isEmpty())){
+        if(type == null) {
             taskdesc_id = R.string.startDialogWindowForLevel_16;
             type = "Find_word";
         }
+        else if((type.equals("Find_word"))){
+            taskdesc_id = R.string.startDialogWindowForLevel_16;
+            type = "Find_word";
+        }
+
 
 
 
@@ -95,7 +95,7 @@ public class Level_16 extends AppCompatActivity {
         //Находим текст задания и устанавливаем его на свой
         // Делаем задний фон прозрачным
         setIconAndTask();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
@@ -103,10 +103,10 @@ public class Level_16 extends AppCompatActivity {
     }
 
     private void setIconAndTask() {
-        task = dialog.findViewById(R.id.dialogTask);
+        TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(taskdesc_id));
         //Находим аватар задания и устанавливаем свой
-        icon = dialog.findViewById(R.id.iconTask);
+        CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
     }
 
@@ -116,18 +116,21 @@ public class Level_16 extends AppCompatActivity {
         View.OnClickListener OnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("DSA","DSA");
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
                     startActivity(new Intent(Level_16.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
+                    Log.d("ASD","ASD");
                     dialog.dismiss();
                     new Thread(t, "Time").start();
                 }
             }
         };
 
-        startButton = dialog.findViewById(R.id.startDialogButton);
-        backButton = dialog.findViewById(R.id.backDialogButton);
+        Button startButton = dialog.findViewById(R.id.startDialogButton);
+        startButton.setOnClickListener(OnClickListener);
+        Button backButton = dialog.findViewById(R.id.backDialogButton);
         backButton.setOnClickListener(OnClickListener);
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
@@ -165,29 +168,28 @@ public class Level_16 extends AppCompatActivity {
 
         Log.d("TYPE",type);
 
-        switch (type){
-            case("Find_word"):
-                ocl = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int index = (int) desc.getTag();
-                        String user_word = input_word.getText().toString();
-                        if(Find_word.isExistsAndNotFound(index,user_word)){
-                            founded_words.setText(founded_words.getText().toString()+" , "+user_word);
-                            Find_word.setKoefhasFounded(index,user_word);
-                            count++;
-                        }
-                        if(count==3){
-                            startResultsDialog();
-                        }
+        if ("Find_word".equals(type)) {
+            ocl = new View.OnClickListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View v) {
+                    int index = (int) desc.getTag(R.string.tagDescTag);
+                    String user_word = input_word.getText().toString().toLowerCase();
+                    Log.d("WORD","1");
+                    if (Find_word.isExistsAndNotFound(index, user_word)) {
+                        Log.d("ASD","DASDASDA");
 
+                        founded_words.setText(founded_words.getText().toString()  + user_word + " , ");
+                        Find_word.setKoefhasFounded(index, user_word);
+                        count++;
                     }
-                };
-                break;
+                    if (count == 5) {
+                        startResultsDialog();
+                    }
 
-
+                }
+            };
         }
-
         sendButton.setOnClickListener(ocl);
 
     }
@@ -216,7 +218,7 @@ public class Level_16 extends AppCompatActivity {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog_results);
         // Делаем задний фон прозрачным
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
@@ -229,7 +231,7 @@ public class Level_16 extends AppCompatActivity {
                     startActivity(new Intent(Level_16.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent = null;
+                    Intent intent;// = null;
                     intent = new Intent(Level_16.this,four_choice.class);
                     startActivity(intent);
                     finish();
@@ -237,9 +239,9 @@ public class Level_16 extends AppCompatActivity {
             }
         };
 
-        continueButton = dialog.findViewById(R.id.ContinueResultsDialog);
+        Button continueButton = dialog.findViewById(R.id.ContinueResultsDialog);
         continueButton.setOnClickListener(OnClickListener);
-        repeatButton = dialog.findViewById(R.id.repeatResultsDialog);
+        Button repeatButton = dialog.findViewById(R.id.repeatResultsDialog);
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
@@ -247,7 +249,8 @@ public class Level_16 extends AppCompatActivity {
 
     }
 
-    private void setResultsOnResultsDialog(TextView textResultsDialog,boolean hasCorrect,boolean hasPercent){
+    @SuppressLint("DefaultLocale")
+    private void setResultsOnResultsDialog(TextView textResultsDialog, boolean hasCorrect, boolean hasPercent){
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
