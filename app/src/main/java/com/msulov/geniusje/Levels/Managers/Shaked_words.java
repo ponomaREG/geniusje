@@ -141,6 +141,22 @@ public class Shaked_words {
     }
 
 
+    public static int[] getRandomIndexes(int count,int count_all,boolean isRepeated){
+        int[] indexes = new int[count];
+        int[] full_indexes = new int[count_all];
+
+        for (int i = 0;i<count_all;i++){
+            full_indexes[i] = i;
+        }
+        Memory_game.getShakedArray(full_indexes);
+
+        for(int i = 0;i<count;i++){
+            indexes[i] = full_indexes[i];
+        }
+        return indexes;
+    }
+
+
     private String getTitleOfGroup(int current_group){
         return themes[current_group];
     }

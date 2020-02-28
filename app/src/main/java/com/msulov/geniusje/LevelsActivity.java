@@ -12,6 +12,7 @@ import com.msulov.geniusje.Levels.Level_1;
 import com.msulov.geniusje.Levels.Level_10;
 import com.msulov.geniusje.Levels.Level_11;
 import com.msulov.geniusje.Levels.Level_16;
+import com.msulov.geniusje.Levels.Level_17;
 import com.msulov.geniusje.Levels.Level_2;
 import com.msulov.geniusje.Levels.Level_3;
 import com.msulov.geniusje.Levels.Level_4;
@@ -125,6 +126,9 @@ public class LevelsActivity extends AppCompatActivity {
                         break;
                     case R.id.level_16:
                         startActivity(new Intent(LevelsActivity.this, Level_16.class).putExtra("type","Find_word"));
+                        break;
+                    case R.id.level_17:
+                        startActivity(new Intent(LevelsActivity.this, Level_17.class));
                 }
             }
         };
