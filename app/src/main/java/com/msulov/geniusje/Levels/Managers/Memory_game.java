@@ -11,7 +11,7 @@ public class Memory_game {
     private static String[][] symbols_for_rhythm = {
     };
 
-    public static int EAZY = 3, MEDIUM = 5, HARD = 7;
+    public static int EAZY = 3, MEDIUM = 5, HARD = 6, ULTRA_HARD_SPECIAL_FOR_MURAD = 11;
     public static int HEIGHT = 6,WIDTH = 6;
 
 

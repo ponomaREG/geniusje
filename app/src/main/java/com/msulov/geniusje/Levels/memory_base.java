@@ -148,7 +148,7 @@ public class memory_base extends AppCompatActivity {
 
 
     private View.OnClickListener getOclForCellsSudoku(){
-        indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(Memory_game.EAZY);
+        indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(Memory_game.MEDIUM);
         count_all = indexes_of_pairs_coord.length;
 
         View.OnClickListener ocl = new View.OnClickListener() {
@@ -246,7 +246,6 @@ public class memory_base extends AppCompatActivity {
                         startActivity(new Intent(memory_base.this, memory_base.class).putExtra("type", "Get_rhythm")); //REPEAT
                     }else{
                         startActivity(new Intent(memory_base.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-
                     }
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
