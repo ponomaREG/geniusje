@@ -16,7 +16,7 @@
     <string name="resultDialogCorrect">Правильные: </string>
     <string name="resultDialogPercent">Проценты: </string>
     <string name="resultDialogMistakes">Ошибки: </string>
-
+    <string name="resultDialogRepeat">Попробуйте еще(((</string>
 
     <string name="tagClosed">0</string>
     <string name="tagCellNumber">2</string>
@@ -25,6 +25,8 @@
     <string name="tagSudokuX">X</string>
     <string name="tagSudokuY">Y</string>
     <string name="tagSudokuIsChecked">Check_status</string>
+    <string name="tagX">X</string>
+    <string name="tagY">Y</string>
 
     <string name="hintEditText">Вводи сюда</string>
 
@@ -45,7 +47,7 @@
     <string name="startDialogWindowForLevel_15">Еще вопросы</string>
     <string name="startDialogWindowForLevel_16">Составь слова из букв этого слова.ДЛИНА СЛОВ:4 буквы</string>
     <string name="startDialogWindowForLevel_17">Реши судоку</string>
-
+    <string name="startDialogWindowForLevel_18">Повтори ритм</string>
 
     <string name="sudoku_choice_1">1</string>
     <string name="sudoku_choice_2">2</string>
@@ -56,7 +58,6 @@
     <string name="sudoku_choice_7">7</string>
     <string name="sudoku_choice_8">8</string>
     <string name="sudoku_choice_9">9</string>
-
 
 
 </resources>

@@ -12,4 +12,5 @@
     <color name="red">#ff0000</color>
     <color name="colorAnswerBackgroundChecked">#2D756D</color>
     <color name="colorTextOfSudokuGetMistake">#B31919</color>
+    <color name="cellError">#980909</color>
 </resources>
