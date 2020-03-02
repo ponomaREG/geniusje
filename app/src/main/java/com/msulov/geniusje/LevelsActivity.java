@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -135,7 +136,8 @@ public class LevelsActivity extends AppCompatActivity {
                         startActivity(new Intent(LevelsActivity.this, memory_base.class).putExtra("type","Get_rhythm"));
                         break;
                     case R.id.level_19:
-                        startActivity(new Intent(LevelsActivity.this,memory_base.class).putExtra("type","Find_all"));
+                        Log.d("START 19","!");
+                        startActivity(new Intent(LevelsActivity.this, memory_base.class).putExtra("type","Find_all"));
                         break;
                 }
             }
