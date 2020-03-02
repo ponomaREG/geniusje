@@ -39,7 +39,7 @@ public class memory_base extends AppCompatActivity {
     private int count = 0, correctAnswer,mistakes = 0;
     private int taskdesc_id;
     private LinearLayout baseLY,taskLY;
-    private String type;
+    private String type,next_level;
     private int[][] indexes_of_pairs_coord;
     private int count_all;
     private boolean isWin = true;
@@ -59,6 +59,12 @@ public class memory_base extends AppCompatActivity {
         switch (type){
             case "Get_rhythm":
                 taskdesc_id = R.string.startDialogWindowForLevel_18;
+                next_level = "Find_all";
+                break;
+            case "Find_all":
+                next_level = "None";
+                taskdesc_id = R.string.startDialogWindowForLevel_19;
+                break;
         }
 
         showBeginningDialog();
@@ -148,16 +154,20 @@ public class memory_base extends AppCompatActivity {
 
 
     private View.OnClickListener getOclForCellsSudoku(){
-        indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(Memory_game.MEDIUM);
+        int diffucult = Memory_game.MEDIUM;
+        if(type.equals("Find_all")) diffucult = diffucult+3;
+        indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(diffucult);
         count_all = indexes_of_pairs_coord.length;
 
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(set_textview != null) set_textview.setBackground(getDrawable(R.drawable.cell_style));
+
                 int x = (int) v.getTag(R.string.tagX);
                 int y = (int) v.getTag(R.string.tagY);
                 set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
+                if(type.equals("Get_rhythm")){
                 if(((x==indexes_of_pairs_coord[count][0])&&(y==indexes_of_pairs_coord[count][1]))){
                     set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
                 }else{
@@ -171,6 +181,25 @@ public class memory_base extends AppCompatActivity {
                     t.stopTime();
                     startResultsDialog();
                 };
+                }
+                if(type.equals("Find_all")){
+                    boolean hasFound = false;
+                    for(int[] coords:indexes_of_pairs_coord){
+                        if((coords[0]==x)&&(coords[1]==y)){
+                            set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
+
+                        }else{
+                            set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
+                            t.stopTime();
+                            isWin = false;
+                            startResultsDialog();
+                        }
+                    }
+                    if(count==count_all){
+                        t.stopTime();
+                        startResultsDialog();
+                    }
+                }
             }
         };
         return ocl;
@@ -180,34 +209,62 @@ public class memory_base extends AppCompatActivity {
     private void showRhythm(){
         frozeOrUnfrozeViews(false);
         Handler handler = new Handler();
+//        if(type.equals("Get_rhythm")) {
         int time_koef = 0;
         int time_of_close = 850;
-        for(int[] coords_of_rhythm:indexes_of_pairs_coord){
+        for (int[] coords_of_rhythm : indexes_of_pairs_coord) {
             int x = coords_of_rhythm[0];
             int y = coords_of_rhythm[1];
-            time_koef++;
+            if(type.equals("Get_rhythm")) time_koef++;
             final TextView textView = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
+
             handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setViewChecked(textView);
-                }
-            },850* time_koef);
-            time_of_close = time_of_close + 850;
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setViewUnchecked(textView);
-                }
-            },time_of_close);
-        }
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                frozeOrUnfrozeViews(true);
+                    @Override
+                    public void run() {
+                        setViewChecked(textView);
+                    }
+                    }, 850 * time_koef);
+                if(type.equals("Get_rhythm")) time_of_close = time_of_close + 850;
+
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setViewUnchecked(textView);
+                    }
+                }, time_of_close);
             }
-        },time_of_close);
-        new Thread(t, "Time").start();
+
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    frozeOrUnfrozeViews(true);
+                    new Thread(t, "Time").start();
+                }
+            }, time_of_close);
+//        }
+//        if(type.equals("Find_all")){
+//            for(int[] coord_of_rhythm : indexes_of_pairs_coord){
+//                int x = coord_of_rhythm[0];
+//                int y = coord_of_rhythm[1];
+//
+//                final TextView textView = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
+//                setViewChecked(textView);
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        setViewUnchecked(textView);
+//                    }
+//                },1000);
+//
+//            }
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    frozeOrUnfrozeViews(true);
+//                }
+//            },1000);
+//        }
     }
 
 
@@ -243,7 +300,7 @@ public class memory_base extends AppCompatActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
-                        startActivity(new Intent(memory_base.this, memory_base.class).putExtra("type", "Get_rhythm")); //REPEAT
+                        startActivity(new Intent(memory_base.this, memory_base.class).putExtra("type", type)); //REPEAT
                     }else{
                         startActivity(new Intent(memory_base.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                     }
@@ -251,9 +308,11 @@ public class memory_base extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(memory_base.this, memory_base.class).putExtra("type", "Get_rhythm"); //NEXT LEVEL
+                        if(next_level.equals("None")){
+                            intent = new Intent(memory_base.this,four_choice.class);
+                        }else intent = new Intent(memory_base.this, memory_base.class).putExtra("type", next_level); //NEXT LEVEL
                     }else{
-                        intent = new Intent(memory_base.this, memory_base.class).putExtra("type", "Get_rhythm"); //REPEAT
+                        intent = new Intent(memory_base.this, memory_base.class).putExtra("type", type); //REPEAT
                     }
                     startActivity(intent);
                     finish();
