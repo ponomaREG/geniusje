@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Levels.RSL"></activity>
+        <activity android:name=".Levels.Miner"></activity>
+        <activity android:name=".Levels.RSL" />
         <activity
             android:name=".Levels.memory_base"
             android:screenOrientation="portrait" />

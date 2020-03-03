@@ -49,6 +49,7 @@
     <string name="startDialogWindowForLevel_17">Реши судоку</string>
     <string name="startDialogWindowForLevel_18">Повтори ритм</string>
     <string name="startDialogWindowForLevel_19">Найди все высвечивающиеся ячейки</string>
+    <string name="startDialogWindowForLevel_20">Поиграй в Сапера</string>
 
     <string name="sudoku_choice_1">1</string>
     <string name="sudoku_choice_2">2</string>

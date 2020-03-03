@@ -137,6 +137,32 @@ public class Memory_game {
         return pairs_of_indexes;
     }
 
+    public static int[][] getRandomPairsOfIndexes(int diffucult,int height,int width){
+
+        int[][] pairs_of_indexes = new int[diffucult][2];
+        int[] coord_Y = new int[height];
+        int[] coord_X = new int[width];
+        Random random = new Random();
+
+        for (int i = 0;i<height;i++){
+            coord_Y[i] = i;
+        }
+        for (int i = 0;i<width;i++){
+            coord_X[i] = i;
+        }
+        getShakedArray(coord_X);
+        getShakedArray(coord_Y);
+        for(int i = 0;i<diffucult;i++){
+            int x = coord_X[i];
+            int y = coord_Y[i];
+            pairs_of_indexes[i][1] = y;
+            pairs_of_indexes[i][0] = x;
+            Log.d("X",String.valueOf(x));
+            Log.d("Y",String.valueOf(y));
+        }
+        return pairs_of_indexes;
+    }
+
 
 
 }
