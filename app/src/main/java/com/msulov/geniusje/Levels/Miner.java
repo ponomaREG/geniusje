@@ -8,9 +8,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -40,7 +42,7 @@ public class Miner extends AppCompatActivity {
     private LinearLayout baseLY,taskLY;
     private String type,next_level;
     private int[][] indexes_of_pairs_coord, indexes_bombs;
-    private int count_all, diffucult;
+    private int count_all, diffucult,all_cells_count,all_bombs=0;
     private boolean isWin = true;
 
 
@@ -57,7 +59,7 @@ public class Miner extends AppCompatActivity {
         Log.d("TYPE",type);
         if(type == null) type = "EAZY";
         switch (type){
-            case "EAZY":
+            default:
                 taskdesc_id = R.string.startDialogWindowForLevel_20;
                 next_level = "MEDIUM";
                 diffucult = Miner_manager.HARD;
@@ -106,6 +108,7 @@ public class Miner extends AppCompatActivity {
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
+                    new Thread(t,"time");
                 }
             }
         };
@@ -128,7 +131,10 @@ public class Miner extends AppCompatActivity {
     private void generateLayouts(){
         indexes_bombs = Miner_manager.getRandomCoordOfBombs(diffucult);
         taskLY = findViewById(R.id.taskLY);
+        all_cells_count = Miner_manager.HEIGHT * Miner_manager.WIDTH;
         View.OnClickListener ocl = getOclForCellsSudoku();
+        View.OnLongClickListener long_ocl = getLongClickOclForCells();
+
 
         for(int i = 0; i< Miner_manager.HEIGHT; i++){
             LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,null);
@@ -148,7 +154,11 @@ public class Miner extends AppCompatActivity {
                 textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSizeUltraSmall));
                 textView.setTag(R.string.tagCellNumber,0);
                 textView.setOnClickListener(ocl);
+                textView.setOnLongClickListener(long_ocl);
+                textView.setLongClickable(true);
+
                 if(Miner_manager.isXandYinARRAY(indexes_bombs,j,i)) {
+                    Log.d("COORDS BOMB",j+" "+i);
                     textView.setTag(R.string.tagIsBomb,1);
                 }
                 else textView.setTag(R.string.tagIsBomb,0);
@@ -156,7 +166,6 @@ public class Miner extends AppCompatActivity {
 //                Log.d("J IS ",String.valueOf(j));
             }
             taskLY.addView(baseLL);
-            new Thread(t,"time");
         }
 
 
@@ -173,7 +182,7 @@ public class Miner extends AppCompatActivity {
                         cell.setTag(R.string.tagCellNumber,1);
                     }
                     else {
-                        count_of_bombs = (int) cell.getTag(R.string.tagCellNumber);
+                        count_of_bombs = Integer.parseInt(cell.getTag(R.string.tagCellNumber).toString());
                         count_of_bombs++;
                         cell.setTag(R.string.tagCellNumber,String.valueOf(count_of_bombs));
                     }
@@ -182,7 +191,6 @@ public class Miner extends AppCompatActivity {
         }
 
     }
-
 
     private View.OnClickListener getOclForCellsSudoku(){
         count_all = indexes_bombs.length;
@@ -193,16 +201,126 @@ public class Miner extends AppCompatActivity {
                 set_textview = (TextView) v;
                 int x = (int) set_textview.getTag(R.string.tagX);
                 int y = (int) set_textview.getTag(R.string.tagY);
+                Log.d("X Y",x+" "+y);
+                Log.d("TAG CELL NUMBER",set_textview.getTag(R.string.tagCellNumber).toString());
                 if((int) set_textview.getTag(R.string.tagIsBomb) == 1){
+                    set_textview.setText("!");
+                    set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
                     isWin = false;
                     startResultsDialog();
                 }else{
-                    set_textview.setText(set_textview.getTag(R.string.tagCellNumber).toString());
+                    if(set_textview.getTag(R.string.tagCellNumber).toString().equals("0")){
+                        String[] coords_around = getAllIndexexAroundCellIfCellIsZero(x, y, new ArrayList<String>()).toArray(new String[0]);
+                        for(String coord:coords_around){
+                            String[] coords = coord.split(" ");
+                            TextView textView = ((TextView)((LinearLayout) taskLY.getChildAt(Integer.parseInt(coords[1]))).getChildAt(Integer.parseInt(coords[0])));
+                            textView.setText(textView.getTag(R.string.tagCellNumber).toString());
+                        }
+                        Log.d("ARRAY SIZE FINALLY",coords_around.length+ " ");
+                        set_textview.setText("0");
+                    }else set_textview.setText(set_textview.getTag(R.string.tagCellNumber).toString());
+
                 }
             }
+
         };
+
         return ocl;
     }
+
+
+
+    private ArrayList<String> getAllIndexexAroundCellIfCellIsZero(int x, int y,ArrayList<String> arrayList){
+        if(arrayList.isEmpty()){
+            int[][] coords_around = Miner_manager.getCoordOfCellsAroundCell(x,y,Miner_manager.WIDTH,Miner_manager.HEIGHT);
+            if(coords_around.length==0) return arrayList;
+            for(int i = 0;i<coords_around.length;i++){
+                if(((((LinearLayout) taskLY.getChildAt(coords_around[i][1])).getChildAt(coords_around[i][0])).getTag(R.string.tagCellNumber).toString().equals("0"))) {
+                    arrayList.add(coords_around[i][0]+" "+coords_around[i][1]);
+                    arrayList = getAllIndexexAroundCellIfCellIsZero(coords_around[i][0], coords_around[i][1], arrayList);
+                }
+            }
+            return arrayList;
+        }else{
+            int[][] coords = Miner_manager.getCoordOfCellsAroundCell(x,y,Miner_manager.WIDTH,Miner_manager.HEIGHT);
+            StringBuilder s= new StringBuilder();
+            for(int i = 0 ;i<coords.length;i++){
+                s.append(coords[i][0]).append(" ").append(coords[i][1]).append(" | ");
+            }
+            Log.d("X Y",x+" "+y);
+            Log.d("S",s.toString());
+            for(int[] coord:coords){
+                if(arrayList.contains(coord[0]+" "+coord[1])){
+                    continue;
+                }else{
+
+                        arrayList.add(coord[0]+" "+coord[1]);
+                        Log.d("ARRAY COORD",coord[0]+" "+coord[1]);
+                    if(((((LinearLayout) taskLY.getChildAt(coord[1])).getChildAt(coord[0])).getTag(R.string.tagCellNumber).toString().equals("0"))) {
+                        arrayList = getAllIndexexAroundCellIfCellIsZero(coord[0], coord[1], arrayList);
+                    }
+                }
+
+            }
+            return arrayList;
+        }
+    }
+
+
+//    private int[][] getAllIndexexAroundCellIfCellIsZero(int x,int y){
+//        ArrayList<Integer[]> arrayList = new ArrayList<>();
+//        boolean needStop = true;
+//        while(needStop){
+//
+//        }
+//        return (int[][]) arrayList.toArray();
+//    }
+//
+
+
+
+
+
+    private View.OnLongClickListener getLongClickOclForCells(){
+        View.OnLongClickListener ocl = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TextView textView = (TextView) v;
+                Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+                if(textView.getText().toString().equals("!")){
+                    v.setBackground(getDrawable(R.drawable.cell_style));
+                    textView.setText(" ");
+                    vibrator.vibrate(50);
+                    return true;
+                }
+                else if(all_bombs<diffucult) {
+                    textView.setText("!");
+                    if(v.getTag(R.string.tagIsBomb).toString().equals("0")) {
+                        mistakes++;
+                        v.setBackground(getDrawable(R.drawable.cell_style_error));
+                    }else{
+                        all_bombs++;
+                        v.setClickable(false);
+                        v.setBackground(getDrawable(R.drawable.cell_style_checked));
+                    }
+                    if(all_bombs == indexes_bombs.length) startResultsDialog();
+                    if(mistakes==2){
+                        isWin = false;
+                        startResultsDialog();
+                    }
+                    vibrator.vibrate(100);
+                }
+                return true;
+            }
+        };
+        return  ocl;
+    }
+
+
+//    private boolean checkIfAllBombsWasClosed(){
+//
+//    }
 
 
     @Deprecated
@@ -244,7 +362,7 @@ public class Miner extends AppCompatActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
-                        startActivity(new Intent(Miner.this, memory_base.class).putExtra("type", type)); //REPEAT
+                        startActivity(new Intent(Miner.this, Miner.class).putExtra("type", type)); //REPEAT
                     }else{
                         startActivity(new Intent(Miner.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                     }
@@ -253,10 +371,10 @@ public class Miner extends AppCompatActivity {
                     Intent intent;// = null;
                     if(isWin) {
                         if(next_level.equals("None")){
-                            intent = new Intent(Miner.this,memory_base.class).putExtra("type","Find_all");
-                        }else intent = new Intent(Miner.this, memory_base.class).putExtra("type", next_level); //NEXT LEVEL
+                            intent = new Intent(Miner.this,Miner.class).putExtra("type","Find_all");
+                        }else intent = new Intent(Miner.this, Miner.class).putExtra("type", next_level); //NEXT LEVEL
                     }else{
-                        intent = new Intent(Miner.this, memory_base.class).putExtra("type", type); //REPEAT
+                        intent = new Intent(Miner.this, Miner.class).putExtra("type", type); //REPEAT
                     }
                     startActivity(intent);
                     finish();

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@color/colorMainBackground"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".Levels.Miner">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,44 +24,43 @@
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/back"
-                android:textSize="@dimen/textSizeDefault_24"
-                android:textAllCaps="false"
-                android:textColor="@color/black_95"
+                android:background="@drawable/button_selection"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:background="@drawable/button_selection"/>
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="@color/black_95"
+                android:textSize="@dimen/textSizeDefault_24" />
 
             <TextView
                 android:id="@+id/level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/level"
-                android:textSize="@dimen/textSizeDefault_24"
-                android:textColor="@color/black_95"
+                android:layout_marginStart="@dimen/marginLayoutDefault"
                 android:gravity="end"
                 android:padding="10dp"
-                android:layout_marginStart="@dimen/marginLayoutDefault" />
+                android:text="@string/level"
+                android:textColor="@color/black_95"
+                android:textSize="@dimen/textSizeDefault_24" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/marginLayoutDefault"
 
-            android:layout_marginTop="@dimen/marginLayoutDefault">
+            android:orientation="horizontal">
 
         </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/taskLY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/marginLayoutDefault"
-            android:id="@+id/taskLY"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
 
         </LinearLayout>

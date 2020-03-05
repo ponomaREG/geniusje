@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Miner_manager{
 
-    public static final int HEIGHT = 12,WIDTH = 12, EAZY = 9,MEDIUM = 15,HARD = 20;
+    public static final int HEIGHT = 12,WIDTH = 12, EAZY = 14,MEDIUM = 17,HARD = 20;
 
 
     public static int[][] getRandomCoordOfBombs(int diffucult) {
@@ -38,8 +38,8 @@ public class Miner_manager{
             if(x==width-1){
                 if((y==0)){
                     coords = new int[][]{
-                            {x,y-1},
-                            {x-1,y-1},
+                            {x,y+1},
+                            {x-1,y+1},
                             {x-1,y}
                     };
                 }
