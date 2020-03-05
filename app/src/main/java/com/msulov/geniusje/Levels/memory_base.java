@@ -137,7 +137,6 @@ public class memory_base extends AppCompatActivity {
 
             for(int j = 0 ; j<Memory_game.WIDTH;j++){
                 TextView textView = (TextView) baseLY.getChildAt(j);
-                textView.setText(" ");
                 textView.setTag(R.string.tagX,j);
                 textView.setTag(R.string.tagY,i);
                 textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSizeUltraSmall));

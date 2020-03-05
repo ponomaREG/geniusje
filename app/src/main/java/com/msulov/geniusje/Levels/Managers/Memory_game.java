@@ -90,6 +90,26 @@ public class Memory_game {
         return array;
     }
 
+    public static int[][] getShakedArray(int[][] array){
+        int swap;
+        int[] letter;
+
+        for (int i = 0; i < array.length; i++)
+        {
+            Random random = new Random();
+            swap = random.nextInt(i+1);
+            letter = array[swap];
+//            Log.d("NUMBER",String.valueOf(number));
+            array[swap] = array[i];
+//            Log.d("ARRAY SWAP", String.valueOf(array[swap]));
+            array[i] = letter;
+
+            Log.d("SHAKE",String.valueOf(array[i]));
+        }
+
+        return array;
+    }
+
 
 
     @Deprecated
@@ -137,13 +157,13 @@ public class Memory_game {
         return pairs_of_indexes;
     }
 
-    public static int[][] getRandomPairsOfIndexes(int diffucult,int height,int width){
 
+    public static int[][] getRandomPairsOfIndexes(int diffucult,int height,int width){
         int[][] pairs_of_indexes = new int[diffucult][2];
         int[] coord_Y = new int[height];
         int[] coord_X = new int[width];
-        Random random = new Random();
-
+        int all_variables = height*width;
+        int[][] array_of_all_variables_of_coords = new int[all_variables][2];
         for (int i = 0;i<height;i++){
             coord_Y[i] = i;
         }
@@ -152,9 +172,18 @@ public class Memory_game {
         }
         getShakedArray(coord_X);
         getShakedArray(coord_Y);
+        int count = 0;
+        for(int i = 0;i<height;i++){
+            for(int j = 0;j<width;j++){
+                array_of_all_variables_of_coords[count][0] = coord_X[j];
+                array_of_all_variables_of_coords[count][1] = coord_Y[i];
+                count++;
+            }
+        }
+        getShakedArray(array_of_all_variables_of_coords);
         for(int i = 0;i<diffucult;i++){
-            int x = coord_X[i];
-            int y = coord_Y[i];
+            int x = array_of_all_variables_of_coords[i][0];
+            int y = array_of_all_variables_of_coords[i][1];
             pairs_of_indexes[i][1] = y;
             pairs_of_indexes[i][0] = x;
             Log.d("X",String.valueOf(x));

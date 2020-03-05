@@ -27,6 +27,7 @@
     <string name="tagSudokuIsChecked">Check_status</string>
     <string name="tagX">X</string>
     <string name="tagY">Y</string>
+    <string name="tagIsBomb">0</string>
 
     <string name="hintEditText">Вводи сюда</string>
 

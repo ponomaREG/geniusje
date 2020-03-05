@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msulov.geniusje.Levels.Managers.Memory_game;
+import com.msulov.geniusje.Levels.Managers.Miner_manager;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
@@ -38,7 +39,7 @@ public class Miner extends AppCompatActivity {
     private int taskdesc_id;
     private LinearLayout baseLY,taskLY;
     private String type,next_level;
-    private int[][] indexes_of_pairs_coord;
+    private int[][] indexes_of_pairs_coord, indexes_bombs;
     private int count_all, diffucult;
     private boolean isWin = true;
 
@@ -49,22 +50,23 @@ public class Miner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.memory_base);
+        setContentView(R.layout.miner);
 
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         Log.d("TYPE",type);
         if(type == null) type = "EAZY";
         switch (type){
-            case "Get_rhythm":
+            case "EAZY":
                 taskdesc_id = R.string.startDialogWindowForLevel_20;
                 next_level = "MEDIUM";
-                diffucult = 3;
+                diffucult = Miner_manager.HARD;
                 break;
         }
 
         showBeginningDialog();
         initContAndBackButtons();
+        makeTask();
 //        initOclForAnswers();
     }
 
@@ -104,7 +106,6 @@ public class Miner extends AppCompatActivity {
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
-                    makeTask();
                 }
             }
         };
@@ -125,79 +126,78 @@ public class Miner extends AppCompatActivity {
 
 
     private void generateLayouts(){
+        indexes_bombs = Miner_manager.getRandomCoordOfBombs(diffucult);
         taskLY = findViewById(R.id.taskLY);
         View.OnClickListener ocl = getOclForCellsSudoku();
-        LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,null);
 
-        for(int i = 0; i< Memory_game.HEIGHT; i++){
-            for(int j = 0 ; j<Memory_game.WIDTH;j++){
-                TextView textView = (TextView) this.getLayoutInflater().inflate(R.layout.base_cell,null);
+        for(int i = 0; i< Miner_manager.HEIGHT; i++){
+            LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,null);
+            for(int j = 0 ; j<Miner_manager.WIDTH;j++){
+//                boolean isBomb = false;
+//                for(int[] bombs:indexes_bombs){
+//                    if((bombs[0]==j)&&(bombs[1]==i)){
+//                        isBomb = true;
+//                    }
+//                }
+
+                TextView textView = (TextView) this.getLayoutInflater().inflate(R.layout.base_cell,baseLL,false);
+
                 textView.setText(" ");
                 textView.setTag(R.string.tagX,j);
                 textView.setTag(R.string.tagY,i);
                 textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSizeUltraSmall));
+                textView.setTag(R.string.tagCellNumber,0);
                 textView.setOnClickListener(ocl);
+                if(Miner_manager.isXandYinARRAY(indexes_bombs,j,i)) {
+                    textView.setTag(R.string.tagIsBomb,1);
+                }
+                else textView.setTag(R.string.tagIsBomb,0);
                 baseLL.addView(textView);
 //                Log.d("J IS ",String.valueOf(j));
             }
             taskLY.addView(baseLL);
-            baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,null);
+            new Thread(t,"time");
+        }
+
+
+        for(int[] bombs:indexes_bombs){
+            int[][] coords_of_around_cells;
+            int count_of_bombs;
+            int x_bomb = bombs[0];
+            int y_bomb = bombs[1];
+            coords_of_around_cells = Miner_manager.getCoordOfCellsAroundCell(x_bomb,y_bomb,Miner_manager.WIDTH,Miner_manager.HEIGHT);
+            for(int[] coords_of_cell:coords_of_around_cells){
+                TextView cell = (TextView) ((LinearLayout)taskLY.getChildAt(coords_of_cell[1])).getChildAt(coords_of_cell[0]);
+                if(cell.getTag(R.string.tagIsBomb).toString().equals("0")) {
+                    if (cell.getTag(R.string.tagCellNumber).toString().equals("0")){
+                        cell.setTag(R.string.tagCellNumber,1);
+                    }
+                    else {
+                        count_of_bombs = (int) cell.getTag(R.string.tagCellNumber);
+                        count_of_bombs++;
+                        cell.setTag(R.string.tagCellNumber,String.valueOf(count_of_bombs));
+                    }
+                }
+            }
         }
 
     }
 
 
     private View.OnClickListener getOclForCellsSudoku(){
-        int diffucult = Memory_game.MEDIUM;
-//        if(type.equals("Find_all")) diffucult = diffucult+3;
-        indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(diffucult);
-        count_all = indexes_of_pairs_coord.length;
+        count_all = indexes_bombs.length;
 
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((set_textview != null)&&(type.equals("Get_rhythm"))) set_textview.setBackground(getDrawable(R.drawable.cell_style));
-
-                int x = (int) v.getTag(R.string.tagX);
-                int y = (int) v.getTag(R.string.tagY);
-                set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-                if(type.equals("Get_rhythm")){
-                    if(((x==indexes_of_pairs_coord[count][0])&&(y==indexes_of_pairs_coord[count][1]))){
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-                    }else{
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
-                        t.stopTime();
-                        isWin = false;
-                        startResultsDialog();
-                    }
-                    count++;
-                    if((count==count_all)&&(isWin)){
-                        t.stopTime();
-                        startResultsDialog();
-                    };
-                }
-                if(type.equals("Find_all")){
-                    boolean hasFound = false;
-                    for(int[] coords:indexes_of_pairs_coord){
-                        if((coords[0]==x)&&(coords[1]==y)){
-                            hasFound = true;
-                        }
-                    }
-                    if(hasFound){
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-                        set_textview.setClickable(false);
-                        count++;
-                    }
-                    else{
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
-                        t.stopTime();
-                        isWin = false;
-                        startResultsDialog();
-                    }
-                    if(count==count_all){
-                        t.stopTime();
-                        startResultsDialog();
-                    }
+                set_textview = (TextView) v;
+                int x = (int) set_textview.getTag(R.string.tagX);
+                int y = (int) set_textview.getTag(R.string.tagY);
+                if((int) set_textview.getTag(R.string.tagIsBomb) == 1){
+                    isWin = false;
+                    startResultsDialog();
+                }else{
+                    set_textview.setText(set_textview.getTag(R.string.tagCellNumber).toString());
                 }
             }
         };
@@ -207,71 +207,11 @@ public class Miner extends AppCompatActivity {
 
     @Deprecated
     private void showRhythm(){
-        frozeOrUnfrozeViews(false);
-        Handler handler = new Handler();
-//        if(type.equals("Get_rhythm")) {
-        int time_koef = 0;
-        int time_of_close = 850;
-        for (int[] coords_of_rhythm : indexes_of_pairs_coord) {
-            int x = coords_of_rhythm[0];
-            int y = coords_of_rhythm[1];
-            if(type.equals("Get_rhythm")) {
-                Log.d("TIME_KOEF","1");
-                time_koef++;
-            }
-            final TextView textView = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
 
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setViewChecked(textView);
-                }
-            }, 850 * time_koef);
-            if(type.equals("Get_rhythm")) time_of_close = time_of_close + 850;
-
-
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setViewUnchecked(textView);
-                }
-            }, time_of_close);
-        }
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                frozeOrUnfrozeViews(true);
-                new Thread(t, "Time").start();
-            }
-        }, time_of_close);
-//        }
-//        if(type.equals("Find_all")){
-//            for(int[] coord_of_rhythm : indexes_of_pairs_coord){
-//                int x = coord_of_rhythm[0];
-//                int y = coord_of_rhythm[1];
-//
-//                final TextView textView = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-//                setViewChecked(textView);
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        setViewUnchecked(textView);
-//                    }
-//                },1000);
-//
-//            }
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    frozeOrUnfrozeViews(true);
-//                }
-//            },1000);
-//        }
     }
 
 
-
+    @Deprecated
     private void frozeOrUnfrozeViews(boolean clickable){
         for(int i = 0 ; i<Memory_game.HEIGHT;i++){
             for(int j = 0;j<Memory_game.WIDTH;j++){
@@ -280,6 +220,7 @@ public class Miner extends AppCompatActivity {
             }
         }
     }
+
 
     private void setViewChecked(TextView textView){
         textView.setBackground(getDrawable(R.drawable.cell_style_checked));

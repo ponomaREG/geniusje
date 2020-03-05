@@ -2,10 +2,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="@dimen/blockCellHeightVerySmall"
-android:layout_weight="1"
 android:gravity="center"
 android:tag="null"
+android:text=" "
+android:layout_weight="1"
 android:textColor="@color/black_95"
 android:fontFamily="@font/black_ops_one"
-
 android:background="@drawable/cell_style" />
