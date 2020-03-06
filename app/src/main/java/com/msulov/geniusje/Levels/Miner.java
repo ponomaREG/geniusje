@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +40,7 @@ public class Miner extends AppCompatActivity {
     private int taskdesc_id;
     private LinearLayout baseLY,taskLY;
     private String type,next_level;
-    private int[][] indexes_of_pairs_coord, indexes_bombs;
+    private int[][] indexes_bombs;
     private int count_all, diffucult,all_cells_count,all_bombs=0;
     private boolean isWin = true;
 
@@ -56,12 +55,11 @@ public class Miner extends AppCompatActivity {
 
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
-        Log.d("TYPE",type);
         if(type == null) type = "EAZY";
         switch (type){
             default:
                 taskdesc_id = R.string.startDialogWindowForLevel_20;
-                next_level = "MEDIUM";
+                next_level = "None";
                 diffucult = Miner_manager.HARD;
                 break;
         }
@@ -371,7 +369,7 @@ public class Miner extends AppCompatActivity {
                     Intent intent;// = null;
                     if(isWin) {
                         if(next_level.equals("None")){
-                            intent = new Intent(Miner.this,Miner.class).putExtra("type","Find_all");
+                            intent = new Intent(Miner.this,RSL.class);
                         }else intent = new Intent(Miner.this, Miner.class).putExtra("type", next_level); //NEXT LEVEL
                     }else{
                         intent = new Intent(Miner.this, Miner.class).putExtra("type", type); //REPEAT

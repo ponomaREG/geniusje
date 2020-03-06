@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="@dimen/blockCellHeightVerySmall"
+android:gravity="center"
+android:tag="null"
+android:layout_weight="1"
+android:src="@drawable/s"
+android:textColor="@color/black_95"
+android:fontFamily="@font/black_ops_one"
+android:background="@drawable/answer_style" />

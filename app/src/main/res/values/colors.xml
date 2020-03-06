@@ -8,9 +8,11 @@
     <color name="black_60">#60000000</color>
     <color name="colorMainBackground">#9ddae5</color>
     <color name="colorAnswerBackground">#30ffffff</color>
+    <color name="colorIfNobodyWins">#9F9007</color>
     <color name="green">#00ff00</color>
     <color name="red">#ff0000</color>
     <color name="colorAnswerBackgroundChecked">#2D756D</color>
+    <color name="colorOfCorrectChoice">#036812</color>
     <color name="colorTextOfSudokuGetMistake">#B31919</color>
     <color name="cellError">#980909</color>
 </resources>

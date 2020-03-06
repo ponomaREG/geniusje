@@ -23,6 +23,7 @@ import com.msulov.geniusje.Levels.Level_7;
 import com.msulov.geniusje.Levels.Level_8;
 import com.msulov.geniusje.Levels.Level_9;
 import com.msulov.geniusje.Levels.Miner;
+import com.msulov.geniusje.Levels.RSL;
 import com.msulov.geniusje.Levels.four_choice;
 import com.msulov.geniusje.Levels.memory_base;
 
@@ -137,11 +138,13 @@ public class LevelsActivity extends AppCompatActivity {
                         startActivity(new Intent(LevelsActivity.this, memory_base.class).putExtra("type","Get_rhythm"));
                         break;
                     case R.id.level_19:
-                        Log.d("START 19","!");
                         startActivity(new Intent(LevelsActivity.this, memory_base.class).putExtra("type","Find_all"));
                         break;
                     case R.id.level_20:
                         startActivity(new Intent(LevelsActivity.this, Miner.class).putExtra("type","EAZY"));
+                        break;
+                    case R.id.level_21:
+                        startActivity(new Intent(LevelsActivity.this, RSL.class));
                         break;
                 }
             }

@@ -8,6 +8,7 @@
     <string name="repeat">Повторить</string>
     <string name="Continue">Продолжить</string>
     <string name="level">Уровень</string>
+    <string name="choiceAnswer">Выберите свой вариант</string>
 
     <string name="toastExit">Нажмите еще раз для выхода</string>
 
@@ -28,6 +29,7 @@
     <string name="tagX">X</string>
     <string name="tagY">Y</string>
     <string name="tagIsBomb">0</string>
+    <string name="tagPointNumber">0</string>
 
     <string name="hintEditText">Вводи сюда</string>
 
@@ -51,6 +53,7 @@
     <string name="startDialogWindowForLevel_18">Повтори ритм</string>
     <string name="startDialogWindowForLevel_19">Найди все высвечивающиеся ячейки</string>
     <string name="startDialogWindowForLevel_20">Поиграй в Сапера</string>
+    <string name="startDialogWindowForLevel_21">Сыграй в кмн</string>
 
     <string name="sudoku_choice_1">1</string>
     <string name="sudoku_choice_2">2</string>

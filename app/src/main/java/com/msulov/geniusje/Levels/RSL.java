@@ -1,7 +1,6 @@
 package com.msulov.geniusje.Levels;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -10,13 +9,17 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msulov.geniusje.Levels.Managers.Memory_game;
+import com.msulov.geniusje.Levels.Managers.Miner_manager;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
@@ -39,8 +42,12 @@ public class RSL extends AppCompatActivity {
     private LinearLayout baseLY,taskLY;
     private String type,next_level;
     private int[][] indexes_of_pairs_coord;
+    private ImageView answerBot,userAnswer;
     private int count_all;
     private boolean isWin = true;
+    int diffucult = com.msulov.geniusje.Levels.Managers.RSL.POINTS;
+    int count_of_correct_answers = 0;
+
 
 
 
@@ -49,32 +56,16 @@ public class RSL extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.memory_base);
-
-        Intent intent = new Intent();
-        type = intent.getStringExtra("type");
-        if(type == null) type = "Get_rhythm";
-        switch (type){
-            case "Get_rhythm":
-                taskdesc_id = R.string.startDialogWindowForLevel_18;
-                next_level = "Find_all";
-                break;
-            case "Find_all":
-                next_level = "None";
-                taskdesc_id = R.string.startDialogWindowForLevel_19;
-                break;
-        }
-
+        setContentView(R.layout.r_s_l);
         showBeginningDialog();
         initContAndBackButtons();
-
-        makeTask();
+        generateLayouts();
+        initAnswersOcl();
 //        initOclForAnswers();
     }
 
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
-        t = new Time();
 
         // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
@@ -91,7 +82,7 @@ public class RSL extends AppCompatActivity {
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(taskdesc_id));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_21));
         //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
@@ -108,6 +99,8 @@ public class RSL extends AppCompatActivity {
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
+                    makeTask();
+                    t = new Time();
                 }
             }
         };
@@ -129,66 +122,251 @@ public class RSL extends AppCompatActivity {
 
 
 
-    private View.OnClickListener getOclForCellsSudoku(){
-        int diffucult = Memory_game.MEDIUM;
-        if(type.equals("Find_all")) diffucult = diffucult+3;
-        indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(diffucult);
-        count_all = indexes_of_pairs_coord.length;
 
+
+    private void generateLayouts(){
+        LinearLayout pointsLL = findViewById(R.id.pointsLL);
+        for(int i = 0;i< com.msulov.geniusje.Levels.Managers.RSL.POINTS;i++){
+            TextView point = (TextView) this.getLayoutInflater().inflate(R.layout.base_point,pointsLL,false);
+            point.setTag(R.string.tagPointNumber,i);
+            pointsLL.addView(point);
+        }
+
+    }
+
+
+    private void initAnswersOcl(){
+        findViewById(R.id.scissors).setOnClickListener(getOclForAnswers());
+        findViewById(R.id.rock).setOnClickListener(getOclForAnswers());
+        findViewById(R.id.letter).setOnClickListener(getOclForAnswers());
+    }
+
+    private View.OnClickListener getOclForAnswers(){
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(set_textview != null) set_textview.setBackground(getDrawable(R.drawable.cell_style));
-
-                int x = (int) v.getTag(R.string.tagX);
-                int y = (int) v.getTag(R.string.tagY);
-                set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-                if(type.equals("Get_rhythm")){
-                    if(((x==indexes_of_pairs_coord[count][0])&&(y==indexes_of_pairs_coord[count][1]))){
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-                    }else{
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
-                        t.stopTime();
-                        isWin = false;
-                        startResultsDialog();
+                Handler handler = new Handler();
+                userAnswer = (ImageView) v;
+                v.setBackgroundColor(getResources().getColor(R.color.colorAnswerBackgroundChecked));
+                frozeOrUnfrozeViews(false);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showBotChoiceAndCheckWhoWins();
                     }
-                    count++;
-                    if((count==count_all)&&(isWin)){
-                        t.stopTime();
-                        startResultsDialog();
-                    };
-                }
-                if(type.equals("Find_all")){
-                    boolean hasFound = false;
-                    for(int[] coords:indexes_of_pairs_coord){
-                        if((coords[0]==x)&&(coords[1]==y)){
-                            set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-
-                        }else{
-                            set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
-                            t.stopTime();
-                            isWin = false;
-                            startResultsDialog();
-                        }
-                    }
-                    if(count==count_all){
-                        t.stopTime();
-                        startResultsDialog();
-                    }
-                }
+                },300);
             }
         };
         return ocl;
     }
 
+    private void showBotChoiceAndCheckWhoWins(){
+        Handler handler = new Handler();
+        answerBot = findViewById(R.id.botChoice);
+        com.msulov.geniusje.Levels.Managers.RSL rsl_manager = new com.msulov.geniusje.Levels.Managers.RSL();
+        int choiceBot = rsl_manager.getRandomFigureForBot();
+        switch (choiceBot){
+            case 0:
+                answerBot.setImageDrawable(getDrawable(R.drawable.r));
+                break;
+            case 1:
+                answerBot.setImageDrawable(getDrawable(R.drawable.s));
+                break;
+            case 2:
+                answerBot.setImageDrawable(getDrawable(R.drawable.l));
+                break;
+        }
 
-    @Deprecated
-    private void frozeOrUnfrozeViews(boolean clickable){
-        for(int i = 0 ; i<Memory_game.HEIGHT;i++){
-            for(int j = 0;j<Memory_game.WIDTH;j++){
-                TextView textView = (TextView) ((LinearLayout) taskLY.getChildAt(i)).getChildAt(j);
-                textView.setClickable(clickable);
+        final int status_win = rsl_manager.checkIsUserWin(Integer.parseInt(userAnswer.getTag().toString()),choiceBot);
+        showStatusOfWin(status_win);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(status_win==1) plusOnePoint();
+                if(status_win==0) minusOnePoint();
             }
+        },500);
+
+    }
+
+
+    private void plusOnePoint(){
+        count_of_correct_answers++;
+        Log.d("COUNT OF CORRECT ANSWER",String.valueOf(count_of_correct_answers));
+        LinearLayout pointsLL = findViewById(R.id.pointsLL);
+        TextView point = (TextView) pointsLL.getChildAt(count_of_correct_answers-1);
+        point.setBackground(getDrawable(R.drawable.points_green_style));
+        if(count_of_correct_answers==diffucult){
+            startResultsDialog();
+        }
+
+    }
+
+    private void minusOnePoint(){
+        count_of_correct_answers--;
+        Log.d("COUNT OF CORRECT ANSWER",String.valueOf(count_of_correct_answers));
+        if(count_of_correct_answers == -1){
+            isWin = false;
+            startResultsDialog();
+        }else{
+            LinearLayout pointsLL = findViewById(R.id.pointsLL);
+            TextView point = (TextView) pointsLL.getChildAt(count_of_correct_answers);
+            point.setBackground(getDrawable(R.drawable.points_style));
+        }
+    }
+
+    private void showStatusOfWin(int status_win){
+        switch (status_win){
+            case 1:
+                playWithLightIfUserWin();
+                break;
+            case 0:
+                playWithLightIfBotWin();
+                break;
+            case -1:
+                playWithLightIfNobodyWins();
+                break;
+        }
+    }
+
+
+    private void setUsersChoiceGreen(){
+        userAnswer.setBackgroundColor(getResources().getColor(R.color.colorOfCorrectChoice));
+    }
+    private void setUsersChoiceDefaultColor(){
+        userAnswer.setBackgroundColor(getResources().getColor(R.color.colorAnswerBackground));
+    }
+    private void setUsersChoiceError(){
+        userAnswer.setBackgroundColor(getResources().getColor(R.color.cellError));
+    }
+    private void setUserChoiceNobodyWins(){
+        userAnswer.setBackgroundColor(getResources().getColor(R.color.colorIfNobodyWins));
+    }
+
+
+    private void setBotChoiceGreen(){
+        answerBot.setBackgroundColor(getResources().getColor(R.color.colorOfCorrectChoice));
+    }
+    private void setBotChoiceDefaultColor(){
+        answerBot.setBackgroundColor(getResources().getColor(R.color.colorAnswerBackground));
+    }
+    private void setBotChoiceError(){
+        answerBot.setBackgroundColor(getResources().getColor(R.color.cellError));
+    }
+    private void setBotChoiceNobodyWins(){
+        answerBot.setBackgroundColor(getResources().getColor(R.color.colorIfNobodyWins));
+    }
+
+
+
+    private void playWithLightIfUserWin(){
+        Handler handler = new Handler();
+        long time = 100;
+        setUsersChoiceGreen();
+        setBotChoiceError();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setUsersChoiceDefaultColor();
+            }
+        },time);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setUsersChoiceGreen();
+            }
+        },time*2);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setUsersChoiceDefaultColor();
+            }
+        },time*3);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setUsersChoiceGreen();
+            }
+        },time*4);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                clearWall();
+            }
+        },time*5);
+
+    }
+
+
+    private void playWithLightIfBotWin(){
+        Handler handler = new Handler();
+        long time = 100;
+        setUsersChoiceError();
+        setBotChoiceGreen();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setBotChoiceDefaultColor();
+            }
+        },time);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setBotChoiceGreen();
+            }
+        },time*2);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setBotChoiceDefaultColor();
+            }
+        },time*3);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setBotChoiceGreen();
+            }
+        },time*4);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                clearWall();
+            }
+        },time*5);
+
+    }
+
+
+    private void playWithLightIfNobodyWins(){
+        Handler handler = new Handler();
+        setBotChoiceNobodyWins();
+        setUserChoiceNobodyWins();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                clearWall();
+            }
+        },300);
+
+
+    }
+
+
+
+    private void clearWall(){
+        setBotChoiceDefaultColor();
+        setUsersChoiceDefaultColor();
+        frozeOrUnfrozeViews(true);
+        answerBot.setImageDrawable(getDrawable(R.drawable.question));
+    }
+
+
+    private void frozeOrUnfrozeViews(boolean clickable){
+        int[] ids = new int[]{R.id.scissors,R.id.letter,R.id.rock};
+        for(int id:ids){
+            ImageView answerForFroze = findViewById(id);
+            answerForFroze.setClickable(clickable);
         }
     }
 
@@ -215,7 +393,7 @@ public class RSL extends AppCompatActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
-                        startActivity(new Intent(RSL.this, memory_base.class).putExtra("type", type)); //REPEAT
+                        startActivity(new Intent(RSL.this, RSL.class)); //REPEAT
                     }else{
                         startActivity(new Intent(RSL.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                     }
@@ -223,11 +401,9 @@ public class RSL extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        if(next_level.equals("None")){
-                            intent = new Intent(RSL.this,four_choice.class);
-                        }else intent = new Intent(RSL.this, memory_base.class).putExtra("type", next_level); //NEXT LEVEL
+                        intent = new Intent(RSL.this,Miner.class);
                     }else{
-                        intent = new Intent(RSL.this, memory_base.class).putExtra("type", type); //REPEAT
+                        intent = new Intent(RSL.this, RSL.class); //REPEAT
                     }
                     startActivity(intent);
                     finish();

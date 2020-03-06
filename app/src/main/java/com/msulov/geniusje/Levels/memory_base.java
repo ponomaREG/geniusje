@@ -315,7 +315,7 @@ public class memory_base extends AppCompatActivity {
                     Intent intent;// = null;
                     if(isWin) {
                         if(next_level.equals("None")){
-                            intent = new Intent(memory_base.this,four_choice.class);
+                            intent = new Intent(memory_base.this,Miner.class);
                         }else intent = new Intent(memory_base.this, memory_base.class).putExtra("type", next_level); //NEXT LEVEL
                     }else{
                         intent = new Intent(memory_base.this, memory_base.class).putExtra("type", type); //REPEAT
