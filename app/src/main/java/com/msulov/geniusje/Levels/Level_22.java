@@ -466,6 +466,7 @@ public class Level_22 extends AppCompatActivity {
         View.OnClickListener OnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearALL();
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
                         startActivity(new Intent(Level_22.this, Level_22.class)); //REPEAT
