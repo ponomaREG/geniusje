@@ -199,7 +199,7 @@ public class Level_22 extends AppCompatActivity {
             drawable.setColor(color_to_mixed);
         }
         Log.d("COLOR_CURRENT",color_current+" ");
-        if((color_current+300000 > color_bot)&&(color_current-300000 < color_bot)){
+        if((color_current+300000 > color_bot)&&(color_current-300000 < color_bot)&&(count_of_mixed<=diffucult+diffucult/3)){
             makeTask();
             clearFeedBack();
             plusOnePoint();
@@ -571,7 +571,7 @@ public class Level_22 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        clearALL();
 
     }
 
@@ -582,6 +582,5 @@ public class Level_22 extends AppCompatActivity {
         gradientDrawable.setColor(getResources().getColor(R.color.colorAnswerBackground));
         GradientDrawable drawable  = (GradientDrawable) answerBot.getBackground();
         drawable.setColor(getResources().getColor(R.color.colorAnswerBackground));
-
     }
 }
