@@ -1,6 +1,7 @@
 package com.msulov.geniusje.Levels;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.ColorUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -130,6 +131,7 @@ public class RSL extends AppCompatActivity {
             TextView point = (TextView) this.getLayoutInflater().inflate(R.layout.base_point,pointsLL,false);
             point.setTag(R.string.tagPointNumber,i);
             pointsLL.addView(point);
+
         }
 
     }

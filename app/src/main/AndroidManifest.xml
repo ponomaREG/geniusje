@@ -3,6 +3,7 @@
     package="com.msulov.geniusje">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Levels.Miner"></activity>
+        <activity android:name=".Levels.Level_22"></activity>
+        <activity android:name=".Levels.Miner" />
         <activity android:name=".Levels.RSL" />
         <activity
             android:name=".Levels.memory_base"

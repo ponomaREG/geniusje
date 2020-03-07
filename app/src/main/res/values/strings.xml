@@ -9,6 +9,8 @@
     <string name="Continue">Продолжить</string>
     <string name="level">Уровень</string>
     <string name="choiceAnswer">Выберите свой вариант</string>
+    <string name="colorHint">Здесь будет смешиваться ваш цвет</string>
+
 
     <string name="toastExit">Нажмите еще раз для выхода</string>
 
@@ -30,7 +32,7 @@
     <string name="tagY">Y</string>
     <string name="tagIsBomb">0</string>
     <string name="tagPointNumber">0</string>
-
+    <string name="tagAnswerNumber">1</string>
     <string name="hintEditText">Вводи сюда</string>
 
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>

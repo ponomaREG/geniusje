@@ -6,6 +6,8 @@
     
     <color name="black_95">#95000000</color>
     <color name="black_60">#60000000</color>
+    <color name="full_black">#000000</color>
+    <color name="full_white">#FFFFFF</color>
     <color name="colorMainBackground">#9ddae5</color>
     <color name="colorAnswerBackground">#30ffffff</color>
     <color name="colorIfNobodyWins">#9F9007</color>
@@ -15,4 +17,9 @@
     <color name="colorOfCorrectChoice">#036812</color>
     <color name="colorTextOfSudokuGetMistake">#B31919</color>
     <color name="cellError">#980909</color>
+
+    <color name="colorGameBLUE">#0000FF</color>
+    <color name="colorGameGREEN">#00FF00</color>
+    <color name="colorGameRED">#FF0000</color>
+
 </resources>

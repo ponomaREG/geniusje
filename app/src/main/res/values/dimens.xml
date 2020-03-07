@@ -8,6 +8,8 @@
     <dimen name="textSizeDefault_24">24sp</dimen> <!-- Размер текстов кнопок -->
     <dimen name="pointsHeightDefault">12dp</dimen> <!-- Высота пойнтов -->
     <dimen name="blockAnswerHeightDefault">300dp</dimen> <!-- Высота блоков выбора -->
+    <dimen name="marginLayoutMedium">18dp</dimen>
+    <dimen name="marginLayoutBig">25dp</dimen>
     <dimen name="blockAnswerHeightMedium">200dp</dimen>
     <dimen name="blockAnswerHeightVerySmall">50dp</dimen>
     <dimen name="dialogImageSize">140dp</dimen>

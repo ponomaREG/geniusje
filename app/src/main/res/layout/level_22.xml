@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorMainBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Levels.Level_22">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_selection"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/back"
+                android:textAllCaps="false"
+                android:textColor="@color/black_95"
+                android:textSize="@dimen/textSizeDefault_24" />
+
+            <TextView
+                android:id="@+id/level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/marginLayoutDefault"
+                android:gravity="end"
+                android:padding="10dp"
+                android:text="@string/level"
+                android:textColor="@color/black_95"
+                android:textSize="@dimen/textSizeDefault_24" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pointsLL"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/blockAnswerMarginTopVerySmall">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/marginLayoutDefault"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/blockAnswerHeightMedium"
+                android:gravity="center"
+                android:tag="null"
+                android:layout_weight="1"
+                android:id="@+id/botChoice"
+                android:textColor="@color/black_95"
+                android:fontFamily="@font/black_ops_one"
+                android:background="@drawable/answer_style" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/taskLY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/marginLayoutDefault"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/marginLayoutBig"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:hint="@string/colorHint"
+                android:id="@+id/feedback"
+                android:tag="0"
+                android:background="@drawable/cell_style" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/marginLayoutDefault"
+                android:id="@+id/colorsAnswers"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/marginLayoutDefault">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/blockAnswerHeightSmall"
+                    android:gravity="center"
+                    android:id="@+id/reset"
+                    android:tag="2"
+                    android:src="@drawable/trash"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
+                    android:textColor="@color/black_95"
+                    android:fontFamily="@font/black_ops_one"
+                    android:background="@drawable/answer_style_checked" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

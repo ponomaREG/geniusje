@@ -15,6 +15,7 @@ import com.msulov.geniusje.Levels.Level_11;
 import com.msulov.geniusje.Levels.Level_16;
 import com.msulov.geniusje.Levels.Level_17;
 import com.msulov.geniusje.Levels.Level_2;
+import com.msulov.geniusje.Levels.Level_22;
 import com.msulov.geniusje.Levels.Level_3;
 import com.msulov.geniusje.Levels.Level_4;
 import com.msulov.geniusje.Levels.Level_5;
@@ -145,6 +146,9 @@ public class LevelsActivity extends AppCompatActivity {
                         break;
                     case R.id.level_21:
                         startActivity(new Intent(LevelsActivity.this, RSL.class));
+                        break;
+                    case R.id.level_22:
+                        startActivity(new Intent(LevelsActivity.this, Level_22.class));
                         break;
                 }
             }
