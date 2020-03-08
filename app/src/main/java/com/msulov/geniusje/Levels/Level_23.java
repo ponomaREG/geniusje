@@ -16,15 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.Levels.Managers.Miner_manager;
+import com.msulov.geniusje.Levels.Managers.Nonogramm;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
+
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_22 extends AppCompatActivity {
+public class Level_23 extends AppCompatActivity {
 
 
 
@@ -37,8 +41,8 @@ public class Level_22 extends AppCompatActivity {
     private int taskdesc_id;
     private LinearLayout baseLY,taskLY;
     private String type,next_level;
-    private int[] colorsMixed;
-    private int[][] indexes_of_pairs_coord;
+    private int[] rowSumm,columnSumm;
+    private int[][] indexes_of_pairs_coord,row_numbers,column_numbers;
     private ImageView answerBot,userAnswer,resetImage;
     private Colors_shaker colors_shaker;
     private int count_all;
@@ -54,11 +58,10 @@ public class Level_22 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_22);
+        setContentView(R.layout.level_23);
 
         showBeginningDialog();
         initContAndBackButtons();
-
         generateLayouts();
 //        initOclForAnswers();
     }
@@ -94,7 +97,7 @@ public class Level_22 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_22.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_23.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -123,152 +126,148 @@ public class Level_22 extends AppCompatActivity {
 
 
     private void makeTask(){
-        fillBotColor();
+        initAnonther();
     }
 
 
+    private void initAnonther(){
+        rowSumm = new int[Nonogramm.WIDTH];
+        columnSumm = new int[Nonogramm.HEIGHT];
+    }
 
 
 
 
     private void generateLayouts(){
-        LinearLayout pointsLL = findViewById(R.id.pointsLL);
-        for(int i = 0;i< diffucult;i++){
-            TextView point = (TextView) this.getLayoutInflater().inflate(R.layout.base_point,pointsLL,false);
-            point.setTag(R.string.tagPointNumber,i);
-            pointsLL.addView(point);
+        diffucult = Nonogramm.DIFFICULT;
+        taskLY = findViewById(R.id.taskLY);
+        indexes_of_pairs_coord = Nonogramm.getRandomCellsNumber(diffucult,Nonogramm.HEIGHT,Nonogramm.WIDTH);
+        row_numbers = Nonogramm.getCountOfCellsCheckedInRow(indexes_of_pairs_coord,Nonogramm.HEIGHT,Nonogramm.WIDTH);
+        column_numbers = Nonogramm.getCountOfCellsCheckedInColumn(indexes_of_pairs_coord,Nonogramm.HEIGHT,Nonogramm.WIDTH);
+        View.OnClickListener ocl = getOclForCells();
+
+        for(int i = 0;i< Nonogramm.HEIGHT;i++){
+
+
+            if(i==0){
+                baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,taskLY,false);
+                TextView infoX = (TextView) this.getLayoutInflater().inflate(R.layout.base_textview_info_x,baseLY,false);
+                infoX.setVisibility(View.INVISIBLE);
+                baseLY.addView(infoX);
+
+                for(int j = 0;j<Nonogramm.WIDTH;j++){
+                    TextView infoY = (TextView) this.getLayoutInflater().inflate(R.layout.base_textview_info_y,baseLY,false);
+                    StringBuilder s = new StringBuilder();
+                    for(int number:column_numbers[j]){
+                        if(number!=0) s.append(number).append("\n");
+                    }
+                    infoY.setText(s.toString());
+                    baseLY.addView(infoY);
+                }
+                taskLY.addView(baseLY);
+            }
+
+
+            baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,taskLY,false);
+            TextView infoX = (TextView) this.getLayoutInflater().inflate(R.layout.base_textview_info_x,baseLY,false);
+            StringBuilder s = new StringBuilder();
+            for(int number:row_numbers[i]){
+                if(number!=0) {
+                    count_all += number;
+                    s.append(number).append(" ");
+                }
+            }
+            infoX.setText(s.toString());
+            baseLY.addView(infoX);
+            for(int j = 0;j<Nonogramm.WIDTH;j++){
+                TextView baseCELL = (TextView) this.getLayoutInflater().inflate(R.layout.base_cell_nonogramm,baseLY,false);
+                baseCELL.setTag(R.string.tagX,j);
+                baseCELL.setTag(R.string.tagY,i);
+                if(Miner_manager.isXandYinARRAY(indexes_of_pairs_coord,j,i)){
+                    baseCELL.setTag(R.string.tagIsCorrect,1);
+//                    baseCELL.setBackground(getDrawable(R.drawable.cell_style_checked));
+                }
+                else{
+                    baseCELL.setTag(R.string.tagIsCorrect,0);
+                }
+                baseCELL.setOnClickListener(ocl);
+                baseLY.addView(baseCELL);
+            }
+            taskLY.addView(baseLY);
         }
-        LinearLayout colorsLL = findViewById(R.id.colorsAnswers);
-        resetImage = findViewById(R.id.reset);
-        View.OnClickListener ocl = getOclForAnswers();
-        resetImage.setOnClickListener(ocl);
-        for(int i = 0;i< Colors_shaker.COUNT;i++){
-            ImageView colorAnswer = (ImageView) this.getLayoutInflater().inflate(R.layout.base_imageview,colorsLL,false);
-            colorAnswer.setOnClickListener(ocl);
-            colorAnswer.setTag(R.string.tagAnswerNumber,i);
-            GradientDrawable drawable = (GradientDrawable) colorAnswer.getBackground();
-            drawable.setColor(getResources().getColor(Colors_shaker.ID_COLORS[i]));
-            colorsLL.addView(colorAnswer);
-        }
-        answerBot = findViewById(R.id.botChoice);
 
 
     }
 
-    @Deprecated
-    private void initAnswersOcl(){
-        findViewById(R.id.scissors).setOnClickListener(getOclForAnswers());
-        findViewById(R.id.rock).setOnClickListener(getOclForAnswers());
-        findViewById(R.id.letter).setOnClickListener(getOclForAnswers());
-    }
+//    @Deprecated
+//    private void initAnswersOcl(){
+//        findViewById(R.id.scissors).setOnClickListener(getOclForAnswers());
+//        findViewById(R.id.rock).setOnClickListener(getOclForAnswers());
+//        findViewById(R.id.letter).setOnClickListener(getOclForAnswers());
+//    }
 
-    private View.OnClickListener getOclForAnswers(){
+    private View.OnClickListener getOclForCells(){
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userAnswer = (ImageView) v;
-                if(userAnswer.getId()==R.id.reset){
-                    clearFeedBack();
+                set_textview = (TextView) v;
+                if(set_textview.getTag(R.string.tagIsCorrect).toString().equals("0")){
+                    set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
+                    mistakes++;
+                    if(mistakes == 3) {
+                        isWin = false;
+                        startResultsDialog();
+                    }
+
                 }else{
-                    addColorToFeedBack();
+                    setViewChecked(set_textview);
+                    count_all--;
+                    int x = Integer.parseInt(set_textview.getTag(R.string.tagX).toString());
+                    int y = Integer.parseInt(set_textview.getTag(R.string.tagY).toString());
+                    rowSumm[y]++;
+                    columnSumm[x]++;
+                    checkFullColumn(x,y);
+                    checkFullRow(x,y);
+                    if(count_all==0) startResultsDialog();
                 }
+                set_textview.setClickable(false);
             }
         };
         return ocl;
     }
 
 
-    private void addColorToFeedBack(){
+    private void checkFullRow(int x,int y){
+        int summ = 0;
 
-        GradientDrawable drawable = (GradientDrawable) feedback.getBackground();
-        int color_to_mixed = (getResources().getColor(Colors_shaker.ID_COLORS[Integer.parseInt(userAnswer.getTag(R.string.tagAnswerNumber).toString())]));
-        count_of_mixed++;
-        if(Integer.parseInt(feedback.getTag().toString())==1) {
-            color_current = colors_shaker.mixColorsValue(color_current,color_to_mixed,count_of_mixed);
-            drawable.setColor(color_current);
-        }else{
-            feedback.setTag(1);
-            color_current = color_to_mixed;
-            drawable.setColor(color_to_mixed);
+        for(int number:row_numbers[y]){
+            summ = summ + number;
         }
-        Log.d("COLOR_CURRENT",color_current+" ");
-        if((color_current+300000 > color_bot)&&(color_current-300000 < color_bot)&&(count_of_mixed<=diffucult+diffucult/3)){
-            makeTask();
-            clearFeedBack();
-            plusOnePoint();
+        if(rowSumm[y]==summ){
+            TextView textView = ((TextView)((LinearLayout)taskLY.getChildAt(y+1)).getChildAt(0));
+            textView.setBackground(getDrawable(R.drawable.answer_style_checked));
         }
     }
 
-    private void clearFeedBack(){
-        GradientDrawable drawable = (GradientDrawable) feedback.getBackground();
-        color_current = getResources().getColor(R.color.colorAnswerBackground);
-        drawable.setColor(color_current);
-        feedback.setTag(0);
-        count_of_mixed = 0;
+    private void checkFullColumn(int x,int y){
+        int summ = 0;
 
-    }
-
-
-
-    private void fillBotColor(){
-        colorsMixed = colors_shaker.setResources(getResources()).shake().mix(Colors_shaker.DIFFICULT).get();
-        color_bot = 0;
-        for(int i=0;i<colorsMixed.length;i++){
-            Log.d("COLORMIXED1",colorsMixed[i]+" ");
-
-            if(color_bot == 0){
-                color_bot = getResources().getColor(colorsMixed[i]);
-            }else{
-                color_bot = colors_shaker.mixColorsValue(color_bot,getResources().getColor(colorsMixed[i]),i+1);
-            }
-            Log.d("COLOR BOT",color_bot+" ");
+        for(int number:column_numbers[x]){
+            summ = summ + number;
         }
-        GradientDrawable drawable = (GradientDrawable) answerBot.getBackground();
-        drawable.setColor(color_bot);
-    }
-
-    private void plusOnePoint(){
-        count_of_correct_answers++;
-        Log.d("COUNT OF CORRECT ANSWER",String.valueOf(count_of_correct_answers));
-        LinearLayout pointsLL = findViewById(R.id.pointsLL);
-        TextView point = (TextView) pointsLL.getChildAt(count_of_correct_answers-1);
-        point.setBackground(getDrawable(R.drawable.points_green_style));
-        if(count_of_correct_answers==diffucult){
-            startResultsDialog();
-        }
-
-    }
-
-    @Deprecated
-    private void minusOnePoint(){
-        count_of_correct_answers--;
-        Log.d("COUNT OF CORRECT ANSWER",String.valueOf(count_of_correct_answers));
-        if(count_of_correct_answers == -1){
-            isWin = false;
-            startResultsDialog();
-        }else{
-            LinearLayout pointsLL = findViewById(R.id.pointsLL);
-            TextView point = (TextView) pointsLL.getChildAt(count_of_correct_answers);
-            point.setBackground(getDrawable(R.drawable.points_style));
+        if(columnSumm[x]==summ){
+            TextView textView = ((TextView)((LinearLayout)taskLY.getChildAt(0)).getChildAt(x+1));
+            textView.setBackground(getDrawable(R.drawable.answer_style_checked));
         }
     }
 
 
 
-    private void frozeOrUnfrozeViews(boolean clickable){
-        int[] ids = new int[]{R.id.scissors,R.id.letter,R.id.rock};
-        for(int id:ids){
-            ImageView answerForFroze = findViewById(id);
-            answerForFroze.setClickable(clickable);
-        }
-    }
-
-    @Deprecated
     private void setViewChecked(TextView textView){
         textView.setBackground(getDrawable(R.drawable.cell_style_checked));
     }
 
-    @Deprecated
+
     private void setViewUnchecked(TextView textView){
         textView.setBackground(getDrawable(R.drawable.cell_style));
     }
@@ -284,20 +283,19 @@ public class Level_22 extends AppCompatActivity {
         View.OnClickListener OnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearALL();
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
-                        startActivity(new Intent(Level_22.this, Level_22.class)); //REPEAT
+                        startActivity(new Intent(Level_23.this, Level_23.class)); //REPEAT
                     }else{
-                        startActivity(new Intent(Level_22.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
+                        startActivity(new Intent(Level_23.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                     }
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(Level_22.this,Miner.class);
+                        intent = new Intent(Level_23.this,Miner.class);
                     }else{
-                        intent = new Intent(Level_22.this, Level_22.class); //REPEAT
+                        intent = new Intent(Level_23.this, Level_23.class); //REPEAT
                     }
                     startActivity(intent);
                     finish();
@@ -377,20 +375,4 @@ public class Level_22 extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        clearALL();
-
-    }
-
-
-
-    private void clearALL(){
-        GradientDrawable gradientDrawable = (GradientDrawable) getDrawable(R.drawable.cell_style);
-        gradientDrawable.setColor(getResources().getColor(R.color.colorAnswerBackground));
-        GradientDrawable drawable  = (GradientDrawable) answerBot.getBackground();
-        drawable.setColor(getResources().getColor(R.color.colorAnswerBackground));
-    }
 }
