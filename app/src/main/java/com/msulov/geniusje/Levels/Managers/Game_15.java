@@ -81,12 +81,12 @@ public class Game_15 {
             }
             Log.d(array[i] + " N:", n + " ");
             count += n;
+            count+=e;
             Log.d("count", count + " ");
             n = 0;
 
         }
         Log.d("S",s.toString()+"");
-        count+=e;
         Log.d("count result", count + " ");
         if(count % 2 == 0){
             return true;
