@@ -107,6 +107,69 @@ public class Miner_manager{
     }
 
 
+    public static int[] getArrayOfIndexesAroundOf(int index,int[] array,int height,int width){
+        int[] indexes = null;
+
+        if((index/width) == 0){
+
+        }
+        //CORNERS
+        if(index==0){
+            indexes = new int[]{
+                    1,width,
+            };
+        }else if(index == width-1){
+            indexes = new int[]{
+                    width-2, width*2-1,
+            };
+        }else if(index == width*height - 1){
+            indexes = new int[]{
+                    width*height-2,width*height-1-width,
+            };
+        }else if(index == width*height - width) {
+            indexes = new int[]{
+                    width * height - width + 1, width * height - 2 * width,
+            };//BETWEEN CORNERS
+        }else if(index < width) {
+            indexes = new int[]{
+                    index+1,
+                    index-1,
+                    index+width,
+            };
+        }else if((index < width*height)&&(index > width*height - width)) {
+            indexes = new int[]{
+                    index+1,
+                    index-1,
+                    index-width,
+            };
+        }else if((index % width == 0)) {
+            indexes = new int[]{
+                    index+1,
+                    index+width,
+                    index-width,
+            };
+        }else if(index % width == (width-1)) {
+            indexes = new int[]{
+                    index-1,
+                    index+width,
+                    index-width,
+            };
+        }else {
+            indexes = new int[]{
+                    index+1,
+                    index-1,
+                    index+width,
+                    index-width,
+
+            };
+        }
+
+
+
+        return indexes;
+    }
+
+
 
     public static boolean isXandYinARRAY(int[][] array,int x, int y){
         for(int i = 0;i<array.length;i++){

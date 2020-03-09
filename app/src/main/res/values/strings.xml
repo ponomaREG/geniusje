@@ -34,6 +34,7 @@
     <string name="tagPointNumber">0</string>
     <string name="tagAnswerNumber">1</string>
     <string name="hintEditText">Вводи сюда</string>
+    <string name="tagCountCell">1</string>
 
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
     <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>
