@@ -18,6 +18,7 @@
     <dimen name="blockCellHeightVerySmall">40dp</dimen>
     <dimen name="blockCellHeightUltraSmall">30dp</dimen>
     <dimen name="blockCellHeightMedium">108dp</dimen>
+    <dimen name="blockCellHeightMediumLight">85dp</dimen>
 
     <dimen name="blockCellTextSizeGame15Eazy">36dp</dimen>
     <dimen name="blockCellTextSizeGame15Medium">24dp</dimen>
