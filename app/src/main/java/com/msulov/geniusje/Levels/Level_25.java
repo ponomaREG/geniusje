@@ -153,7 +153,7 @@ public class Level_25 extends AppCompatActivity {
                 if((j==Horse_check.BEGIN_X)&&(i==Horse_check.BEGIN_Y)) {
                     base_cell.setImageDrawable(getDrawable(R.drawable.horse));
                     base_cell.setTag(R.string.tagClosed,1);
-                    base_cell.setBackgroundColor(getResources().getColor(R.color.colorAnswerBackgroundChecked));
+                    base_cell.setBackground(getDrawable(R.drawable.cell_style_checked));
                     base_cell.setClickable(false);
                     set_view = base_cell;
                     count_of_correct_answers++;
@@ -177,7 +177,7 @@ public class Level_25 extends AppCompatActivity {
                 for(int[] index:indexes){
                     if((index[0]>=0)&&(index[0]<Horse_check.WIDTH)&&(index[1]>=0)&&(index[1]<Horse_check.HEIGHT)){
                         if((index[0]==((Integer) v.getTag(R.string.tagX)))&&((index[1])==((Integer) v.getTag(R.string.tagY)))) {
-                            v.setBackgroundColor(getResources().getColor(R.color.colorAnswerBackgroundChecked));
+                            v.setBackground(getDrawable(R.drawable.cell_style_checked));
                             swapImagesOnViews((ImageView) v, set_view);
                             set_view.setClickable(false);
                             set_view = (ImageView) v;

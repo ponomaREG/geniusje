@@ -214,7 +214,7 @@ public class Level_23 extends AppCompatActivity {
                 if(set_textview.getTag(R.string.tagIsCorrect).toString().equals("0")){
                     set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
                     mistakes++;
-                    if(mistakes == 3) {
+                    if(mistakes == 5) {
                         isWin = false;
                         startResultsDialog();
                     }
