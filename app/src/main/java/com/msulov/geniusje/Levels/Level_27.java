@@ -31,7 +31,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Level_26 extends AppCompatActivity {
+public class Level_27 extends AppCompatActivity {
 
 
 
@@ -51,7 +51,7 @@ public class Level_26 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level_26);
+        setContentView(R.layout.level_27);
 
         showBeginningDialog();
         initContAndBackButtons();
@@ -90,7 +90,7 @@ public class Level_26 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_26.this, LevelsActivity.class));
+                    startActivity(new Intent(Level_27.this, LevelsActivity.class));
                     finish();
                 } else if (v.getId() == R.id.startDialogButton) {
                     dialog.dismiss();
@@ -173,73 +173,58 @@ public class Level_26 extends AppCompatActivity {
 
     private void swapInDiagonal(int x,int y){
 
-
-        int y_2 = y;
-        for(int x_2 = x+1;x_2<IsCatch_game.WIDTH;x_2++){
-                y_2--;
-                log("X+Y UR",x_2+" "+y_2);
-                if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)&&(x_2>=0)) {
-                    LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
-                    ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                    log("ismain UR", cell.getTag(R.string.tagIsMain).toString());
-                    if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
-                        deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
-                    }
-                }
-
-        }
-
-
-
-        y_2 = y;
-        for(int x_2 = x-1;x_2>=0;x_2--){
+        ImageView current_view = null;
+        int y_2 = IsCatch_game.HEIGHT;
+        for(int x_2 = x;x_2<IsCatch_game.WIDTH;x_2++){
             y_2--;
-            log("X+Y UL",x_2+" "+y_2);
-            if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)&&(x_2>=0)) {
-                LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
-                ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                log("ismain UL", cell.getTag(R.string.tagIsMain).toString());
-                if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
-                    deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
-                }
+            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
+            ImageView cell = (ImageView) baseLL.getChildAt(x);
+            if((Integer) cell.getTag(R.string.tagIsMain)==1){
+                current_view = cell;
             }
         }
+        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
 
 
+        current_view = null;
+        y_2 = IsCatch_game.HEIGHT;
+        for(int x_2 = x;x_2>=0;x_2--){
+            y_2--;
+            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
+            ImageView cell = (ImageView) baseLL.getChildAt(x);
+            if((Integer) cell.getTag(R.string.tagIsMain)==1){
+                current_view = cell;
+            }
+        }
+        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
 
 
-        y_2 = y;
-        for(int x_2 = x+1;x_2<IsCatch_game.WIDTH;x_2++){
+        current_view = null;
+        y_2 = -1;
+        for(int x_2 = x;x_2<IsCatch_game.WIDTH;x_2++){
             y_2++;
-            log("X+Y DR",x_2+" "+y_2);
-            if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)&&(x_2>=0)) {
-                LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
-                ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                log("ismain DR", cell.getTag(R.string.tagIsMain).toString());
-                if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
-                    deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
-                }
+            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
+            ImageView cell = (ImageView) baseLL.getChildAt(x);
+            if((Integer) cell.getTag(R.string.tagIsMain)==1){
+                current_view = cell;
             }
         }
+        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
 
 
-
-
-        y_2 = y;
-        for(int x_2 = x-1;x_2>=0;x_2--) {
+        current_view = null;
+        y_2 = -1;
+        for(int x_2 = x;x_2>=0;x_2--){
             y_2++;
-            log("X+Y DL", x_2 + " " + y_2);
-            if ((y_2 >= 0) && (y_2 < IsCatch_game.HEIGHT) && (x_2 < IsCatch_game.WIDTH) && (x_2 >= 0)) {
-                LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
-                ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                log("ismain DL", cell.getTag(R.string.tagIsMain).toString());
-                if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
-                    deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
-                }
+            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
+            ImageView cell = (ImageView) baseLL.getChildAt(x);
+            if((Integer) cell.getTag(R.string.tagIsMain)==1){
+                current_view = cell;
             }
         }
+        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
 
-        Log.d("X Y END",x+" "+y);
+
         setMainInCell(x,y);
     }
 
@@ -249,12 +234,11 @@ public class Level_26 extends AppCompatActivity {
         for(int i = 0;i<IsCatch_game.HEIGHT;i++){
             LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(i);
             ImageView cell = (ImageView) baseLL.getChildAt(x);
-            if(((Integer) cell.getTag(R.string.tagIsMain)==1)&&(y!=i)){
+            if((Integer) cell.getTag(R.string.tagIsMain)==1){
                 current_view = cell;
-                if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
             }
         }
-
+        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
         setMainInCell(x,y);
     }
 
@@ -264,13 +248,18 @@ public class Level_26 extends AppCompatActivity {
         LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
         for(int i = 0;i<IsCatch_game.WIDTH;i++){
             ImageView cell = (ImageView) baseLL.getChildAt(i);
-            if(((Integer) cell.getTag(R.string.tagIsMain)==1)&&(i!=x)){
+            if((Integer) cell.getTag(R.string.tagIsMain)==1){
                 current_view = cell;
                 x_current = i;
-                if(current_view!=null) deleteMainInCell(x_current,y);
             }
         }
+        if(current_view!=null){
+            current_view.setTag(R.string.tagIsMain,0);
+            current_view.setBackground(getDrawable(R.drawable.cell_style));
+            current_view.setClickable(true);
+        }
         setMainInCell(x,y);
+        deleteMainInCell(x_current,y);
     }
 
 
@@ -289,7 +278,6 @@ public class Level_26 extends AppCompatActivity {
     }
 
     private void deleteMainInCell(int x , int y){
-        log("x y DELETE MAIN IN CELL",x+" "+y);
         ImageView cell = (ImageView)((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
         cell.setTag(R.string.tagIsMain,0);
         cell.setBackground(getDrawable(R.drawable.cell_style));
@@ -317,17 +305,17 @@ public class Level_26 extends AppCompatActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
-                        startActivity(new Intent(Level_26.this, Level_26.class)); //REPEAT
+                        startActivity(new Intent(Level_27.this, Level_27.class)); //REPEAT
                     }else{
-                        startActivity(new Intent(Level_26.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
+                        startActivity(new Intent(Level_27.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                     }
                     finish();
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(Level_26.this,Level_23.class);
+                        intent = new Intent(Level_27.this,Level_23.class);
                     }else{
-                        intent = new Intent(Level_26.this, Level_26.class); //REPEAT
+                        intent = new Intent(Level_27.this, Level_27.class); //REPEAT
                     }
                     startActivity(intent);
                     finish();
