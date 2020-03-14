@@ -129,11 +129,9 @@ public class Level_27 extends AppCompatActivity {
     private void generateLayouts(){
         taskLY = findViewById(R.id.taskLY);
         View.OnClickListener ocl = getOclForCells();
-
         for(int i = 0; i < IsCatch_game.HEIGHT; i++) {
             LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,taskLY,false);
             for (int j = 0;j < IsCatch_game.WIDTH;j++){
-
                 ImageView base_cell = (ImageView) this.getLayoutInflater().inflate(R.layout.base_cell_imageview,baseLL,false);
                 base_cell.setTag(R.string.tagX,j);
                 base_cell.setTag(R.string.tagY,i);

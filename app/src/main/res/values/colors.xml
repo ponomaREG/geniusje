@@ -16,7 +16,7 @@
     <color name="colorAnswerBackgroundChecked">#2D756D</color>
     <color name="colorOfCorrectChoice">#036812</color>
     <color name="colorTextOfSudokuGetMistake">#B31919</color>
-    <color name="colorStaticCell">#575454</color>
+    <color name="colorStaticCell">#E8DBDB</color>
     <color name="cellError">#980909</color>
 
     <color name="colorGameBLUE">#0000FF</color>

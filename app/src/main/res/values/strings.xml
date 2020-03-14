@@ -10,6 +10,10 @@
     <string name="level">Уровень</string>
     <string name="choiceAnswer">Выберите свой вариант</string>
     <string name="colorHint">Здесь будет смешиваться ваш цвет</string>
+    <string name="yourChoice">Ваш ход</string>
+    <string name="botChoice">Ходит Ваш противник. Ожидайте</string>
+    <string name="throwCube">Бросить кубик</string>
+    <string name="writeScore">Записать</string>
 
 
     <string name="toastExit">Нажмите еще раз для выхода</string>
