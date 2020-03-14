@@ -1,9 +1,8 @@
 package com.msulov.geniusje.Levels.Managers.Interfaces;
 
 import android.content.res.Resources;
-import android.graphics.Color;
 
-import com.msulov.geniusje.Levels.Colors_shaker;
+import com.msulov.geniusje.Levels.Managers.Colors_shaker;
 
 public interface Colors_manager {
 

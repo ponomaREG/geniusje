@@ -337,7 +337,11 @@ public class four_choice extends AppCompatActivity {
 
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 
 
 

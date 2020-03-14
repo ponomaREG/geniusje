@@ -1,4 +1,4 @@
-package com.msulov.geniusje.Levels;
+package com.msulov.geniusje.Levels.Managers;
 
 import android.content.res.Resources;
 import android.util.Log;
@@ -6,10 +6,8 @@ import android.util.Log;
 import androidx.core.graphics.ColorUtils;
 
 import com.msulov.geniusje.Levels.Managers.Interfaces.Colors_manager;
-import com.msulov.geniusje.Levels.Managers.Memory_game;
 import com.msulov.geniusje.R;
 
-import java.net.CookieHandler;
 import java.util.Random;
 
 public class Colors_shaker implements Colors_manager {

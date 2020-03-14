@@ -198,6 +198,13 @@ public class Level_6 extends AppCompatActivity {
         icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 }
 
 

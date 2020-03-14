@@ -291,5 +291,12 @@ public class Level_10 extends AppCompatActivity {
     private void log(String tag,boolean text){
         Log.d(tag,String.valueOf(text));
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 }
 

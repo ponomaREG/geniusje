@@ -200,6 +200,12 @@ public class Level_2 extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
+
 
 }
 

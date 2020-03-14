@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.Levels.Managers.Colors_shaker;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
@@ -81,7 +82,7 @@ public class Level_22 extends AppCompatActivity {
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_21));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_22));
         //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
@@ -381,6 +382,7 @@ public class Level_22 extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        dialog.cancel();
         clearALL();
 
     }
@@ -393,4 +395,7 @@ public class Level_22 extends AppCompatActivity {
         GradientDrawable drawable  = (GradientDrawable) answerBot.getBackground();
         drawable.setColor(getResources().getColor(R.color.colorAnswerBackground));
     }
+
+
+
 }

@@ -223,4 +223,11 @@ public class Level_5 extends AppCompatActivity {
         color_task.setText(random_text_of_color);
         color_task.setTextColor(random_color);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 }

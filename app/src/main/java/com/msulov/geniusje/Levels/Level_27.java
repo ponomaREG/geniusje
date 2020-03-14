@@ -6,26 +6,19 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Game_15;
-import com.msulov.geniusje.Levels.Managers.IsCatch_game;
-import com.msulov.geniusje.Levels.Managers.Miner_manager;
-import com.msulov.geniusje.Levels.Managers.Nonogramm;
+import com.msulov.geniusje.Levels.Managers.Bones;
+import com.msulov.geniusje.Levels.Managers.Player;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
-
-import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -41,8 +34,10 @@ public class Level_27 extends AppCompatActivity {
     private long pressedTime;
     private int count = 0,mistakes = 0,correctAnswer=0;
     private int taskdesc_id;
-    private LinearLayout baseLY,taskLY;
+    private Player user,bot;
     private boolean isWin = true;
+    private Button writeScore , throwCube;
+    private TextView botScores,botTotalScores,userScores,userTotalScores, mainScore,status;
 
 
 
@@ -55,7 +50,7 @@ public class Level_27 extends AppCompatActivity {
 
         showBeginningDialog();
         initContAndBackButtons();
-        generateLayouts();
+//        generateLayouts();
 //        initOclForAnswers();
     }
 
@@ -115,51 +110,58 @@ public class Level_27 extends AppCompatActivity {
 
 
 
-    private void makeTask(){ initAnother(); }
-
-
-    private void initAnother(){
-    }
-
-
-
-
-
-
-    private void generateLayouts(){
-        taskLY = findViewById(R.id.taskLY);
-        View.OnClickListener ocl = getOclForCells();
-        for(int i = 0; i < IsCatch_game.HEIGHT; i++) {
-            LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,taskLY,false);
-            for (int j = 0;j < IsCatch_game.WIDTH;j++){
-                ImageView base_cell = (ImageView) this.getLayoutInflater().inflate(R.layout.base_cell_imageview,baseLL,false);
-                base_cell.setTag(R.string.tagX,j);
-                base_cell.setTag(R.string.tagY,i);
-                base_cell.setTag(R.string.tagIsMain,0);
-                base_cell.setOnClickListener(ocl);
-                baseLL.addView(base_cell);
-            }
-            log("CHILD COUNT",taskLY.getChildCount());
-            taskLY.addView(baseLL);
-        }
-
+    private void makeTask(){
+        init();
+        decideWhoGoesFirst_UserOrBot();
 
     }
 
 
-    private View.OnClickListener getOclForCells(){
+    private void init(){
+        initVariables();
+        initOclForButtons();
+    }
+
+    private void initVariables(){
+        user = new Player();
+        bot = new Player();
+
+        writeScore = findViewById(R.id.writeScore);
+        throwCube = findViewById(R.id.throwCube);
+
+        botScores = findViewById(R.id.botScores);
+        botTotalScores = findViewById(R.id.botTotalScores);
+
+        userScores = findViewById(R.id.userScores);
+        userTotalScores = findViewById(R.id.userTotalScores);
+
+        mainScore = findViewById(R.id.number);
+        status = findViewById(R.id.description);
+    }
+
+    private void initOclForButtons(){
+
+
+        writeScore.setOnClickListener(getOclForButtonWriteScore());
+        throwCube.setOnClickListener(getOclForButtonThrowCube());
+
+    }
+
+    private View.OnClickListener getOclForButtonWriteScore(){
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                int x = (Integer) v.getTag(R.string.tagX);
-                int y = (Integer) v.getTag(R.string.tagY);
+            public void onClick(View view) {
+                playerWritesScore();
+            }
+        };
+        return ocl;
+    }
 
-                swapInRow(x,y);
-                swapInColumn(x,y);
-                swapInDiagonal(x,y);
-                if(checkIfUserWin()) startResultsDialog();
-
-
+    private View.OnClickListener getOclForButtonThrowCube(){
+        View.OnClickListener ocl = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playerMakeThrow();
             }
         };
         return ocl;
@@ -169,126 +171,262 @@ public class Level_27 extends AppCompatActivity {
 
 
 
-    private void swapInDiagonal(int x,int y){
 
-        ImageView current_view = null;
-        int y_2 = IsCatch_game.HEIGHT;
-        for(int x_2 = x;x_2<IsCatch_game.WIDTH;x_2++){
-            y_2--;
-            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
-            ImageView cell = (ImageView) baseLL.getChildAt(x);
-            if((Integer) cell.getTag(R.string.tagIsMain)==1){
-                current_view = cell;
-            }
-        }
-        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
-
-
-        current_view = null;
-        y_2 = IsCatch_game.HEIGHT;
-        for(int x_2 = x;x_2>=0;x_2--){
-            y_2--;
-            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
-            ImageView cell = (ImageView) baseLL.getChildAt(x);
-            if((Integer) cell.getTag(R.string.tagIsMain)==1){
-                current_view = cell;
-            }
-        }
-        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
-
-
-        current_view = null;
-        y_2 = -1;
-        for(int x_2 = x;x_2<IsCatch_game.WIDTH;x_2++){
-            y_2++;
-            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
-            ImageView cell = (ImageView) baseLL.getChildAt(x);
-            if((Integer) cell.getTag(R.string.tagIsMain)==1){
-                current_view = cell;
-            }
-        }
-        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
-
-
-        current_view = null;
-        y_2 = -1;
-        for(int x_2 = x;x_2>=0;x_2--){
-            y_2++;
-            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
-            ImageView cell = (ImageView) baseLL.getChildAt(x);
-            if((Integer) cell.getTag(R.string.tagIsMain)==1){
-                current_view = cell;
-            }
-        }
-        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
-
-
-        setMainInCell(x,y);
-    }
-
-    private void swapInColumn(int x , int y){
-        ImageView current_view = null;
-        int y_current = -1;
-        for(int i = 0;i<IsCatch_game.HEIGHT;i++){
-            LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(i);
-            ImageView cell = (ImageView) baseLL.getChildAt(x);
-            if((Integer) cell.getTag(R.string.tagIsMain)==1){
-                current_view = cell;
-            }
-        }
-        if(current_view!=null) deleteMainInCell((Integer) current_view.getTag(R.string.tagX),(Integer) current_view.getTag(R.string.tagY));
-        setMainInCell(x,y);
-    }
-
-    private void swapInRow(int x, int y ){
-        ImageView current_view=null;
-        int x_current=-1;
-        LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
-        for(int i = 0;i<IsCatch_game.WIDTH;i++){
-            ImageView cell = (ImageView) baseLL.getChildAt(i);
-            if((Integer) cell.getTag(R.string.tagIsMain)==1){
-                current_view = cell;
-                x_current = i;
-            }
-        }
-        if(current_view!=null){
-            current_view.setTag(R.string.tagIsMain,0);
-            current_view.setBackground(getDrawable(R.drawable.cell_style));
-            current_view.setClickable(true);
-        }
-        setMainInCell(x,y);
-        deleteMainInCell(x_current,y);
+    private void decideWhoGoesFirst_UserOrBot(){
+        if(Bones.whoIsFirst()==1) letThePlayerThrow();
+        else letTheBotThrow();
     }
 
 
 
-    private boolean checkIfUserWin(){
-        for(int y = 0;y<IsCatch_game.HEIGHT;y++){
-            baseLY = (LinearLayout) taskLY.getChildAt(y);
-            boolean isExistsMainCell = false;
-            for(int x = 0;x<IsCatch_game.WIDTH;x++){
-                ImageView cell = (ImageView) baseLY.getChildAt(x);
-                if((Integer) cell.getTag(R.string.tagIsMain) == 1) isExistsMainCell = true;
-            }
-            if(!isExistsMainCell) return false;
+
+
+
+
+
+
+    private void letThePlayerThrow(){
+        setStatusThatPlayerThrows();
+        writeScore.setEnabled(true);
+        throwCube.setEnabled(true);
+    }
+
+    private void preventThePlayerFromThrowing(){
+        writeScore.setEnabled(false);
+        throwCube.setEnabled(false);
+    }
+
+    private void playerWritesScore(){
+        user.incCurrentScore(user.getVarScores());
+        clearAllForUser();
+        updateTextViewUserCurrentScores();
+        checkIsAnybodyWins();
+        letTheBotThrow();
+    }
+
+    private void playerMakeThrow(){
+        int score = Bones.getRandomOfScore();
+        log("USER SCORE",score);
+        if(score != 0){
+            changeTextViewMainScore(String.valueOf(score));
+            user.incVarScores(score);
+            changeTextViewUserVarScores(score);
+            changeTextViewUserTotalScoresWithShowingVarScores(user.getCurrentScore(),user.getVarScores());
+        }else{
+            changeTextViewMainScore("X");
+            preventThePlayerFromThrowing();
+            clearAllForUserWithDelay();
         }
-        return true;
     }
 
-    private void deleteMainInCell(int x , int y){
-        ImageView cell = (ImageView)((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-        cell.setTag(R.string.tagIsMain,0);
-        cell.setBackground(getDrawable(R.drawable.cell_style));
-        cell.setClickable(true);
+    private void clearAllForUserWithDelay(){
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                clearAllForUser();
+                letTheBotThrow();
+            }
+        },1000);
     }
 
 
-    private void setMainInCell(int x , int y){
-        ImageView cell = (ImageView)((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-        cell.setTag(R.string.tagIsMain,1);
-        cell.setBackground(getDrawable(R.drawable.cell_style_checked));
-        cell.setClickable(false);
+    private void clearAllForUser(){
+        clearTextViewNUMBER();
+        clearTextViewUserScores();
+        clearTextViewUserTotalScores(user.getCurrentScore());
+        user.clearVarScores();
     }
+
+    private void changeTextViewUserVarScores(int score){
+        String text = userScores.getText().toString();
+        userScores.setText(String.format("%s + "+text,String.valueOf(score)));
+    }
+
+    private void changeTextViewUserTotalScoresWithShowingVarScores(int currentScore,int varScore){
+        userTotalScores.setText(String.format("%d+(%d)",currentScore,varScore));
+    }
+
+    private void clearTextViewUserScores(){
+        userScores.setText(" ");
+    }
+
+    private void clearTextViewUserTotalScores(int currentScore){
+        userTotalScores.setText(String.valueOf(currentScore));
+    }
+
+    private void updateTextViewUserCurrentScores(){
+        userTotalScores.setText(String.valueOf(user.getCurrentScore()));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    private void letTheBotThrow(){
+        setStatusThatBotThrows();
+        preventThePlayerFromThrowing();
+        //MAKE BOT THROWES
+        botMakesThrowWithDelay();
+    }
+
+    private void botMakesThrowWithDelay(){
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                botMakesThrow();
+            }
+        },1000);
+    }
+
+
+    private void botMakesThrow(){
+        bot.incCountThrows(1);
+        int score = Bones.getRandomOfScore();
+        if(score!=0){
+            changeTextViewMainScore(String.valueOf(score));
+            bot.incVarScores(score);
+            changeTextViewBotVarScores(score);
+            changeTextViewBotTotalScoresWithShowingVarScores(bot.getCurrentScore(),bot.getVarScores());
+            botMakesChoice_ThrowOrWrite();
+        }else{
+            changeTextViewMainScore("X");
+            clearAllForBotWithDelay();
+        }
+    }
+
+    private void clearAllForBotWithDelay(){
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                clearAllForBot();
+                letThePlayerThrow();
+            }
+        },1000);
+    }
+
+
+    private void botMakesChoice_ThrowOrWrite(){
+        if(Math.random()<(0.8-(float) bot.getCountThrows()/10)) {
+            log("BOT DECIDED THROWS",1);
+            Handler delay = new Handler();
+            botMakesThrowWithDelay();
+        }
+        else {
+            botWritesScoreWithDelay();
+        }
+    }
+
+
+
+    private void changeTextViewBotVarScores(int score){
+        String text = botScores.getText().toString();
+        botScores.setText(String.format("%s + "+text,String.valueOf(score)));
+    }
+
+    private void changeTextViewBotTotalScoresWithShowingVarScores(int currentScore,int varScore){
+        botTotalScores.setText(String.format("%s+(%s)",currentScore,varScore));
+    }
+
+
+    private void clearAllForBot(){
+        clearTextViewNUMBER();
+        clearTextViewBotScores();
+        clearTextViewBotTotalScores(bot.getCurrentScore());
+        bot.clearCountThrows();
+        bot.clearVarScores();
+
+    }
+
+    private void clearTextViewBotScores(){
+        botScores.setText(" ");
+    }
+
+    private void clearTextViewBotTotalScores(int currentScore){
+        botTotalScores.setText(String.valueOf(currentScore));
+    }
+
+    private void botWritesScoreWithDelay(){
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                botWritesScore();
+            }
+        },1000);
+    }
+
+
+    private void botWritesScore(){
+        log("BOT DECIDED WRITES",1);
+        bot.incCurrentScore(bot.getVarScores());
+        clearAllForBot();
+        updateTextViewBotCurrentScores();
+        checkIsAnybodyWins();
+        letThePlayerThrow();
+    }
+
+
+    private void updateTextViewBotCurrentScores(){
+        botTotalScores.setText(String.valueOf(bot.getCurrentScore()));
+    }
+
+
+
+
+
+
+
+
+
+    private void checkIsAnybodyWins(){
+        if(user.getCurrentScore()>=Bones.WIN_SCORE) {
+            isWin = true;
+            startResultsDialog();
+        }
+        if(bot.getCurrentScore()>=Bones.WIN_SCORE){
+            isWin = false;
+            startResultsDialog();
+        }
+    }
+
+    @Deprecated
+    private void updateAllTextViewsCurrentScores(){
+        updateTextViewBotCurrentScores();
+        updateTextViewUserCurrentScores();
+    }
+
+    private void changeTextViewMainScore(String score){
+        mainScore.setText(score);
+    }
+
+    private void clearTextViewNUMBER(){
+        mainScore.setText(" ");
+    }
+
+    private void setStatusThatPlayerThrows(){
+        status.setText(getResources().getString(R.string.playerChoice));
+    }
+
+    private void setStatusThatBotThrows(){
+        status.setText(getResources().getString(R.string.botChoice));
+    }
+
+
+
+
+
+
+
 
 
     public void startResultsDialog() {
@@ -404,4 +542,10 @@ public class Level_27 extends AppCompatActivity {
         Log.d(tag,text +"");
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 }

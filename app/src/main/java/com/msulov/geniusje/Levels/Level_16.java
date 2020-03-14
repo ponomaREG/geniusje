@@ -289,7 +289,11 @@ public class Level_16 extends AppCompatActivity {
 
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 
 
 

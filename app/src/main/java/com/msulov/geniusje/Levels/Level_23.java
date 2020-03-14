@@ -6,9 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,13 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.Levels.Managers.Colors_shaker;
 import com.msulov.geniusje.Levels.Managers.Miner_manager;
 import com.msulov.geniusje.Levels.Managers.Nonogramm;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
-
-import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -84,7 +81,7 @@ public class Level_23 extends AppCompatActivity {
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_21));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_23));
         //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
@@ -375,4 +372,10 @@ public class Level_23 extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 }

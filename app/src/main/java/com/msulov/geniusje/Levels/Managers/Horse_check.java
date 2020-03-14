@@ -1,4 +1,4 @@
-package com.msulov.geniusje.Levels;
+package com.msulov.geniusje.Levels.Managers;
 
 public class Horse_check {
 

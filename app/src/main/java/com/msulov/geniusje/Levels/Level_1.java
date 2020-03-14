@@ -201,6 +201,13 @@ public class Level_1 extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
+
+
 
 
 }

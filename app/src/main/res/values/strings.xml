@@ -10,8 +10,8 @@
     <string name="level">Уровень</string>
     <string name="choiceAnswer">Выберите свой вариант</string>
     <string name="colorHint">Здесь будет смешиваться ваш цвет</string>
-    <string name="yourChoice">Ваш ход</string>
-    <string name="botChoice">Ходит Ваш противник. Ожидайте</string>
+    <string name="playerChoice">Ваш ход</string>
+    <string name="botChoice">Ходит Ваш противник</string>
     <string name="throwCube">Бросить кубик</string>
     <string name="writeScore">Записать</string>
 
@@ -62,6 +62,12 @@
     <string name="startDialogWindowForLevel_19">Найди все высвечивающиеся ячейки</string>
     <string name="startDialogWindowForLevel_20">Поиграй в Сапера</string>
     <string name="startDialogWindowForLevel_21">Сыграй в кмн</string>
+    <string name="startDialogWindowForLevel_22">Смешай правильно цвет. Подсказка: надо смешать 3 цвета и только</string>
+    <string name="startDialogWindowForLevel_23">Реши нонограмму</string>
+    <string name="startDialogWindowForLevel_24">Реши игру в 15</string>
+    <string name="startDialogWindowForLevel_25">Пройди все поля конем(Конь может ходить только буквой Г)</string>
+    <string name="startDialogWindowForLevel_26">На каждой линии должно быть одно отмеченное поле</string>
+    <string name="startDialogWindowForLevel_27">Сыграй в кости!Надо набрать 36 очков для победы</string>
 
     <string name="sudoku_choice_1">1</string>
     <string name="sudoku_choice_2">2</string>

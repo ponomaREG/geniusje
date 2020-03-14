@@ -237,4 +237,11 @@ public class Level_3 extends AppCompatActivity {
 
         equation.setText(Equation.makeEquation(number_1,number_2,sign)[0]);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 }

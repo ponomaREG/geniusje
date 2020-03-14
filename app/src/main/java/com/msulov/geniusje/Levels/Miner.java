@@ -463,7 +463,11 @@ public class Miner extends AppCompatActivity {
 
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 
 
 

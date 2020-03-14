@@ -409,7 +409,11 @@ public class memory_base extends AppCompatActivity {
 
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.cancel();
+    }
 
 
 
