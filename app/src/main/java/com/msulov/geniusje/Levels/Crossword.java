@@ -8,9 +8,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -134,15 +136,17 @@ public class Crossword extends AppCompatActivity {
 
     private void generateLayouts(){
         View.OnClickListener ocl = getOclForCells();
-
+        View.OnFocusChangeListener focus_ocl = getFocusOclForCells();
         for(int i = 0; i < Crossword_generator.HEIGHT; i++) {
             LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_linearlayout,taskLY,false);
             for (int j = 0;j < Crossword_generator.WIDTH;j++){
-                TextView base_cell = (TextView) this.getLayoutInflater().inflate(R.layout.base_cell_edittext,baseLL,false);
+                EditText base_cell = (EditText) this.getLayoutInflater().inflate(R.layout.base_cell_edittext,baseLL,false);
+                if(j == 0) base_cell.setHint(String.valueOf(i+1));
                 base_cell.setTag(R.string.tagX,j);
                 base_cell.setTag(R.string.tagY,i);
                 base_cell.setTag(R.string.tagIsCell,0);
                 base_cell.setOnClickListener(ocl);
+                base_cell.setOnFocusChangeListener(focus_ocl);
                 base_cell.setVisibility(View.INVISIBLE);
                 base_cell.setClickable(false);
                 baseLL.addView(base_cell);
@@ -154,20 +158,48 @@ public class Crossword extends AppCompatActivity {
 
 
     private View.OnClickListener getOclForCells(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Logging.log("FIRST INDEX  WORD",view.getTag(R.string.tagIndexWord).toString());
-                if(view.getTag(R.string.tagIndexSecondWordIfExists) != null)  Logging.log("SECOND INDEX WORD",view.getTag(R.string.tagIndexSecondWordIfExists).toString());
-                if(current_cell != null) current_cell.setBackground(getResources().getDrawable(R.drawable.cell_style));
-                view.setBackground(getDrawable(R.drawable.cell_style_checked));
-                current_cell = (TextView) view;
-                Logging.log("WORD",Crossword_static.getWordFromKeyword((Integer) view.getTag(R.string.tagIndexWord)));
-            }
+        return view -> {
+            makeManipulationWhenUserClicks(view);
+
         };
     }
 
+    private View.OnFocusChangeListener getFocusOclForCells(){
+        return (view, b) -> {
+            if(b) makeManipulationWhenUserClicks(view);
+            else checkIfUserWin();
 
+        };
+    }
+
+    private void makeManipulationWhenUserClicks(View view){
+        Logging.log("FIRST INDEX  WORD",view.getTag(R.string.tagIndexWord).toString());
+        if(view.getTag(R.string.tagIndexSecondWordIfExists) != null)  Logging.log("SECOND INDEX WORD",view.getTag(R.string.tagIndexSecondWordIfExists).toString());
+        if(current_cell != null) current_cell.setBackground(getResources().getDrawable(R.drawable.cell_style));
+        view.setBackground(getDrawable(R.drawable.cell_style_checked));
+        current_cell = (TextView) view;
+        Logging.log("WORD",Crossword_static.getWordFromKeyword((Integer) view.getTag(R.string.tagIndexWord)));
+    }
+
+    private void checkIfUserWin(){
+        if (checkIfCellIsFullOfCorrectAnswers()) startResultsDialog();
+    }
+
+    private boolean checkIfCellIsFullOfCorrectAnswers(){
+        int[][][] coords = Crossword_static.getCoordsOfCells();
+        for(int i=0;i<coords.length;i++){
+            for(int j = 0;j<coords[i].length;j++){
+                EditText crossword_cell = ((EditText) ((LinearLayout) taskLY.getChildAt(coords[i][j][1])).getChildAt(coords[i][j][0]));
+                if(crossword_cell.length()>0) {
+                    log("LOGGING",Crossword_static.getWordFromKeyword(i).charAt(j)+" "+crossword_cell.getText().charAt(0));
+                    if (Crossword_static.getWordFromKeyword(i).charAt(j) != crossword_cell.getText().charAt(0)) {
+                        return false;
+                    }
+                }else return false;
+            }
+        }
+        return true;
+    }
 
 
     private void generateCrossword(){
@@ -175,8 +207,10 @@ public class Crossword extends AppCompatActivity {
         for(int i = 0;i<coords_cells.length;i++){
             String word = Crossword_static.getWordFromKeyword(i);
             for(int j = 0 ;j<coords_cells[i].length;j++){
-                TextView crossword_cell = ((TextView) ((LinearLayout) taskLY.getChildAt(coords_cells[i][j][1])).getChildAt(coords_cells[i][j][0]));
+                EditText crossword_cell = ((EditText) ((LinearLayout) taskLY.getChildAt(coords_cells[i][j][1])).getChildAt(coords_cells[i][j][0]));
                 crossword_cell.setVisibility(View.VISIBLE);
+                crossword_cell.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+                crossword_cell.setLines(1);
                 crossword_cell.setClickable(true);
                 crossword_cell.setTag(R.string.tagIsCell,1);
                 if(j == 0) crossword_cell.setHint(String.valueOf(i+1));
