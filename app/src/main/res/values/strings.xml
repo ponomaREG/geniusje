@@ -40,6 +40,10 @@
     <string name="hintEditText">Вводи сюда</string>
     <string name="tagCountCell">1</string>
     <string name="tagIsMain">1</string>
+    <string name="tagIsCell">1</string>
+    <string name="tagIndexWord">1</string>
+    <string name="tagIndexSecondWordIfExists">2</string>
+
 
     <string name="startDialogWindowForLevel_1">Выбери число, которое больше</string>
     <string name="startDialogWindowForLevel_2">Выбери число , которое меньше</string>

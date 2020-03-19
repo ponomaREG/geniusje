@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.msulov.geniusje.Levels.Crossword;
 import com.msulov.geniusje.Levels.Level_1;
 import com.msulov.geniusje.Levels.Level_10;
 import com.msulov.geniusje.Levels.Level_11;
@@ -169,6 +170,9 @@ public class LevelsActivity extends AppCompatActivity {
                         break;
                     case R.id.level_27:
                         startActivity(new Intent(LevelsActivity.this, Level_27.class));
+                        break;
+                    case R.id.level_28:
+                        startActivity(new Intent(LevelsActivity.this, Crossword.class));
                         break;
                 }
             }

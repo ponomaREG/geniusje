@@ -50,30 +50,22 @@ public class Level_27 extends AppCompatActivity {
 
         showBeginningDialog();
         initContAndBackButtons();
-//        generateLayouts();
-//        initOclForAnswers();
     }
 
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
 
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_21));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
@@ -102,7 +94,6 @@ public class Level_27 extends AppCompatActivity {
         backButton.setOnClickListener(OnClickListener);
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
-
     }
 
 
@@ -206,7 +197,6 @@ public class Level_27 extends AppCompatActivity {
 
     private void playerMakeThrow(){
         int score = Bones.getRandomOfScore();
-        log("USER SCORE",score);
         if(score != 0){
             changeTextViewMainScore(String.valueOf(score));
             user.incVarScores(score);
@@ -317,7 +307,6 @@ public class Level_27 extends AppCompatActivity {
 
     private void botMakesChoice_ThrowOrWrite(){
         if(Math.random()<(0.8-(float) bot.getCountThrows()/10)) {
-            log("BOT DECIDED THROWS",1);
             Handler delay = new Handler();
             botMakesThrowWithDelay();
         }
@@ -367,7 +356,6 @@ public class Level_27 extends AppCompatActivity {
 
 
     private void botWritesScore(){
-        log("BOT DECIDED WRITES",1);
         bot.incCurrentScore(bot.getVarScores());
         clearAllForBot();
         updateTextViewBotCurrentScores();
@@ -532,15 +520,6 @@ public class Level_27 extends AppCompatActivity {
     }
 
 
-    private void log(String tag,String text){
-        Log.d(tag,text);
-    }
-    private void log(String tag,int text){
-        Log.d(tag,text+"");
-    }
-    private void log(String tag,long text){
-        Log.d(tag,text +"");
-    }
 
 
     @Override
