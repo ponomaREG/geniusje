@@ -43,11 +43,12 @@ public class Crossword extends AppCompatActivity {
     private Dialog dialog;
     private Time t;
     private long pressedTime;
-    private int count = 0,mistakes = 0,correctAnswer=0;
+    private int count = 0,mistakes = 0,correctAnswer=0,current_index_of_fill_word = -1;
     private int taskdesc_id;
     private LinearLayout baseLY,taskLY;
-    private TextView current_cell;
+    private EditText current_cell;
     private boolean isWin = true;
+    private TextView cell_description;
     private Crossword_generator crossword;
 
 
@@ -117,7 +118,7 @@ public class Crossword extends AppCompatActivity {
 
     private void initVariables(){
         taskLY = findViewById(R.id.taskLY);
-
+        cell_description = findViewById(R.id.description);
         crossword = new Crossword_generator();
         crossword.setCount_Words(5);
 
@@ -173,12 +174,35 @@ public class Crossword extends AppCompatActivity {
     }
 
     private void makeManipulationWhenUserClicks(View view){
-        Logging.log("FIRST INDEX  WORD",view.getTag(R.string.tagIndexWord).toString());
-        if(view.getTag(R.string.tagIndexSecondWordIfExists) != null)  Logging.log("SECOND INDEX WORD",view.getTag(R.string.tagIndexSecondWordIfExists).toString());
-        if(current_cell != null) current_cell.setBackground(getResources().getDrawable(R.drawable.cell_style));
-        view.setBackground(getDrawable(R.drawable.cell_style_checked));
-        current_cell = (TextView) view;
-        Logging.log("WORD",Crossword_static.getWordFromKeyword((Integer) view.getTag(R.string.tagIndexWord)));
+        if(view == current_cell){
+            if(current_cell.getTag(R.string.tagIndexSecondWordIfExists) != null){
+                if(current_index_of_fill_word != (Integer)current_cell.getTag(R.string.tagIndexSecondWordIfExists)){
+                    cell_description.setText(Crossword_static.getQuestionFromKeyword((Integer) current_cell.getTag(R.string.tagIndexSecondWordIfExists)));
+                    unfillWord(current_index_of_fill_word);
+                    fillWord((Integer) current_cell.getTag(R.string.tagIndexSecondWordIfExists));
+                    current_index_of_fill_word = (Integer) current_cell.getTag(R.string.tagIndexSecondWordIfExists);
+                }else {
+                    cell_description.setText(Crossword_static.getQuestionFromKeyword((Integer) current_cell.getTag(R.string.tagIndexWord)));
+                    unfillWord(current_index_of_fill_word);
+                    fillWord((Integer) current_cell.getTag(R.string.tagIndexWord));
+                    current_index_of_fill_word = (Integer) current_cell.getTag(R.string.tagIndexWord);
+                }
+            }
+        }else{
+//        if(current_cell != null) current_cell.setBackground(getResources().getDrawable(R.drawable.cell_style));
+//        view.setBackground(getDrawable(R.drawable.cell_style_checked));
+        current_cell = (EditText) view;
+
+
+        cell_description.setText(Crossword_static.getQuestionFromKeyword((Integer) current_cell.getTag(R.string.tagIndexWord)));
+            if(current_index_of_fill_word != -1) {
+                unfillWord(current_index_of_fill_word);
+            }
+        fillWord((Integer) current_cell.getTag(R.string.tagIndexWord));
+        current_index_of_fill_word = (Integer) view.getTag(R.string.tagIndexWord);
+        }
+
+
     }
 
     private void checkIfUserWin(){
@@ -222,6 +246,20 @@ public class Crossword extends AppCompatActivity {
 
     }
 
+
+    private void fillWord(int index_of_word){
+        for(int[] indexes:Crossword_static.getIndexesOfWord(index_of_word)){
+            ((LinearLayout) taskLY.getChildAt(indexes[1])).getChildAt(indexes[0]).setBackground(getDrawable(R.drawable.cell_style_total));
+
+        }
+    }
+
+
+    private void unfillWord(int index_of_word){
+        for(int[] indexes:Crossword_static.getIndexesOfWord(index_of_word)) {
+            ((LinearLayout) taskLY.getChildAt(indexes[1])).getChildAt(indexes[0]).setBackground(getDrawable(R.drawable.cell_style));
+        }
+    }
 
     public void startResultsDialog() {
         dialog = new Dialog(this);

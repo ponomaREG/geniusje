@@ -45,6 +45,23 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/marginLayoutMedium"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/blockCellHeightMediumLight"
+                android:id="@+id/description"
+                android:hint="Здесь будет задание"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textSize="@dimen/textSize_24"
+                android:background="@drawable/answer_style"/>
+
+
+        </LinearLayout>
 
 
 
@@ -52,12 +69,17 @@
             android:id="@+id/taskLY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/marginLayoutVeryLarge"
+            android:layout_marginTop="@dimen/marginLayoutMedium"
             android:orientation="vertical">
 
 
         </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/kostylMARGIN2"/>
     </LinearLayout>
 
 </LinearLayout>
