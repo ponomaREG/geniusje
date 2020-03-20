@@ -32,6 +32,7 @@
     <dimen name="answerCellTextSize">9dp</dimen>
     <dimen name="answerCellTextSizeUltraSmall">10dp</dimen>
     <dimen name="textSize_8">8dp</dimen>
+    <dimen name="textSize_18">18dp</dimen>
 
     <dimen name="sudokuChoiceTextSize">35dp</dimen>
     <dimen name="sudokuChoiceLLMarginTop">18dp</dimen>

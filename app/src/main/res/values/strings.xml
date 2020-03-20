@@ -14,6 +14,9 @@
     <string name="botChoice">Ходит Ваш противник</string>
     <string name="throwCube">Бросить кубик</string>
     <string name="writeScore">Записать</string>
+    <string name="skip">Пропустить</string>
+    <string name="finish">Закончить</string>
+    <string name="find_task">Найти след. вопрос</string>
 
 
     <string name="toastExit">Нажмите еще раз для выхода</string>
