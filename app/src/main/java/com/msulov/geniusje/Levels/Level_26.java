@@ -325,7 +325,7 @@ public class Level_26 extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(Level_26.this,Level_23.class);
+                        intent = new Intent(Level_26.this,Level_27.class);
                     }else{
                         intent = new Intent(Level_26.this, Level_26.class); //REPEAT
                     }

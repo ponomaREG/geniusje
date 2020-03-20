@@ -437,7 +437,7 @@ public class Level_27 extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(Level_27.this,Level_23.class);
+                        intent = new Intent(Level_27.this,Crossword.class);
                     }else{
                         intent = new Intent(Level_27.this, Level_27.class); //REPEAT
                     }

@@ -262,6 +262,7 @@ public class Crossword extends AppCompatActivity {
     }
 
     public void startResultsDialog() {
+        t.stopTime();
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog_results);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -273,7 +274,7 @@ public class Crossword extends AppCompatActivity {
             public void onClick(View v) {
                 if (v.getId() == R.id.repeatResultsDialog) {
                     if(isWin) {
-                        startActivity(new Intent(Crossword.this, Level_27.class)); //REPEAT
+                        startActivity(new Intent(Crossword.this, Crossword.class)); //REPEAT
                     }else{
                         startActivity(new Intent(Crossword.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                     }
@@ -281,9 +282,9 @@ public class Crossword extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(Crossword.this,Level_23.class);
+                        intent = new Intent(Crossword.this,Level_29.class);
                     }else{
-                        intent = new Intent(Crossword.this, Level_27.class); //REPEAT
+                        intent = new Intent(Crossword.this, Crossword.class); //REPEAT
                     }
                     startActivity(intent);
                     finish();

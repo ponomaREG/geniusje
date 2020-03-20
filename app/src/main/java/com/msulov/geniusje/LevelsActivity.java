@@ -22,6 +22,7 @@ import com.msulov.geniusje.Levels.Level_24;
 import com.msulov.geniusje.Levels.Level_25;
 import com.msulov.geniusje.Levels.Level_26;
 import com.msulov.geniusje.Levels.Level_27;
+import com.msulov.geniusje.Levels.Level_29;
 import com.msulov.geniusje.Levels.Level_3;
 import com.msulov.geniusje.Levels.Level_4;
 import com.msulov.geniusje.Levels.Level_5;
@@ -173,6 +174,9 @@ public class LevelsActivity extends AppCompatActivity {
                         break;
                     case R.id.level_28:
                         startActivity(new Intent(LevelsActivity.this, Crossword.class));
+                        break;
+                    case R.id.level_29:
+                        startActivity(new Intent(LevelsActivity.this, Level_29.class));
                         break;
                 }
             }

@@ -290,7 +290,7 @@ public class Level_23 extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(Level_23.this,Miner.class);
+                        intent = new Intent(Level_23.this,Level_24.class);
                     }else{
                         intent = new Intent(Level_23.this, Level_23.class); //REPEAT
                     }

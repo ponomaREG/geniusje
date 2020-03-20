@@ -403,7 +403,7 @@ public class RSL extends AppCompatActivity {
                 } else if (v.getId() == R.id.ContinueResultsDialog) {
                     Intent intent;// = null;
                     if(isWin) {
-                        intent = new Intent(RSL.this,Miner.class);
+                        intent = new Intent(RSL.this,Level_22.class);
                     }else{
                         intent = new Intent(RSL.this, RSL.class); //REPEAT
                     }

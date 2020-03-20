@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/choice_1"
+android:layout_width="match_parent"
+android:layout_height="@dimen/blockAnswerHeightVerySmall"
+android:layout_weight="1"
+android:gravity="center"
+android:textSize="@dimen/sudokuChoiceTextSize"
+android:text="@string/sudoku_choice_1"
+android:textColor="@color/black_95"
+android:fontFamily="@font/black_ops_one"
+android:layout_marginTop="@dimen/blockAnswerMarginTopVerySmall"
+android:layout_marginEnd="5dp"
+android:background="@drawable/answer_style" />

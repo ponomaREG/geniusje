@@ -51,6 +51,7 @@ public class Equation {
             case "-":
                 return number_1 - number_2;
             case "*":
+            case "x":
                 return number_1 * number_2;
             case "/":
                 return number_1 / number_2;
