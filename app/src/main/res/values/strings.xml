@@ -75,6 +75,9 @@
     <string name="startDialogWindowForLevel_25">Пройди все поля конем(Конь может ходить только буквой Г)</string>
     <string name="startDialogWindowForLevel_26">На каждой линии должно быть одно отмеченное поле</string>
     <string name="startDialogWindowForLevel_27">Сыграй в кости!Надо набрать 36 очков для победы</string>
+    <string name="startDialogWindowForLevel_28">Реши кроссворд</string>
+    <string name="startDialogWindowForLevel_29">Реши головоломку. Приореты АРИФМЕТИЧЕСКИХ ОПРЕАЦИЙ НЕ УЧИТЫВАЮТСЯ</string>
+    <string name="startDialogWindowForLevel_30">Пройди IQ тест</string>
 
     <string name="sudoku_choice_1">1</string>
     <string name="sudoku_choice_2">2</string>

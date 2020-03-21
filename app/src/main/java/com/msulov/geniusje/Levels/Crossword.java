@@ -78,7 +78,7 @@ public class Crossword extends AppCompatActivity {
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_21));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_29));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }

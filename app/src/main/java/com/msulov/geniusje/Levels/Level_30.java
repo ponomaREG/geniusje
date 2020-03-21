@@ -83,7 +83,7 @@ public class Level_30 extends AppCompatActivity {
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_21));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_30));
         //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
