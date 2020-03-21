@@ -45,7 +45,12 @@
 
         </LinearLayout>
 
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/marginLayoutMedium"
+            android:orientation="horizontal"
+            android:id="@+id/pointsLL"/>
 
 
         <LinearLayout
@@ -57,17 +62,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <ImageView
+                    android:id="@+id/task"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/blockAnswerHeightDefault"
-                    android:src="@drawable/task_1"
-                    android:gravity="center"
-                    android:tag="null"
+                    android:layout_height="341dp"
                     android:layout_weight="1"
-                    android:id="@+id/botChoice"
-                    android:textColor="@color/black_95"
+                    android:background="@drawable/answer_style"
                     android:fontFamily="@font/black_ops_one"
-                    android:background="@drawable/answer_style" />
+                    android:gravity="center"
+                    android:src="@drawable/question"
+                    android:tag="null"
+                    android:textColor="@color/black_95" />
             </LinearLayout>
                 
         </LinearLayout>
@@ -81,9 +87,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/blockAnswerHeightSmall"
                 android:gravity="center"
-                android:tag="0"
+                android:tag="A"
                 android:layout_weight="1"
-                android:src="@drawable/answer_1_3"
+                android:src="@drawable/question"
                 android:id="@+id/answer_1"
                 android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
                 android:textColor="@color/black_95"
@@ -93,11 +99,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/blockAnswerHeightSmall"
                 android:gravity="center"
-                android:tag="1"
+                android:tag="B"
                 android:id="@+id/answer_2"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
-                android:src="@drawable/answer_1_3"
+                android:src="@drawable/question"
                 android:textColor="@color/black_95"
                 android:fontFamily="@font/black_ops_one"
                 android:background="@drawable/answer_style" />
@@ -106,9 +112,9 @@
                 android:layout_height="@dimen/blockAnswerHeightSmall"
                 android:gravity="center"
                 android:id="@+id/answer_3"
-                android:tag="2"
+                android:tag="C"
                 android:layout_weight="1"
-                android:src="@drawable/answer_1_3"
+                android:src="@drawable/question"
                 android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
                 android:textColor="@color/black_95"
                 android:fontFamily="@font/black_ops_one"
@@ -125,9 +131,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/blockAnswerHeightSmall"
                 android:gravity="center"
-                android:tag="0"
+                android:tag="D"
                 android:layout_weight="1"
-                android:src="@drawable/answer_1_3"
+                android:src="@drawable/question"
                 android:id="@+id/answer_4"
                 android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
                 android:textColor="@color/black_95"
@@ -137,11 +143,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/blockAnswerHeightSmall"
                 android:gravity="center"
-                android:tag="1"
+                android:tag="E"
                 android:id="@+id/answer_5"
                 android:layout_weight="1"
                 android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
-                android:src="@drawable/answer_1_3"
+                android:src="@drawable/question"
                 android:textColor="@color/black_95"
                 android:fontFamily="@font/black_ops_one"
                 android:background="@drawable/answer_style" />
@@ -150,9 +156,9 @@
                 android:layout_height="@dimen/blockAnswerHeightSmall"
                 android:gravity="center"
                 android:id="@+id/answer_6"
-                android:tag="2"
+                android:tag="F"
                 android:layout_weight="1"
-                android:src="@drawable/answer_1_3"
+                android:src="@drawable/question"
                 android:layout_marginEnd="@dimen/blockAnswerMarginTopVerySmall"
                 android:textColor="@color/black_95"
                 android:fontFamily="@font/black_ops_one"
@@ -164,23 +170,24 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/marginLayoutMedium"
             android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_gravity="left">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/button_selection"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="@string/find_task"
-                android:textAllCaps="false"
-                android:textColor="@color/black_95"
-                android:textSize="@dimen/textSize_18" />
-            </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="left"-->
+<!--                android:layout_gravity="left">-->
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/button_selection"-->
+<!--                android:paddingStart="10dp"-->
+<!--                android:paddingEnd="10dp"-->
+<!--                android:text="@string/find_task"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@color/black_95"-->
+<!--                android:id="@+id/find_next_question"-->
+<!--                android:textSize="@dimen/textSize_18" />-->
+<!--            </LinearLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -192,7 +199,7 @@
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:id="@+id/skip"
                 android:background="@drawable/button_selection"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
@@ -205,11 +212,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="right"
                     android:layout_gravity="right">
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/finish"
                 android:background="@drawable/button_selection"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
