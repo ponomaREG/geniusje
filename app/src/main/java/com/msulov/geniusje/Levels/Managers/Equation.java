@@ -10,7 +10,7 @@ public class Equation {
 
     public static String getRandomSign(){
         Random random = new Random();
-        int sign_key = random.nextInt(4);
+        int sign_key = random.nextInt(3);
         switch (sign_key){
             case 0:
                 return "+";
@@ -18,8 +18,8 @@ public class Equation {
                 return "-";
             case 2:
                 return "*";
-            case 3:
-                return "/";
+//            case 3:
+//                return "/";
         }
         return null;
 

@@ -230,6 +230,7 @@ public class Level_25 extends AppCompatActivity {
         return false;
     }
 
+    @Deprecated
     private void checkFullRow(int x,int y){
         int summ = 0;
 
@@ -242,6 +243,7 @@ public class Level_25 extends AppCompatActivity {
         }
     }
 
+    @Deprecated
     private void checkFullColumn(int x,int y){
         int summ = 0;
 
@@ -255,12 +257,12 @@ public class Level_25 extends AppCompatActivity {
     }
 
 
-
+    @Deprecated
     private void setViewChecked(TextView textView){
         textView.setBackground(getDrawable(R.drawable.cell_style_checked));
     }
 
-
+    @Deprecated
     private void setViewUnchecked(TextView textView){
         textView.setBackground(getDrawable(R.drawable.cell_style));
     }
@@ -273,26 +275,23 @@ public class Level_25 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Level_25.this, Level_25.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Level_25.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Level_25.this,Level_26.class);
-                    }else{
-                        intent = new Intent(Level_25.this, Level_25.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Level_25.this, Level_25.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Level_25.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Level_25.this,Level_26.class);
+                }else{
+                    intent = new Intent(Level_25.this, Level_25.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -350,7 +349,6 @@ public class Level_25 extends AppCompatActivity {
 
 
 
-    // Обработчик нажатия системной кнопки "Назад" - (Начало)
     @Override
     public void onBackPressed() {
 
@@ -363,8 +361,6 @@ public class Level_25 extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT234
-        // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
 

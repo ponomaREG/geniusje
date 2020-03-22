@@ -7,28 +7,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Bones;
 import com.msulov.geniusje.Levels.Managers.Crossword_generator;
 import com.msulov.geniusje.Levels.Managers.Crossword_static;
-import com.msulov.geniusje.Levels.Managers.IsCatch_game;
-import com.msulov.geniusje.Levels.Managers.Player;
 import com.msulov.geniusje.LevelsActivity;
-import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
-
-import java.util.HashMap;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,16 +34,11 @@ public class Crossword extends AppCompatActivity {
     private Dialog dialog;
     private Time t;
     private long pressedTime;
-    private int count = 0,mistakes = 0,correctAnswer=0,current_index_of_fill_word = -1;
-    private int taskdesc_id;
-    private LinearLayout baseLY,taskLY;
+    private int current_index_of_fill_word = -1;
+    private LinearLayout taskLY;
     private EditText current_cell;
     private boolean isWin = true;
     private TextView cell_description;
-    private Crossword_generator crossword;
-
-
-
 
 
     @Override
@@ -60,7 +46,6 @@ public class Crossword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_28);
 
-        showBeginningDialog();
         initContAndBackButtons();
         init();
     }
@@ -78,7 +63,7 @@ public class Crossword extends AppCompatActivity {
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_29));
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_28));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
@@ -86,18 +71,15 @@ public class Crossword extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Crossword.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
-                    makeTask();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Crossword.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
+                makeTask();
             }
         };
 
@@ -119,7 +101,7 @@ public class Crossword extends AppCompatActivity {
     private void initVariables(){
         taskLY = findViewById(R.id.taskLY);
         cell_description = findViewById(R.id.description);
-        crossword = new Crossword_generator();
+        Crossword_generator crossword = new Crossword_generator();
         crossword.setCount_Words(5);
 
     }
@@ -127,7 +109,7 @@ public class Crossword extends AppCompatActivity {
 
 
 
-    private void makeTask(){
+    public void makeTask(){
         generateCrossword();
     }
 
@@ -319,13 +301,15 @@ public class Crossword extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -333,7 +317,8 @@ public class Crossword extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){
