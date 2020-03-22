@@ -32,9 +32,6 @@
             android:name=".Levels.Level_16"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Levels.one_choice"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".Levels.four_choice"
             android:screenOrientation="portrait" />
         <activity

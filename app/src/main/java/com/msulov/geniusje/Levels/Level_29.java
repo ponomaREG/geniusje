@@ -7,19 +7,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.msulov.geniusje.Levels.Managers.Arithmetic_cells;
-import com.msulov.geniusje.Levels.Managers.Bones;
-import com.msulov.geniusje.Levels.Managers.Crossword_generator;
-import com.msulov.geniusje.Levels.Managers.Player;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
@@ -37,12 +31,8 @@ public class Level_29 extends AppCompatActivity {
     private Dialog dialog;
     private Time t;
     private long pressedTime;
-    private int count = 0,mistakes = 0,correctAnswer=0;
-    private int taskdesc_id;
-    private Player user,bot;
     private LinearLayout taskLY;
     private boolean isWin = true;
-    private Button writeScore , throwCube;
     private TextView current_textview;
 
 
@@ -82,18 +72,15 @@ public class Level_29 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_29.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
-                    makeTask();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_29.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
+                makeTask();
             }
         };
 
@@ -296,26 +283,23 @@ public class Level_29 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Level_29.this, Level_29.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Level_29.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Level_29.this,Level_27.class);
-                    }else{
-                        intent = new Intent(Level_29.this, Level_29.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Level_29.this, Level_29.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Level_29.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Level_29.this,Level_27.class);
+                }else{
+                    intent = new Intent(Level_29.this, Level_29.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -346,13 +330,15 @@ public class Level_29 extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -360,7 +346,8 @@ public class Level_29 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){

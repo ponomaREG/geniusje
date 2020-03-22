@@ -2,27 +2,24 @@ package com.msulov.geniusje.Levels;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Cells;
 import com.msulov.geniusje.Levels.Managers.Randomize_number;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
-import java.util.Random;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,90 +27,188 @@ public class Level_11 extends AppCompatActivity {
 
 
     private Toast toast;
-    private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
-    private CircleImageView icon;
-    private TextView task, cell;
     private Time t;
     private long pressedTime;
-    private int count;
+    private boolean isWin = true;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_11);
+        init();
         showBeginningDialog();
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_11.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    new Thread(t, "Time").start();
-                }
-            }
-        };
-
-        // Обработчик нажатия на "Начать" в диалоговом окне - (Начало)
-        startButton = dialog.findViewById(R.id.startDialogButton);
-        startButton.setOnClickListener(OnClickListener);
-        // Обработчик нажатия на "Начать" в диалоговом окне - (Конец)
-
-        // Обработчик нажатия на "Назад" в диалоговом окне - (Начало)
-        backButton = dialog.findViewById(R.id.backDialogButton);
-        backButton.setOnClickListener(OnClickListener);
-        // Обработчик нажатия на "Назад" в диалоговом окне - (Конец)
-
-        //Уравнение
-
-        // Обработчик нажатия на "Назад" - (Начало)
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(OnClickListener);
-        // Обработчик нажатия на "Назад" - (Конец)
-        makeTask();
-
-
-        // Уровень -1
 
     }
 
-    public void startResultsDialog() {
-        // Вызов диалогового окна с результатами - (Начало)
+    //BEGIN BLOCK
+    private void showBeginningDialog(){
         dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_dialog_results);
-        // Делаем задний фон прозрачным
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
+        dialog.setContentView(R.layout.activity_dialog);
+        initContAndBackButtons();
+        setIconAndTask();
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна с результатами - (Конец)
+    }
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_11.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    startActivity(new Intent(Level_11.this, four_choice.class).putExtra("type","Shaked_words"));
-                    finish();
+    private void setIconAndTask() {
+        TextView task = dialog.findViewById(R.id.dialogTask);
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_11));
+        CircleImageView icon = dialog.findViewById(R.id.iconTask);
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+    }
+
+    private void initContAndBackButtons(){
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(getApplicationContext(), LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                new Thread(t, "Time").start();
+                makeTask();
+            }
+        };
+        Button startButton = dialog.findViewById(R.id.startDialogButton);
+        startButton.setOnClickListener(OnClickListener);
+        Button backButton = dialog.findViewById(R.id.backDialogButton);
+        backButton.setOnClickListener(OnClickListener);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(OnClickListener);
+    }
+    //BEGIN BLOCK END
+
+
+
+
+    //TASK FUNCTIONS
+
+    private void makeTask() {
+        generateLayouts();
+    }
+
+    //INIT
+    private void init(){
+        initVariables();
+    }
+
+    private void initVariables(){
+        t = new Time();
+    }
+
+    private View.OnClickListener getOclForCell(){
+        return v-> startResultsDialog();
+    }
+
+    private void generateLayouts(){
+        final int HEIGHT = Randomize_number.HEIGHT;
+
+        int[] coord = Randomize_number.getRandomCoordOfCell();
+        String[] pair = Randomize_number.getRandomNumbers();
+        LinearLayout taskLL = findViewById(R.id.taskLY);
+        LinearLayout baseLL;
+        for (int i = 0;i<HEIGHT;i++){
+            baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly,taskLL,false);
+            for(int j = 0;j<Randomize_number.WIDTH;j++){
+                TextView tv = (TextView) baseLL.getChildAt(j);
+                tv.setTextSize(Randomize_number.TEXT_SIZE);
+                if((coord[0]==j)&&(coord[1]==i)){
+                    tv.setText(pair[1]);
+                    tv.setOnClickListener(getOclForCell());
+                }else{
+                    tv.setText(pair[0]);
                 }
+            }
+            taskLL.addView(baseLL);
+        }
+    }
+
+
+
+    //SHOW RESULT BLOCK
+    public void startResultsDialog() {
+        dialog.cancel();
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_dialog_results);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        dialog.show();
+
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(getApplicationContext(), Level_10.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(getApplicationContext(), LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
+                }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(getApplicationContext(),Level_11.class);
+                }else{
+                    intent = new Intent(getApplicationContext(), Level_10.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
-        continueButton = dialog.findViewById(R.id.ContinueResultsDialog);
+        Button continueButton = dialog.findViewById(R.id.ContinueResultsDialog);
         continueButton.setOnClickListener(OnClickListener);
-        repeatButton = dialog.findViewById(R.id.repeatResultsDialog);
+        Button repeatButton = dialog.findViewById(R.id.repeatResultsDialog);
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
-        textResultsDialog.setText("Time: " + String.format("%.1f", t.time));
+
+        if(!isWin){
+            continueButton.setText(getString(R.string.repeat));
+            repeatButton.setText(getString(R.string.back));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+
+        }else{
+            repeatButton.setText(getString(R.string.repeat));
+            repeatButton.setTextSize(getResources().getDimension(R.dimen.textSize_8));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+        }
     }
 
-    // Обработчик нажатия системной кнопки "Назад" - (Начало)
+
+    @SuppressLint("DefaultLocale")
+    private void setResultsOnResultsDialog(TextView textResultsDialog, boolean hasCorrect, boolean hasPercent, boolean hasMistakes, boolean isWin){
+        String result = "%s%.1f";
+        result = String.format(result,getString(R.string.resultDialogTime),t.time);
+
+        int correctAnswer = 0;
+        if(hasCorrect){
+            result = result + " %s%s";
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
+        }
+
+        if(hasPercent){
+            result = result + " %s%d";
+            int count = 0;
+            int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
+            result = String.format(result,getString(R.string.resultDialogPercent),percent);
+
+        }
+
+        if(hasMistakes){
+            result = result + " %s%d";
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
+        }
+
+        if(!isWin){
+            result = result + " %s";
+            result = String.format(result,getString(R.string.resultDialogRepeat));
+        }
+
+        textResultsDialog.setText(result);
+    }
+
     @Override
     public void onBackPressed() {
 
@@ -126,118 +221,11 @@ public class Level_11 extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT234
-        // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
-    // Обработчик нажатия системной кнопки "Назад" - (Конец)
 
+    //SHOW RESULT BLOCK END
 
-    @Deprecated
-    private void CheckCorrect(boolean hasCorrect, TextView point) {
-        if (hasCorrect) {
-            point.setBackgroundResource(R.drawable.points_green_style);
-        } else {
-            point.setBackgroundResource(R.drawable.points_red_style);
-        }
-
-    }
-
-    private void makeTask() {
-        generateLayouts();
-    }
-
-    private void showBeginningDialog() {
-        t = new Time();
-
-        // Вызов диалогового окна - (Начало)
-        dialog = new Dialog(this);
-        dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
-        setIconAndTask();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
-        dialog.setCancelable(false);
-        dialog.show();
-        // Вызов диалогового окна - (Конец)
-    }
-
-    private void setIconAndTask() {
-        task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(R.string.startDialogWindowForLevel_9));
-        //Находим аватар задания и устанавливаем свой
-        icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
-    }
-
-
-    private void generateLayouts(){
-        final int HEIGHT = Randomize_number.HEIGHT;
-
-        int[] coord = Randomize_number.getRandomCoordOfCell();
-        String[] pair = Randomize_number.getRandomNumbers();
-
-//        final int WIDTH = 10;
-//        LinearLayout.LayoutParams params_ll = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-//        LinearLayout ll = new LinearLayout(getApplicationContext());
-//        params_ll.setMargins(0,10,0,0);
-
-
-
-        LinearLayout taskLL = findViewById(R.id.taskLY);
-        LinearLayout baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly,null);
-        log("CHILDS",taskLL.getChildCount());
-
-        for (int i = 0;i<HEIGHT;i++){
-//            for (int j = 0;j<WIDTH;j++){
-////                if(baseTV.getParent() != null){
-////                    ((ViewGroup) baseTV.getParent()).removeView(baseTV);
-////                }
-//                baseLL.addView(baseTV);
-//                baseTV = (TextView) this.getLayoutInflater().inflate(R.layout.base_textview,null);
-//                log("CHILDS BASE",baseLL.getChildCount());
-//            }
-            log("SIZE",baseLL.getChildCount());
-            for(int j = 0;j<Randomize_number.WIDTH;j++){
-                log("I J",(i + " " + j));
-                TextView tv = (TextView) baseLL.getChildAt(j);
-                tv.setTextSize(Randomize_number.TEXT_SIZE);
-                if((coord[0]==j)&&(coord[1]==i)){
-                    tv.setText(pair[1]);
-                    tv.setOnClickListener(getOcl());
-                    log("I J ANSWER",(i + " " + j));
-                }else{
-                    tv.setText(pair[0]);
-                }
-            }
-
-            taskLL.addView(baseLL);
-            baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly,null);
-        }
-    }
-
-    private View.OnClickListener getOcl(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startResultsDialog();
-            }
-        };
-        return ocl;
-    }
-
-
-    //LOG FUNCTIONS
-    private void log(String tag,String text){
-        Log.d(tag,text);
-    }
-    private void log(String tag,int text){
-        Log.d(tag,String.valueOf(text));
-    }
-    private void log(String tag,boolean text){
-        Log.d(tag,String.valueOf(text));
-    }
 
     @Override
     protected void onDestroy() {
