@@ -37,10 +37,8 @@ public class Level_16 extends AppCompatActivity {
     private TextView founded_words;
     private Time t;
     private long pressedTime;
-    private int count, correctAnswer;
-    private String type;
-    private int taskdesc_id;
-    private View.OnClickListener ocl;
+    private int count, mistakes = 0;
+    private boolean isWin = true;
 
 
 
@@ -52,60 +50,27 @@ public class Level_16 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_16);
 
-        Intent intent = getIntent();
-
-        type = intent.getStringExtra("type");
-        if(type == null) {
-            taskdesc_id = R.string.startDialogWindowForLevel_16;
-            type = "Find_word";
-        }
-        else if((type.equals("Find_word"))){
-            taskdesc_id = R.string.startDialogWindowForLevel_16;
-            type = "Find_word";
-        }
-
-
-
-
-
         showBeginningDialog();
         initContAndBackButtons();
-        makeTask(type);
+        makeTask();
         initOclForAnswers();
-
-
-
-
     }
-
-
-
-
-
-
 
 
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
         t = new Time();
-
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
-        task.setText(getResources().getString(taskdesc_id));
-        //Находим аватар задания и устанавливаем свой
+        task.setText(getResources().getString(R.string.startDialogWindowForLevel_16));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
     }
@@ -113,18 +78,15 @@ public class Level_16 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("DSA","DSA");
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_16.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    Log.d("ASD","ASD");
-                    dialog.dismiss();
-                    new Thread(t, "Time").start();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            Log.d("DSA","DSA");
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_16.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                Log.d("ASD","ASD");
+                dialog.dismiss();
+                new Thread(t, "Time").start();
             }
         };
 
@@ -142,100 +104,72 @@ public class Level_16 extends AppCompatActivity {
 
 
 
-    private void makeTask(String type){
-        String[][] data;
+    private void makeTask(){
         Random random = new Random();
-        switch (type){
-            case ("Find_word"):
-                int rand_index = random.nextInt(Find_word.COUNT);
-                String[] words = Find_word.getWords(rand_index);
-                desc.setText(words[0]);
-                desc.setTag(R.string.tagDescTag,rand_index);
-//                setCellsTo(words[1],Integer.parseInt(words[2][0]),COUNT);
-                break;
-
-        }
+        int rand_index = random.nextInt(Find_word.COUNT);
+        String[] words = Find_word.getWords(rand_index);
+        desc.setText(words[0]);
+        desc.setTag(R.string.tagDescTag,rand_index);
     }
 
 
 
+    @SuppressLint("SetTextI18n")
     private void initOclForAnswers(){
         count = 0;
-        correctAnswer = 0;
         input_word = findViewById(R.id.input_word);
         founded_words = findViewById(R.id.founded_words);
+        View.OnClickListener ocl = v -> {
+            int index = (int) desc.getTag(R.string.tagDescTag);
+            String user_word = input_word.getText().toString().toLowerCase();
+            Log.d("WORD", "1");
+            if (Find_word.isExistsAndNotFound(index, user_word)) {
+                Log.d("ASD", "DASDASDA");
+                founded_words.setText(founded_words.getText().toString() + user_word + " , ");
+                Find_word.setKoefhasFounded(index, user_word);
+                count++;
+            }else mistakes++;
+            if(mistakes == 3) {
+                isWin = false;
+                startResultsDialog();
+            }
+            if (count == 3) {
+                startResultsDialog();
+            }
 
-
-        Log.d("TYPE",type);
-
-        if ("Find_word".equals(type)) {
-            ocl = new View.OnClickListener() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onClick(View v) {
-                    int index = (int) desc.getTag(R.string.tagDescTag);
-                    String user_word = input_word.getText().toString().toLowerCase();
-                    Log.d("WORD","1");
-                    if (Find_word.isExistsAndNotFound(index, user_word)) {
-                        Log.d("ASD","DASDASDA");
-
-                        founded_words.setText(founded_words.getText().toString()  + user_word + " , ");
-                        Find_word.setKoefhasFounded(index, user_word);
-                        count++;
-                    }
-                    if (count == 5) {
-                        startResultsDialog();
-                    }
-
-                }
-            };
-        }
+        };
         sendButton.setOnClickListener(ocl);
 
     }
 
 
-    @Deprecated
-    private void setCellsTo(String[] answers,int index_of_random_word,int count){
-        for (int i = 0;i<count;i++){
-            int tag;
-            ((TextView) findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setText(answers[i]);
-            tag = 0;
-            if(index_of_random_word == i){
-                tag = 1;
-                (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
-            }
-            (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
 
-        }
-    }
-
-
-
-
+    //RESULT BLOCK
     public void startResultsDialog() {
-        // Вызов диалогового окна с результатами - (Начало)
+        dialog.cancel();
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog_results);
-        // Делаем задний фон прозрачным
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна с результатами - (Конец)
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_16.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    intent = new Intent(Level_16.this,four_choice.class);
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(getApplicationContext(), Level_16.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(getApplicationContext(), LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(getApplicationContext(),Level_17.class);
+                }else{
+                    intent = new Intent(getApplicationContext(), Level_16.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -245,18 +179,29 @@ public class Level_16 extends AppCompatActivity {
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
-        setResultsOnResultsDialog(textResultsDialog,false,false);
 
+        if(!isWin){
+            continueButton.setText(getString(R.string.repeat));
+            repeatButton.setText(getString(R.string.back));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+
+        }else{
+            repeatButton.setText(getString(R.string.repeat));
+            repeatButton.setTextSize(getResources().getDimension(R.dimen.textSize_8));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+        }
     }
 
+
     @SuppressLint("DefaultLocale")
-    private void setResultsOnResultsDialog(TextView textResultsDialog, boolean hasCorrect, boolean hasPercent){
+    private void setResultsOnResultsDialog(TextView textResultsDialog, boolean hasCorrect, boolean hasPercent, boolean hasMistakes, boolean isWin){
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
@@ -265,10 +210,21 @@ public class Level_16 extends AppCompatActivity {
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
         }
+
+        if(hasMistakes){
+            result = result + " %s%d";
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
+        }
+
+        if(!isWin){
+            result = result + " %s";
+            result = String.format(result,getString(R.string.resultDialogRepeat));
+        }
+
         textResultsDialog.setText(result);
     }
+    //RESULT BLOCK END
 
-    // Обработчик нажатия системной кнопки "Назад" - (Начало)
     @Override
     public void onBackPressed() {
 
@@ -281,8 +237,6 @@ public class Level_16 extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT234
-        // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
 

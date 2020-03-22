@@ -11,13 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Find_word;
-import com.msulov.geniusje.Levels.Managers.Memory_game;
 import com.msulov.geniusje.Levels.Managers.Shaked_words;
 import com.msulov.geniusje.Levels.Managers.Sudoku;
 import com.msulov.geniusje.LevelsActivity;
@@ -34,16 +31,15 @@ public class Level_17 extends AppCompatActivity {
 
 
     private Toast toast;
-    private EditText input_word;
     private Dialog dialog;
-    private TextView founded_words,set_textview;
+    private TextView set_textview;
     private Time t;
     private long pressedTime;
-    private int count = 0, correctAnswer,mistakes = 0;
-    private int taskdesc_id;
-    private View.OnClickListener ocl;
+    private int correctAnswer = 0;
+    private int mistakes = 0;
     private int[][] sudoku;
     private LinearLayout baseLY,taskLY;
+    private boolean isWin = true;
 
 
 
@@ -58,30 +54,23 @@ public class Level_17 extends AppCompatActivity {
         showBeginningDialog();
         initContAndBackButtons();
         makeTask();
-//        initOclForAnswers();
+
     }
 
-    /////BEGINNIG AND RESULTING CONSTANT BLOCKS
+    /////BEGINNIG CONSTANT BLOCKS
     private void showBeginningDialog() {
         t = new Time();
-
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_17));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
     }
@@ -89,16 +78,13 @@ public class Level_17 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_17.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    new Thread(t, "Time").start();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_17.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                new Thread(t, "Time").start();
             }
         };
 
@@ -126,7 +112,7 @@ public class Level_17 extends AppCompatActivity {
         View.OnClickListener ocl = getOclForCellsSudoku();
 
         for(int i =0 ; i<Sudoku.HEIGHT;i++){
-            baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_sudoku,null);
+            baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_sudoku,taskLY,false);
             indexes_of_missing_numbers = Shaked_words.getRandomIndexes(random.nextInt(3)+Sudoku.EAZY-1,Sudoku.HEIGHT,false);
 
             for(int j = 0 ; j<Sudoku.HEIGHT;j++){
@@ -136,9 +122,7 @@ public class Level_17 extends AppCompatActivity {
                 textView.setTag(R.string.tagSudokuY,i);
                 textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSizeUltraSmall));
                 textView.setOnClickListener(ocl);
-//                Log.d("J IS ",String.valueOf(j));
                 for(int index_of_missing_number:indexes_of_missing_numbers){
-//                    Log.d("Index_of_missing",String.valueOf(index_of_missing_number));
                     if(index_of_missing_number == j) {
                         textView.setText("");
                         textView.setTag(R.string.tagSudokuIsChecked,0);
@@ -154,45 +138,41 @@ public class Level_17 extends AppCompatActivity {
 
 
     private View.OnClickListener getOclForCellsSudoku(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(set_textview != null) set_textview.setBackground(getDrawable(R.drawable.cell_style));
-                int x = (int) v.getTag(R.string.tagSudokuX);
-                int y = (int) v.getTag(R.string.tagSudokuY);
-                set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-                set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-                Log.d("TAG CHECKED IS ",set_textview.getTag(R.string.tagSudokuIsChecked).toString());
-            }
+        return v -> {
+            if(set_textview != null) set_textview.setBackground(getDrawable(R.drawable.cell_style));
+            int x = (int) v.getTag(R.string.tagSudokuX);
+            int y = (int) v.getTag(R.string.tagSudokuY);
+            set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
+            set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
         };
-        return ocl;
     }
 
 
     private void initOclForAnswerCells(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(set_textview != null){
-                    int user_choice =  Integer.parseInt(v.getTag().toString());
-                    Log.d("USER CHOICE",String.valueOf(user_choice));
-                    if(!Sudoku.checkUserChoiceForCorrect(
-                            sudoku,
-                            (int) set_textview.getTag(R.string.tagSudokuX),
-                            (int) set_textview.getTag(R.string.tagSudokuY),
-                            user_choice)) {
-                        mistakes++;
-                        set_textview.setTag(R.string.tagSudokuIsChecked,0);
-                        set_textview.setTextColor(getResources().getColor(R.color.colorTextOfSudokuGetMistake));
-                    }else {
-                        set_textview.setTextColor(getResources().getColor(R.color.black_95));
-                        set_textview.setTag(R.string.tagSudokuIsChecked,1);
-                    }
-                    set_textview.setText(String.valueOf(user_choice));
-//                    MasterLog();
-                    if(isSudokuIsReadyForEnd()){
+        View.OnClickListener ocl = v -> {
+            if(set_textview != null){
+                int user_choice =  Integer.parseInt(v.getTag().toString());
+                Log.d("USER CHOICE",String.valueOf(user_choice));
+                if(!Sudoku.checkUserChoiceForCorrect(
+                        sudoku,
+                        (int) set_textview.getTag(R.string.tagSudokuX),
+                        (int) set_textview.getTag(R.string.tagSudokuY),
+                        user_choice)) {
+                    mistakes++;
+                    set_textview.setTag(R.string.tagSudokuIsChecked,0);
+                    set_textview.setTextColor(getResources().getColor(R.color.colorTextOfSudokuGetMistake));
+                    if (mistakes == 5) {
+                        isWin = false;
                         startResultsDialog();
                     }
+                }else {
+                    correctAnswer++;
+                    set_textview.setTextColor(getResources().getColor(R.color.black_95));
+                    set_textview.setTag(R.string.tagSudokuIsChecked,1);
+                }
+                set_textview.setText(String.valueOf(user_choice));
+                if(isSudokuIsReadyForEnd()){
+                    startResultsDialog();
                 }
             }
         };
@@ -200,23 +180,6 @@ public class Level_17 extends AppCompatActivity {
         for(int i = 1;i<Sudoku.HEIGHT+1;i++){
             TextView answerCell = findViewById(getResources().getIdentifier("choice_"+i,"id",getPackageName()));
             answerCell.setOnClickListener(ocl);
-        }
-    }
-
-
-
-    @Deprecated
-    private void setCellsTo(String[] answers,int index_of_random_word,int count){
-        for (int i = 0;i<count;i++){
-            int tag;
-            ((TextView) findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setText(answers[i]);
-            tag = 0;
-            if(index_of_random_word == i){
-                tag = 1;
-                (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
-            }
-            (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
-
         }
     }
 
@@ -234,45 +197,32 @@ public class Level_17 extends AppCompatActivity {
         return true;
     }
 
-    @Deprecated
-    private void MasterLog(){
-        for(int i = 0;i< Sudoku.HEIGHT;i++){
-
-            baseLY = (LinearLayout) taskLY.getChildAt(i);
-            for(int j = 0;j<Sudoku.HEIGHT;j++){
-                TextView textView = (TextView) baseLY.getChildAt(j);
-                String word = "%s %s %s";
-                if(Integer.parseInt(textView.getTag(R.string.tagSudokuIsChecked).toString()) == 0) Log.d("TAG STRING",String.format(word,textView.getTag(R.string.tagSudokuX).toString(),textView.getTag(R.string.tagSudokuY).toString(),textView.getTag(R.string.tagSudokuIsChecked).toString()));
-            }
-        }
-    }
-
-
-
-
+    //RESULTING BLOCK
     public void startResultsDialog() {
-        // Вызов диалогового окна с результатами - (Начало)
+        dialog.cancel();
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog_results);
-        // Делаем задний фон прозрачным
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна с результатами - (Конец)
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    startActivity(new Intent(Level_17.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    intent = new Intent(Level_17.this,four_choice.class);
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(getApplicationContext(), Level_17.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(getApplicationContext(), LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(getApplicationContext(),memory_base.class);
+                }else{
+                    intent = new Intent(getApplicationContext(), Level_17.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -282,22 +232,33 @@ public class Level_17 extends AppCompatActivity {
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
-        setResultsOnResultsDialog(textResultsDialog,false,false,true);
 
+        if(!isWin){
+            continueButton.setText(getString(R.string.repeat));
+            repeatButton.setText(getString(R.string.back));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+
+        }else{
+            repeatButton.setText(getString(R.string.repeat));
+            repeatButton.setTextSize(getResources().getDimension(R.dimen.textSize_8));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+        }
     }
 
+
     @SuppressLint("DefaultLocale")
-    private void setResultsOnResultsDialog(TextView textResultsDialog, boolean hasCorrect, boolean hasPercent, boolean hasMistakes){
+    private void setResultsOnResultsDialog(TextView textResultsDialog, boolean hasCorrect, boolean hasPercent, boolean hasMistakes, boolean isWin){
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -305,13 +266,21 @@ public class Level_17 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
+        }
+
+        if(!isWin){
+            result = result + " %s";
+            result = String.format(result,getString(R.string.resultDialogRepeat));
         }
 
         textResultsDialog.setText(result);
     }
 
-    // Обработчик нажатия системной кнопки "Назад" - (Начало)
+    //RESULTING BLOCK END
+
+
+
     @Override
     public void onBackPressed() {
 
@@ -324,8 +293,6 @@ public class Level_17 extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT234
-        // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
 

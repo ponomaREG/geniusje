@@ -34,9 +34,9 @@ public class memory_base extends AppCompatActivity {
     private TextView set_textview;
     private Time t;
     private long pressedTime;
-    private int count = 0, correctAnswer,mistakes = 0;
+    private int count = 0;
     private int taskdesc_id;
-    private LinearLayout baseLY,taskLY;
+    private LinearLayout taskLY;
     private String type,next_level;
     private int[][] indexes_of_pairs_coord;
     private int count_all;
@@ -69,30 +69,24 @@ public class memory_base extends AppCompatActivity {
         showBeginningDialog();
         initContAndBackButtons();
         makeTask();
-//        initOclForAnswers();
+
     }
 
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
         t = new Time();
 
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(taskdesc_id));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
@@ -100,16 +94,13 @@ public class memory_base extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(memory_base.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    showRhythm();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(memory_base.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                showRhythm();
             }
         };
 
@@ -122,7 +113,7 @@ public class memory_base extends AppCompatActivity {
     }
 
 
-
+    //TASK FUNCTIONS
     private void makeTask(){
         generateLayouts();
     }
@@ -131,23 +122,17 @@ public class memory_base extends AppCompatActivity {
     private void generateLayouts(){
         taskLY = findViewById(R.id.taskLY);
         View.OnClickListener ocl = getOclForCellsSudoku();
-
         for(int i = 0; i< Memory_game.HEIGHT; i++){
-            baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_memory,null);
-
+            LinearLayout baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_memory, taskLY,false);
             for(int j = 0 ; j<Memory_game.WIDTH;j++){
                 TextView textView = (TextView) baseLY.getChildAt(j);
                 textView.setTag(R.string.tagX,j);
                 textView.setTag(R.string.tagY,i);
                 textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSizeUltraSmall));
                 textView.setOnClickListener(ocl);
-//                Log.d("J IS ",String.valueOf(j));
-
-
             }
             taskLY.addView(baseLY);
         }
-
     }
 
 
@@ -157,55 +142,51 @@ public class memory_base extends AppCompatActivity {
         indexes_of_pairs_coord = Memory_game.getRandomPairsOfIndexes(diffucult);
         count_all = indexes_of_pairs_coord.length;
 
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if((set_textview != null)&&(type.equals("Get_rhythm"))) set_textview.setBackground(getDrawable(R.drawable.cell_style));
-
-                int x = (int) v.getTag(R.string.tagX);
-                int y = (int) v.getTag(R.string.tagY);
-                set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
-                if(type.equals("Get_rhythm")){
-                if(((x==indexes_of_pairs_coord[count][0])&&(y==indexes_of_pairs_coord[count][1]))){
+        return v -> {
+            if((set_textview != null)&&(type.equals("Get_rhythm"))) set_textview.setBackground(getDrawable(R.drawable.cell_style));
+            int x = (int) v.getTag(R.string.tagX);
+            int y = (int) v.getTag(R.string.tagY);
+            set_textview = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
+            if(type.equals("Get_rhythm")){
+            if(((x==indexes_of_pairs_coord[count][0])&&(y==indexes_of_pairs_coord[count][1]))){
+                set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
+            }else{
+                set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
+                t.stopTime();
+                isWin = false;
+                startResultsDialog();
+            }
+            count++;
+            if((count==count_all)&&(isWin)){
+                t.stopTime();
+                startResultsDialog();
+            }
+            }
+            if(type.equals("Find_all")){
+                boolean hasFound = false;
+                for(int[] coords:indexes_of_pairs_coord){
+                    if ((coords[0] == x) && (coords[1] == y)) {
+                        hasFound = true;
+                        break;
+                    }
+                }
+                if(hasFound){
                     set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-                }else{
+                    set_textview.setClickable(false);
+                    count++;
+                }
+                else{
                     set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
                     t.stopTime();
                     isWin = false;
                     startResultsDialog();
                 }
-                count++;
-                if((count==count_all)&&(isWin)){
+                if(count==count_all){
                     t.stopTime();
                     startResultsDialog();
-                };
-                }
-                if(type.equals("Find_all")){
-                    boolean hasFound = false;
-                    for(int[] coords:indexes_of_pairs_coord){
-                        if((coords[0]==x)&&(coords[1]==y)){
-                            hasFound = true;
-                        }
-                    }
-                    if(hasFound){
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_checked));
-                        set_textview.setClickable(false);
-                        count++;
-                    }
-                    else{
-                        set_textview.setBackground(getDrawable(R.drawable.cell_style_error));
-                        t.stopTime();
-                        isWin = false;
-                        startResultsDialog();
-                    }
-                    if(count==count_all){
-                        t.stopTime();
-                        startResultsDialog();
-                    }
                 }
             }
         };
-        return ocl;
     }
 
 
@@ -224,29 +205,16 @@ public class memory_base extends AppCompatActivity {
             }
             final TextView textView = (TextView) ((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
 
-            handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setViewChecked(textView);
-                    }
-                    }, 850 * time_koef);
+            handler.postDelayed(() -> setViewChecked(textView), 850 * time_koef);
                 if(type.equals("Get_rhythm")) time_of_close = time_of_close + 850;
 
 
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        setViewUnchecked(textView);
-                    }
-                }, time_of_close);
+                handler.postDelayed(() -> setViewUnchecked(textView), time_of_close);
             }
 
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    frozeOrUnfrozeViews(true);
-                    new Thread(t, "Time").start();
-                }
+            handler.postDelayed(() -> {
+                frozeOrUnfrozeViews(true);
+                new Thread(t, "Time").start();
             }, time_of_close);
 //        }
 //        if(type.equals("Find_all")){
@@ -292,8 +260,8 @@ public class memory_base extends AppCompatActivity {
     private void setViewUnchecked(TextView textView){
         textView.setBackground(getDrawable(R.drawable.cell_style));
     }
-
-
+//TASK FUNCTIONS END
+//SHOW RESULT BLOCK
     public void startResultsDialog() {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog_results);
@@ -301,28 +269,25 @@ public class memory_base extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(memory_base.this, memory_base.class).putExtra("type", type)); //REPEAT
-                    }else{
-                        startActivity(new Intent(memory_base.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        if(next_level.equals("None")){
-                            intent = new Intent(memory_base.this,Miner.class);
-                        }else intent = new Intent(memory_base.this, memory_base.class).putExtra("type", next_level); //NEXT LEVEL
-                    }else{
-                        intent = new Intent(memory_base.this, memory_base.class).putExtra("type", type); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(memory_base.this, memory_base.class).putExtra("type", type)); //REPEAT
+                }else{
+                    startActivity(new Intent(memory_base.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    if(next_level.equals("None")){
+                        intent = new Intent(memory_base.this,Miner.class);
+                    }else intent = new Intent(memory_base.this, memory_base.class).putExtra("type", next_level); //NEXT LEVEL
+                }else{
+                    intent = new Intent(memory_base.this, memory_base.class).putExtra("type", type); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -353,9 +318,10 @@ public class memory_base extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
@@ -367,7 +333,8 @@ public class memory_base extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){
@@ -377,18 +344,7 @@ public class memory_base extends AppCompatActivity {
 
         textResultsDialog.setText(result);
     }
-
-
-
-
-//    private void startResultDialogForRepeating(){
-//
-//        Dialog dialog = new Dialog(this);
-//        dialog.setContentView();
-//
-//    }
-
-    // Обработчик нажатия системной кнопки "Назад" - (Начало)
+//SHOW RESULT BLOCK END
     @Override
     public void onBackPressed() {
 
@@ -401,8 +357,6 @@ public class memory_base extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT234
-        // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
 

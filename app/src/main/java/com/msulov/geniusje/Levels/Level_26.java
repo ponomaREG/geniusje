@@ -6,10 +6,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,15 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Game_15;
 import com.msulov.geniusje.Levels.Managers.IsCatch_game;
-import com.msulov.geniusje.Levels.Managers.Miner_manager;
-import com.msulov.geniusje.Levels.Managers.Nonogramm;
 import com.msulov.geniusje.LevelsActivity;
+import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
-
-import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -39,9 +32,7 @@ public class Level_26 extends AppCompatActivity {
     private Dialog dialog;
     private Time t;
     private long pressedTime;
-    private int count = 0,mistakes = 0,correctAnswer=0;
-    private int taskdesc_id;
-    private LinearLayout baseLY,taskLY;
+    private LinearLayout taskLY;
     private boolean isWin = true;
 
 
@@ -62,23 +53,17 @@ public class Level_26 extends AppCompatActivity {
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
 
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_26));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
@@ -86,18 +71,15 @@ public class Level_26 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_26.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
-                    makeTask();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_26.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
+                makeTask();
             }
         };
 
@@ -141,7 +123,6 @@ public class Level_26 extends AppCompatActivity {
                 base_cell.setOnClickListener(ocl);
                 baseLL.addView(base_cell);
             }
-            log("CHILD COUNT",taskLY.getChildCount());
             taskLY.addView(baseLL);
         }
 
@@ -150,21 +131,17 @@ public class Level_26 extends AppCompatActivity {
 
 
     private View.OnClickListener getOclForCells(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int x = (Integer) v.getTag(R.string.tagX);
-                int y = (Integer) v.getTag(R.string.tagY);
+        return v -> {
+            int x = (Integer) v.getTag(R.string.tagX);
+            int y = (Integer) v.getTag(R.string.tagY);
 
-                swapInRow(x,y);
-                swapInColumn(x,y);
-                swapInDiagonal(x,y);
-                if(checkIfUserWin()) startResultsDialog();
+            swapInRow(x,y);
+            swapInColumn(x,y);
+            swapInDiagonal(x,y);
+            if(checkIfUserWin()) startResultsDialog();
 
 
-            }
         };
-        return ocl;
     }
 
 
@@ -172,80 +149,66 @@ public class Level_26 extends AppCompatActivity {
 
 
     private void swapInDiagonal(int x,int y){
-
-
         int y_2 = y;
         for(int x_2 = x+1;x_2<IsCatch_game.WIDTH;x_2++){
                 y_2--;
-                log("X+Y UR",x_2+" "+y_2);
+                Logging.log("X+Y UR", x_2 + " " + y_2);
                 if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)&&(x_2>=0)) {
                     LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
                     ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                    log("ismain UR", cell.getTag(R.string.tagIsMain).toString());
+                    Logging.log("ismain UR", cell.getTag(R.string.tagIsMain).toString());
                     if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
                         deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
                     }
                 }
-
         }
-
-
 
         y_2 = y;
         for(int x_2 = x-1;x_2>=0;x_2--){
             y_2--;
-            log("X+Y UL",x_2+" "+y_2);
-            if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)&&(x_2>=0)) {
+            Logging.log("X+Y UL",x_2+" "+y_2);
+            if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)) {
                 LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
                 ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                log("ismain UL", cell.getTag(R.string.tagIsMain).toString());
+                Logging.log("ismain UL", cell.getTag(R.string.tagIsMain).toString());
                 if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
                     deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
                 }
             }
         }
-
-
-
 
         y_2 = y;
         for(int x_2 = x+1;x_2<IsCatch_game.WIDTH;x_2++){
             y_2++;
-            log("X+Y DR",x_2+" "+y_2);
+            Logging.log("X+Y DR",x_2+" "+y_2);
             if((y_2>=0)&&(y_2<IsCatch_game.HEIGHT)&&(x_2<IsCatch_game.WIDTH)&&(x_2>=0)) {
                 LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
                 ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                log("ismain DR", cell.getTag(R.string.tagIsMain).toString());
+                Logging.log("ismain DR", cell.getTag(R.string.tagIsMain).toString());
                 if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
                     deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
                 }
             }
         }
-
-
-
 
         y_2 = y;
         for(int x_2 = x-1;x_2>=0;x_2--) {
             y_2++;
-            log("X+Y DL", x_2 + " " + y_2);
-            if ((y_2 >= 0) && (y_2 < IsCatch_game.HEIGHT) && (x_2 < IsCatch_game.WIDTH) && (x_2 >= 0)) {
+            if ((y_2 >= 0) && (y_2 < IsCatch_game.HEIGHT) && (x_2 < IsCatch_game.WIDTH)) {
                 LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y_2);
                 ImageView cell = (ImageView) baseLL.getChildAt(x_2);
-                log("ismain DL", cell.getTag(R.string.tagIsMain).toString());
+                Logging.log("ismain DL", cell.getTag(R.string.tagIsMain).toString());
                 if ((Integer) cell.getTag(R.string.tagIsMain) == 1) {
                     deleteMainInCell((Integer) cell.getTag(R.string.tagX), (Integer) cell.getTag(R.string.tagY));
                 }
             }
         }
 
-        Log.d("X Y END",x+" "+y);
         setMainInCell(x,y);
     }
 
     private void swapInColumn(int x , int y){
-        ImageView current_view = null;
-        int y_current = -1;
+        ImageView current_view;
         for(int i = 0;i<IsCatch_game.HEIGHT;i++){
             LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(i);
             ImageView cell = (ImageView) baseLL.getChildAt(x);
@@ -260,7 +223,7 @@ public class Level_26 extends AppCompatActivity {
 
     private void swapInRow(int x, int y ){
         ImageView current_view=null;
-        int x_current=-1;
+        int x_current;
         LinearLayout baseLL = (LinearLayout) taskLY.getChildAt(y);
         for(int i = 0;i<IsCatch_game.WIDTH;i++){
             ImageView cell = (ImageView) baseLL.getChildAt(i);
@@ -277,7 +240,7 @@ public class Level_26 extends AppCompatActivity {
 
     private boolean checkIfUserWin(){
         for(int y = 0;y<IsCatch_game.HEIGHT;y++){
-            baseLY = (LinearLayout) taskLY.getChildAt(y);
+            LinearLayout baseLY = (LinearLayout) taskLY.getChildAt(y);
             boolean isExistsMainCell = false;
             for(int x = 0;x<IsCatch_game.WIDTH;x++){
                 ImageView cell = (ImageView) baseLY.getChildAt(x);
@@ -289,7 +252,7 @@ public class Level_26 extends AppCompatActivity {
     }
 
     private void deleteMainInCell(int x , int y){
-        log("x y DELETE MAIN IN CELL",x+" "+y);
+        Logging.log("x y DELETE MAIN IN CELL",x+" "+y);
         ImageView cell = (ImageView)((LinearLayout) taskLY.getChildAt(y)).getChildAt(x);
         cell.setTag(R.string.tagIsMain,0);
         cell.setBackground(getDrawable(R.drawable.cell_style));
@@ -312,26 +275,23 @@ public class Level_26 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Level_26.this, Level_26.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Level_26.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Level_26.this,Level_27.class);
-                    }else{
-                        intent = new Intent(Level_26.this, Level_26.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Level_26.this, Level_26.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Level_26.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Level_26.this,Level_27.class);
+                }else{
+                    intent = new Intent(Level_26.this, Level_26.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -362,13 +322,15 @@ public class Level_26 extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -376,7 +338,8 @@ public class Level_26 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){
@@ -407,16 +370,6 @@ public class Level_26 extends AppCompatActivity {
         pressedTime = System.currentTimeMillis();
     }
 
-
-    private void log(String tag,String text){
-        Log.d(tag,text);
-    }
-    private void log(String tag,int text){
-        Log.d(tag,text+"");
-    }
-    private void log(String tag,long text){
-        Log.d(tag,text +"");
-    }
 
     @Override
     protected void onDestroy() {

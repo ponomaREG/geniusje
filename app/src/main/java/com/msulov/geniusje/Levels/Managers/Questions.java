@@ -106,8 +106,9 @@ public class Questions {
 
         int number = random.nextInt(answers[current_type].length);
         String[] answers = getAnswers(current_type,number);
+        assert answers != null;
         String answer = answers[answers.length-1];
-        answers = Memory_game.getShakedArray(answers);
+        Memory_game.getShakedArray(answers);
         data = new String[][]{{getQuestion(current_type, number)}, answers, {Shaked_words.getIndexOfRandomWord(answer,answers)}};
 
         return data;

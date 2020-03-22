@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,8 +31,6 @@ public class Level_27 extends AppCompatActivity {
     private Dialog dialog;
     private Time t;
     private long pressedTime;
-    private int count = 0,mistakes = 0,correctAnswer=0;
-    private int taskdesc_id;
     private Player user,bot;
     private boolean isWin = true;
     private Button writeScore , throwCube;
@@ -73,18 +70,15 @@ public class Level_27 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_27.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
-                    makeTask();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_27.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
+                makeTask();
             }
         };
 
@@ -96,17 +90,10 @@ public class Level_27 extends AppCompatActivity {
         backButton.setOnClickListener(OnClickListener);
     }
 
-
-
-
-
-
     private void makeTask(){
         init();
         decideWhoGoesFirst_UserOrBot();
-
     }
-
 
     private void init(){
         initVariables();
@@ -139,40 +126,18 @@ public class Level_27 extends AppCompatActivity {
     }
 
     private View.OnClickListener getOclForButtonWriteScore(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playerWritesScore();
-            }
-        };
-        return ocl;
+        return view -> playerWritesScore();
     }
 
     private View.OnClickListener getOclForButtonThrowCube(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playerMakeThrow();
-            }
-        };
-        return ocl;
+        return view -> playerMakeThrow();
     }
-
-
-
-
 
 
     private void decideWhoGoesFirst_UserOrBot(){
         if(Bones.whoIsFirst()==1) letThePlayerThrow();
         else letTheBotThrow();
     }
-
-
-
-
-
-
 
 
 
@@ -211,12 +176,9 @@ public class Level_27 extends AppCompatActivity {
 
     private void clearAllForUserWithDelay(){
         Handler delay = new Handler();
-        delay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                clearAllForUser();
-                letTheBotThrow();
-            }
+        delay.postDelayed(() -> {
+            clearAllForUser();
+            letTheBotThrow();
         },1000);
     }
 
@@ -233,7 +195,8 @@ public class Level_27 extends AppCompatActivity {
         userScores.setText(String.format("%s + "+text,String.valueOf(score)));
     }
 
-    private void changeTextViewUserTotalScoresWithShowingVarScores(int currentScore,int varScore){
+    @SuppressLint("DefaultLocale")
+    private void changeTextViewUserTotalScoresWithShowingVarScores(int currentScore, int varScore){
         userTotalScores.setText(String.format("%d+(%d)",currentScore,varScore));
     }
 
@@ -269,12 +232,7 @@ public class Level_27 extends AppCompatActivity {
 
     private void botMakesThrowWithDelay(){
         Handler delay = new Handler();
-        delay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                botMakesThrow();
-            }
-        },1000);
+        delay.postDelayed(this::botMakesThrow,1000);
     }
 
 
@@ -295,19 +253,15 @@ public class Level_27 extends AppCompatActivity {
 
     private void clearAllForBotWithDelay(){
         Handler delay = new Handler();
-        delay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                clearAllForBot();
-                letThePlayerThrow();
-            }
+        delay.postDelayed(() -> {
+            clearAllForBot();
+            letThePlayerThrow();
         },1000);
     }
 
 
     private void botMakesChoice_ThrowOrWrite(){
         if(Math.random()<(0.8-(float) bot.getCountThrows()/10)) {
-            Handler delay = new Handler();
             botMakesThrowWithDelay();
         }
         else {
@@ -346,12 +300,7 @@ public class Level_27 extends AppCompatActivity {
 
     private void botWritesScoreWithDelay(){
         Handler delay = new Handler();
-        delay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                botWritesScore();
-            }
-        },1000);
+        delay.postDelayed(this::botWritesScore,1000);
     }
 
 
@@ -387,12 +336,6 @@ public class Level_27 extends AppCompatActivity {
         }
     }
 
-    @Deprecated
-    private void updateAllTextViewsCurrentScores(){
-        updateTextViewBotCurrentScores();
-        updateTextViewUserCurrentScores();
-    }
-
     private void changeTextViewMainScore(String score){
         mainScore.setText(score);
     }
@@ -424,26 +367,23 @@ public class Level_27 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Level_27.this, Level_27.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Level_27.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Level_27.this,Crossword.class);
-                    }else{
-                        intent = new Intent(Level_27.this, Level_27.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Level_27.this, Level_27.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Level_27.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Level_27.this,Crossword.class);
+                }else{
+                    intent = new Intent(Level_27.this, Level_27.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -474,13 +414,15 @@ public class Level_27 extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -488,7 +430,8 @@ public class Level_27 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){

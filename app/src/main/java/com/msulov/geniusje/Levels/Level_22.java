@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,18 +30,12 @@ public class Level_22 extends AppCompatActivity {
 
     private Toast toast;
     private Dialog dialog;
-    private TextView set_textview,feedback;
+    private TextView feedback;
     private Time t;
     private long pressedTime;
-    private int count = 0, correctAnswer,mistakes = 0;
-    private int taskdesc_id;
-    private LinearLayout baseLY,taskLY;
-    private String type,next_level;
-    private int[] colorsMixed;
-    private int[][] indexes_of_pairs_coord;
-    private ImageView answerBot,userAnswer,resetImage;
+    private ImageView answerBot;
+    private ImageView userAnswer;
     private Colors_shaker colors_shaker;
-    private int count_all;
     private boolean isWin = true;
     private int diffucult = Colors_shaker.DIFFICULT;
     private int count_of_correct_answers = 0,color_current,count_of_mixed = 0,color_bot = 0;
@@ -66,24 +59,17 @@ public class Level_22 extends AppCompatActivity {
 
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
-
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_22));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
@@ -91,18 +77,15 @@ public class Level_22 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_22.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
-                    makeTask();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_22.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
+                makeTask();
             }
         };
 
@@ -115,22 +98,12 @@ public class Level_22 extends AppCompatActivity {
 
         feedback = findViewById(R.id.feedback);
         colors_shaker = new Colors_shaker();
-
     }
-
-
-
-
 
 
     private void makeTask(){
         fillBotColor();
     }
-
-
-
-
-
 
     private void generateLayouts(){
         LinearLayout pointsLL = findViewById(R.id.pointsLL);
@@ -140,7 +113,7 @@ public class Level_22 extends AppCompatActivity {
             pointsLL.addView(point);
         }
         LinearLayout colorsLL = findViewById(R.id.colorsAnswers);
-        resetImage = findViewById(R.id.reset);
+        ImageView resetImage = findViewById(R.id.reset);
         View.OnClickListener ocl = getOclForAnswers();
         resetImage.setOnClickListener(ocl);
         for(int i = 0;i< Colors_shaker.COUNT;i++){
@@ -156,26 +129,15 @@ public class Level_22 extends AppCompatActivity {
 
     }
 
-    @Deprecated
-    private void initAnswersOcl(){
-        findViewById(R.id.scissors).setOnClickListener(getOclForAnswers());
-        findViewById(R.id.rock).setOnClickListener(getOclForAnswers());
-        findViewById(R.id.letter).setOnClickListener(getOclForAnswers());
-    }
-
     private View.OnClickListener getOclForAnswers(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userAnswer = (ImageView) v;
-                if(userAnswer.getId()==R.id.reset){
-                    clearFeedBack();
-                }else{
-                    addColorToFeedBack();
-                }
+        return v -> {
+            userAnswer = (ImageView) v;
+            if(userAnswer.getId()==R.id.reset){
+                clearFeedBack();
+            }else{
+                addColorToFeedBack();
             }
         };
-        return ocl;
     }
 
 
@@ -192,12 +154,11 @@ public class Level_22 extends AppCompatActivity {
             color_current = color_to_mixed;
             drawable.setColor(color_to_mixed);
         }
-        Log.d("COLOR_CURRENT",color_current+" ");
         if((color_current+300000 > color_bot)&&(color_current-300000 < color_bot)&&(count_of_mixed<=diffucult+diffucult/3)){
             makeTask();
             clearFeedBack();
             plusOnePoint();
-        }
+        }else if ( count_of_mixed == 3) clearFeedBack();
     }
 
     private void clearFeedBack(){
@@ -206,23 +167,19 @@ public class Level_22 extends AppCompatActivity {
         drawable.setColor(color_current);
         feedback.setTag(0);
         count_of_mixed = 0;
-
     }
 
 
 
     private void fillBotColor(){
-        colorsMixed = colors_shaker.setResources(getResources()).shake().mix(Colors_shaker.DIFFICULT).get();
+        int[] colorsMixed = colors_shaker.setResources(getResources()).shake().mix(Colors_shaker.DIFFICULT).get();
         color_bot = 0;
-        for(int i=0;i<colorsMixed.length;i++){
-            Log.d("COLORMIXED1",colorsMixed[i]+" ");
-
+        for(int i = 0; i< colorsMixed.length; i++){
             if(color_bot == 0){
                 color_bot = getResources().getColor(colorsMixed[i]);
             }else{
                 color_bot = colors_shaker.mixColorsValue(color_bot,getResources().getColor(colorsMixed[i]),i+1);
             }
-            Log.d("COLOR BOT",color_bot+" ");
         }
         GradientDrawable drawable = (GradientDrawable) answerBot.getBackground();
         drawable.setColor(color_bot);
@@ -230,48 +187,12 @@ public class Level_22 extends AppCompatActivity {
 
     private void plusOnePoint(){
         count_of_correct_answers++;
-        Log.d("COUNT OF CORRECT ANSWER",String.valueOf(count_of_correct_answers));
         LinearLayout pointsLL = findViewById(R.id.pointsLL);
         TextView point = (TextView) pointsLL.getChildAt(count_of_correct_answers-1);
         point.setBackground(getDrawable(R.drawable.points_green_style));
         if(count_of_correct_answers==diffucult){
             startResultsDialog();
         }
-
-    }
-
-    @Deprecated
-    private void minusOnePoint(){
-        count_of_correct_answers--;
-        Log.d("COUNT OF CORRECT ANSWER",String.valueOf(count_of_correct_answers));
-        if(count_of_correct_answers == -1){
-            isWin = false;
-            startResultsDialog();
-        }else{
-            LinearLayout pointsLL = findViewById(R.id.pointsLL);
-            TextView point = (TextView) pointsLL.getChildAt(count_of_correct_answers);
-            point.setBackground(getDrawable(R.drawable.points_style));
-        }
-    }
-
-
-
-    private void frozeOrUnfrozeViews(boolean clickable){
-        int[] ids = new int[]{R.id.scissors,R.id.letter,R.id.rock};
-        for(int id:ids){
-            ImageView answerForFroze = findViewById(id);
-            answerForFroze.setClickable(clickable);
-        }
-    }
-
-    @Deprecated
-    private void setViewChecked(TextView textView){
-        textView.setBackground(getDrawable(R.drawable.cell_style_checked));
-    }
-
-    @Deprecated
-    private void setViewUnchecked(TextView textView){
-        textView.setBackground(getDrawable(R.drawable.cell_style));
     }
 
 
@@ -282,27 +203,24 @@ public class Level_22 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearALL();
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Level_22.this, Level_22.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Level_22.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Level_22.this,Level_23.class);
-                    }else{
-                        intent = new Intent(Level_22.this, Level_22.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            clearALL();
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Level_22.this, Level_22.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Level_22.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Level_22.this,Level_23.class);
+                }else{
+                    intent = new Intent(Level_22.this, Level_22.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -333,13 +251,15 @@ public class Level_22 extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -347,7 +267,8 @@ public class Level_22 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){
@@ -391,6 +312,7 @@ public class Level_22 extends AppCompatActivity {
 
     private void clearALL(){
         GradientDrawable gradientDrawable = (GradientDrawable) getDrawable(R.drawable.cell_style);
+        assert gradientDrawable != null;
         gradientDrawable.setColor(getResources().getColor(R.color.colorAnswerBackground));
         GradientDrawable drawable  = (GradientDrawable) answerBot.getBackground();
         drawable.setColor(getResources().getColor(R.color.colorAnswerBackground));

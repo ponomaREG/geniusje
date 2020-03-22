@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Colors_shaker;
 import com.msulov.geniusje.Levels.Managers.Horse_check;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
@@ -31,21 +30,13 @@ public class Level_25 extends AppCompatActivity {
 
     private Toast toast;
     private Dialog dialog;
-    private TextView set_textview,feedback;
     private Time t;
     private long pressedTime;
-    private int count = 0, correctAnswer,mistakes = 0;
-    private int taskdesc_id;
-    private LinearLayout baseLY,taskLY;
-    private String type,next_level;
-    private int[] rowSumm,columnSumm, arrayGame;
-    private int[][] indexes_of_pairs_coord,row_numbers,column_numbers,indexes;
-    private ImageView answerBot,userAnswer,resetImage,set_view;
-    private Colors_shaker colors_shaker;
-    private int count_all;
+    private LinearLayout taskLY;
+    private int[][] indexes;
+    private ImageView set_view;
     private boolean isWin = true;
-    private int diffucult = Colors_shaker.DIFFICULT;
-    private int count_of_correct_answers = 0,color_current,count_of_mixed = 0,color_bot = 0;
+    private int count_of_correct_answers = 0;
 
 
 
@@ -90,18 +81,15 @@ public class Level_25 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_25.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
-                    makeTask();
-                }
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_25.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
+                makeTask();
             }
         };
 
@@ -158,7 +146,6 @@ public class Level_25 extends AppCompatActivity {
                 baseLL.addView(base_cell);
 
             }
-            log("CHILD COUNT",taskLY.getChildCount());
             taskLY.addView(baseLL);
         }
 
@@ -167,27 +154,22 @@ public class Level_25 extends AppCompatActivity {
 
 
     private View.OnClickListener getOclForCells(){
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(int[] index:indexes){
-                    if((index[0]>=0)&&(index[0]<Horse_check.WIDTH)&&(index[1]>=0)&&(index[1]<Horse_check.HEIGHT)){
-                        if((index[0]==((Integer) v.getTag(R.string.tagX)))&&((index[1])==((Integer) v.getTag(R.string.tagY)))) {
-                            v.setBackground(getDrawable(R.drawable.cell_style_checked));
-                            swapImagesOnViews((ImageView) v, set_view);
-                            set_view.setClickable(false);
-                            set_view = (ImageView) v;
-                            log("correct answers",correctAnswer);
-                            count_of_correct_answers++;
-                            updateIndexes((Integer) v.getTag(R.string.tagX),(Integer) v.getTag(R.string.tagY));
-                            break;
-                        }
+        return v -> {
+            for(int[] index:indexes){
+                if((index[0]>=0)&&(index[0]<Horse_check.WIDTH)&&(index[1]>=0)&&(index[1]<Horse_check.HEIGHT)){
+                    if((index[0]==((Integer) v.getTag(R.string.tagX)))&&((index[1])==((Integer) v.getTag(R.string.tagY)))) {
+                        v.setBackground(getDrawable(R.drawable.cell_style_checked));
+                        swapImagesOnViews((ImageView) v, set_view);
+                        set_view.setClickable(false);
+                        set_view = (ImageView) v;
+                        count_of_correct_answers++;
+                        updateIndexes((Integer) v.getTag(R.string.tagX),(Integer) v.getTag(R.string.tagY));
+                        break;
                     }
                 }
-
             }
+
         };
-        return ocl;
     }
 
 
@@ -207,11 +189,7 @@ public class Level_25 extends AppCompatActivity {
     }
 
     private boolean checkIndexesForIsUserWin(){
-        if(count_of_correct_answers == Horse_check.HEIGHT*Horse_check.WIDTH){
-            return true;
-        }else{
-            return false;
-        }
+        return count_of_correct_answers == Horse_check.HEIGHT * Horse_check.WIDTH;
     }
 
     private boolean checkIndexesForIsAnythingClickableCell(int[][] indexes){
@@ -228,43 +206,6 @@ public class Level_25 extends AppCompatActivity {
             }
         }
         return false;
-    }
-
-    @Deprecated
-    private void checkFullRow(int x,int y){
-        int summ = 0;
-
-        for(int number:row_numbers[y]){
-            summ = summ + number;
-        }
-        if(rowSumm[y]==summ){
-            TextView textView = ((TextView)((LinearLayout)taskLY.getChildAt(y+1)).getChildAt(0));
-            textView.setBackground(getDrawable(R.drawable.answer_style_checked));
-        }
-    }
-
-    @Deprecated
-    private void checkFullColumn(int x,int y){
-        int summ = 0;
-
-        for(int number:column_numbers[x]){
-            summ = summ + number;
-        }
-        if(columnSumm[x]==summ){
-            TextView textView = ((TextView)((LinearLayout)taskLY.getChildAt(0)).getChildAt(x+1));
-            textView.setBackground(getDrawable(R.drawable.answer_style_checked));
-        }
-    }
-
-
-    @Deprecated
-    private void setViewChecked(TextView textView){
-        textView.setBackground(getDrawable(R.drawable.cell_style_checked));
-    }
-
-    @Deprecated
-    private void setViewUnchecked(TextView textView){
-        textView.setBackground(getDrawable(R.drawable.cell_style));
     }
 
 
@@ -322,13 +263,15 @@ public class Level_25 extends AppCompatActivity {
         String result = "%s%.1f";
         result = String.format(result,getString(R.string.resultDialogTime),t.time);
 
+        int correctAnswer = 0;
         if(hasCorrect){
             result = result + " %s%s";
-            result = String.format(result,getString(R.string.resultDialogCorrect),correctAnswer);
+            result = String.format(result,getString(R.string.resultDialogCorrect), correctAnswer);
         }
 
         if(hasPercent){
             result = result + " %s%d";
+            int count = 0;
             int percent = (int) (((((float) correctAnswer)/((float) count)))*100);
             result = String.format(result,getString(R.string.resultDialogPercent),percent);
 
@@ -336,7 +279,8 @@ public class Level_25 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){
@@ -362,17 +306,6 @@ public class Level_25 extends AppCompatActivity {
             toast.show();
         }
         pressedTime = System.currentTimeMillis();
-    }
-
-
-    private void log(String tag,String text){
-        Log.d(tag,text);
-    }
-    private void log(String tag,int text){
-        Log.d(tag,text+"");
-    }
-    private void log(String tag,long text){
-        Log.d(tag,text +"");
     }
 
     @Override

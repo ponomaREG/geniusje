@@ -2,6 +2,7 @@ package com.msulov.geniusje.Levels.Managers;
 
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Shaked_words {
@@ -49,6 +50,7 @@ public class Shaked_words {
 
         String[] words = getManyWordsFromRandomGroup(current_group,count-1);
         String random_word = getRandomWordFromRandomGroup(current_group);
+        assert words != null;
         words[count-1] = random_word;
 
         String[][] returnement_array = {{getTitleOfGroup(current_group)}, Memory_game.getShakedArray(words),{getIndexOfRandomWord(random_word,words)}};
@@ -69,7 +71,7 @@ public class Shaked_words {
     }
 
 
-    public static String getIndexOfRandomWord(String word,String[] array){
+    static String getIndexOfRandomWord(String word, String[] array){
         Log.d("WORD",word);
         for (int i = 0;i<array.length;i++){
             Log.d("ARRAY WORD",array[i]);
@@ -96,17 +98,12 @@ public class Shaked_words {
 
 
     private String[] getManyWordsFromRandomGroup(int current_group,int count){
-        Random random = new Random();
-
         int[] indexes;
-
         String[] words;
-
-
         try {
             indexes = getRandomIndexes(count,current_group);
         } catch (Exception e) {
-            Log.d("ERROR",e.getStackTrace().toString());
+            Log.d("ERROR", Arrays.toString(e.getStackTrace()));
             return null;
         }
 
@@ -121,8 +118,6 @@ public class Shaked_words {
 
 
     private int[] getRandomIndexes(int count,int current_group) throws Exception {
-        Random random = new Random();
-
         if((count > keywords[current_group].length)||(count == 0)||(keywords[current_group].length==0)){
             throw new Exception();
         }else{
@@ -132,9 +127,7 @@ public class Shaked_words {
                 full_indexes[i] = i;
             }
             Memory_game.getShakedArray(full_indexes);
-            for (int i =0;i<count;i++){
-                indexes[i] = full_indexes[i];
-            }
+            System.arraycopy(full_indexes, 0, indexes, 0, count);
             return indexes;
         }
 
@@ -150,9 +143,7 @@ public class Shaked_words {
         }
         Memory_game.getShakedArray(full_indexes);
 
-        for(int i = 0;i<count;i++){
-            indexes[i] = full_indexes[i];
-        }
+        System.arraycopy(full_indexes, 0, indexes, 0, count);
         return indexes;
     }
 

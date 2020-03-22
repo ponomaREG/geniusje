@@ -46,6 +46,7 @@ public class Crossword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_28);
 
+        showBeginningDialog();
         initContAndBackButtons();
         init();
     }
@@ -103,19 +104,11 @@ public class Crossword extends AppCompatActivity {
         cell_description = findViewById(R.id.description);
         Crossword_generator crossword = new Crossword_generator();
         crossword.setCount_Words(5);
-
     }
-
-
-
 
     public void makeTask(){
         generateCrossword();
     }
-
-
-
-
 
     private void generateLayouts(){
         View.OnClickListener ocl = getOclForCells();
@@ -136,15 +129,10 @@ public class Crossword extends AppCompatActivity {
             }
             taskLY.addView(baseLL);
         }
-
     }
 
-
     private View.OnClickListener getOclForCells(){
-        return view -> {
-            makeManipulationWhenUserClicks(view);
-
-        };
+        return this::makeManipulationWhenUserClicks;
     }
 
     private View.OnFocusChangeListener getFocusOclForCells(){
@@ -211,7 +199,6 @@ public class Crossword extends AppCompatActivity {
     private void generateCrossword(){
         int[][][] coords_cells = Crossword_static.getCoordsOfCells();
         for(int i = 0;i<coords_cells.length;i++){
-            String word = Crossword_static.getWordFromKeyword(i);
             for(int j = 0 ;j<coords_cells[i].length;j++){
                 EditText crossword_cell = ((EditText) ((LinearLayout) taskLY.getChildAt(coords_cells[i][j][1])).getChildAt(coords_cells[i][j][0]));
                 crossword_cell.setVisibility(View.VISIBLE);
@@ -251,26 +238,23 @@ public class Crossword extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Crossword.this, Crossword.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Crossword.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Crossword.this,Level_29.class);
-                    }else{
-                        intent = new Intent(Crossword.this, Crossword.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Crossword.this, Crossword.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Crossword.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Crossword.this,Level_29.class);
+                }else{
+                    intent = new Intent(Crossword.this, Crossword.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 

@@ -1,7 +1,6 @@
 package com.msulov.geniusje.Levels;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.ColorUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -10,27 +9,19 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msulov.geniusje.Levels.Managers.Memory_game;
 import com.msulov.geniusje.Levels.Managers.Mensa;
-import com.msulov.geniusje.Levels.Managers.Miner_manager;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -43,7 +34,6 @@ public class Level_30 extends AppCompatActivity {
     private Dialog dialog;
     private Time t;
     private long pressedTime;
-    private int mistakes = 0;
     private ImageView task;
     private Mensa mensa;
     private boolean isWin = true;
@@ -68,23 +58,17 @@ public class Level_30 extends AppCompatActivity {
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
 
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_30));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
         icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
     }
@@ -92,20 +76,17 @@ public class Level_30 extends AppCompatActivity {
 
     private void initContAndBackButtons(){
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
-                    startActivity(new Intent(Level_30.this, LevelsActivity.class));
-                    finish();
-                } else if (v.getId() == R.id.startDialogButton) {
-                    dialog.dismiss();
-                    t = new Time();
-                    new Thread(t, "Time").start();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.backDialogButton || v.getId() == R.id.backButton) {
+                startActivity(new Intent(Level_30.this, LevelsActivity.class));
+                finish();
+            } else if (v.getId() == R.id.startDialogButton) {
+                dialog.dismiss();
+                t = new Time();
+                new Thread(t, "Time").start();
 
-                    makeTask();
+                makeTask();
 
-                }
             }
         };
 
@@ -129,7 +110,6 @@ public class Level_30 extends AppCompatActivity {
     private void initBottomButtons(){
         findViewById(R.id.finish).setOnClickListener(getOclForBottomButtons());
         findViewById(R.id.skip).setOnClickListener(getOclForBottomButtons());
-//        findViewById(R.id.find_next_question).setOnClickListener(getOclForBottomButtons());
     }
 
     private View.OnClickListener getOclForBottomButtons(){
@@ -141,10 +121,10 @@ public class Level_30 extends AppCompatActivity {
               case R.id.skip:
                   mensa.pushSkippedTaskIntoEnd(mensa.getCurrent_question());
 //                  int index_of_question = mensa.getCurrent_question() + 1;
-//                  if(mensa.ifTaskContainsInSkippedTasks(index_of_question)) {
-//                      mensa.incCurrentQuestion();
-//                      makeTask();
-//                  }else setSkippedQuestion();
+////                  if(mensa.ifTaskContainsInSkippedTasks(index_of_question)) {
+////                      mensa.incCurrentQuestion();
+////                      makeTask();
+////                  }else setSkippedQuestion();
                   setSkippedQuestion();
                   break;
 //              case R.id.find_next_question:
@@ -208,7 +188,7 @@ public class Level_30 extends AppCompatActivity {
         Drawable[] task_and_answers = Mensa.getTaskInfo(mensa.getCurrent_question(),getBaseContext());
         task.setImageDrawable(task_and_answers[0]);
         for(int i = 1;i<7;i++){
-            ImageView answer = (ImageView)findViewById(getResources().getIdentifier("answer_"+i,"id",getPackageName()));
+            ImageView answer = findViewById(getResources().getIdentifier("answer_"+i,"id",getPackageName()));
             answer.setImageDrawable(task_and_answers[i]);
         }
     }
@@ -222,12 +202,6 @@ public class Level_30 extends AppCompatActivity {
 
     }
 
-    private void setPointUnChecked(int number_of_question){
-            LinearLayout pointsLL = findViewById(R.id.pointsLL);
-            TextView point = (TextView) pointsLL.getChildAt(number_of_question);
-            point.setBackground(getDrawable(R.drawable.points_style));
-    }
-
 
     public void startResultsDialog() {
         dialog = new Dialog(this);
@@ -236,26 +210,23 @@ public class Level_30 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        View.OnClickListener OnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getId() == R.id.repeatResultsDialog) {
-                    if(isWin) {
-                        startActivity(new Intent(Level_30.this, Level_30.class)); //REPEAT
-                    }else{
-                        startActivity(new Intent(Level_30.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
-                    }
-                    finish();
-                } else if (v.getId() == R.id.ContinueResultsDialog) {
-                    Intent intent;// = null;
-                    if(isWin) {
-                        intent = new Intent(Level_30.this,LevelsActivity.class);
-                    }else{
-                        intent = new Intent(Level_30.this, Level_30.class); //REPEAT
-                    }
-                    startActivity(intent);
-                    finish();
+        View.OnClickListener OnClickListener = v -> {
+            if (v.getId() == R.id.repeatResultsDialog) {
+                if(isWin) {
+                    startActivity(new Intent(Level_30.this, Level_30.class)); //REPEAT
+                }else{
+                    startActivity(new Intent(Level_30.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
+                finish();
+            } else if (v.getId() == R.id.ContinueResultsDialog) {
+                Intent intent;// = null;
+                if(isWin) {
+                    intent = new Intent(Level_30.this,LevelsActivity.class);
+                }else{
+                    intent = new Intent(Level_30.this, Level_30.class); //REPEAT
+                }
+                startActivity(intent);
+                finish();
             }
         };
 
@@ -300,7 +271,8 @@ public class Level_30 extends AppCompatActivity {
 
         if(hasMistakes){
             result = result + " %s%d";
-            result = String.format(result,getString(R.string.resultDialogMistakes),mistakes);
+            int mistakes = 0;
+            result = String.format(result,getString(R.string.resultDialogMistakes), mistakes);
         }
 
         if(!isWin){
