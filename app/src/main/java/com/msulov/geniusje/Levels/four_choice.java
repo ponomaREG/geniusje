@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,27 +19,20 @@ import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
-import java.net.Inet4Address;
 import java.util.Objects;
-import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class four_choice extends AppCompatActivity {
 
 
-
-    private Random random;
     private Toast toast;
-    private Button backButton, startButton, continueButton, repeatButton;
     private Dialog dialog;
-    private CircleImageView icon;
-    private TextView answerLeft, answerRight, point, task, color_task, cell,desc;
+    private TextView desc;
     private Time t;
     private long pressedTime;
-    private int count, correctAnswer, correct_color, mistakes = 0;
-    private int[] array_of_numbers;
-    private String type;
+    private int count, correctAnswer,  mistakes = 0;
+    private String type,level;
     private int taskdesc_id;
     private boolean isWin = true;
 
@@ -61,25 +53,31 @@ public class four_choice extends AppCompatActivity {
         type = intent.getStringExtra("type");
         if(type == null) {
             type = "Shaked_words";
+            level = "12";
             taskdesc_id = R.string.startDialogWindowForLevel_12;
         }
         else if((type.equals("Shaked_words"))){
             type = "Shaked_words";
+            level = "12";
             taskdesc_id = R.string.startDialogWindowForLevel_12;
         }
         else if((type.equals("Question_1"))){
-                type = "Question_1";
-                taskdesc_id = R.string.startDialogWindowForLevel_13;
+            type = "Question_1";
+            level = "13";
+            taskdesc_id = R.string.startDialogWindowForLevel_13;
         }
         else if((type.equals("Question_2"))){
             type = "Question_2";
+            level = "14";
             taskdesc_id = R.string.startDialogWindowForLevel_14;
         }
         else if((type.equals("Question_3"))){
             type = "Question_3";
+            level = "15";
             taskdesc_id = R.string.startDialogWindowForLevel_15;
         }else{
             type = "Shaked_words";
+            level = "12";
             taskdesc_id = R.string.startDialogWindowForLevel_12;
         }
 
@@ -108,10 +106,12 @@ public class four_choice extends AppCompatActivity {
     }
 
     private void setIconAndTask() {
-        task = dialog.findViewById(R.id.dialogTask);
+        TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(taskdesc_id));
-        icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
+        CircleImageView icon = dialog.findViewById(R.id.iconTask);
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.icon));
+        TextView level_name = findViewById(R.id.level);
+        level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
     }
 
 
@@ -126,9 +126,9 @@ public class four_choice extends AppCompatActivity {
                 new Thread(t, "Time").start();
             }
         };
-        startButton = dialog.findViewById(R.id.startDialogButton);
+        Button startButton = dialog.findViewById(R.id.startDialogButton);
         startButton.setOnClickListener(OnClickListener);
-        backButton = dialog.findViewById(R.id.backDialogButton);
+        Button backButton = dialog.findViewById(R.id.backDialogButton);
         backButton.setOnClickListener(OnClickListener);
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(OnClickListener);
@@ -250,9 +250,9 @@ public class four_choice extends AppCompatActivity {
             }
         };
 
-        continueButton = dialog.findViewById(R.id.ContinueResultsDialog);
+        Button continueButton = dialog.findViewById(R.id.ContinueResultsDialog);
         continueButton.setOnClickListener(OnClickListener);
-        repeatButton = dialog.findViewById(R.id.repeatResultsDialog);
+        Button repeatButton = dialog.findViewById(R.id.repeatResultsDialog);
         repeatButton.setOnClickListener(OnClickListener);
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
