@@ -37,7 +37,7 @@ public class memory_base extends AppCompatActivity {
     private int count = 0;
     private int taskdesc_id;
     private LinearLayout taskLY;
-    private String type,next_level;
+    private String type,next_level, level;
     private int[][] indexes_of_pairs_coord;
     private int count_all;
     private boolean isWin = true;
@@ -59,10 +59,12 @@ public class memory_base extends AppCompatActivity {
             case "Get_rhythm":
                 taskdesc_id = R.string.startDialogWindowForLevel_18;
                 next_level = "Find_all";
+                level = "18";
                 break;
             case "Find_all":
                 next_level = "None";
                 taskdesc_id = R.string.startDialogWindowForLevel_19;
+                level = "19";
                 break;
         }
 
@@ -88,7 +90,9 @@ public class memory_base extends AppCompatActivity {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(taskdesc_id));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.icon));
+        TextView level_name = findViewById(R.id.level);
+        level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
     }
 
 
@@ -123,7 +127,7 @@ public class memory_base extends AppCompatActivity {
         taskLY = findViewById(R.id.taskLY);
         View.OnClickListener ocl = getOclForCellsSudoku();
         for(int i = 0; i< Memory_game.HEIGHT; i++){
-            LinearLayout baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_memory, taskLY,false);
+            LinearLayout baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_memory, null);
             for(int j = 0 ; j<Memory_game.WIDTH;j++){
                 TextView textView = (TextView) baseLY.getChildAt(j);
                 textView.setTag(R.string.tagX,j);

@@ -57,7 +57,10 @@ public class Level_11 extends AppCompatActivity {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_11));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.icon));
+        TextView level_name = findViewById(R.id.level);
+        String level = "11";
+        level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
     }
 
     private void initContAndBackButtons(){
@@ -110,7 +113,7 @@ public class Level_11 extends AppCompatActivity {
         LinearLayout taskLL = findViewById(R.id.taskLY);
         LinearLayout baseLL;
         for (int i = 0;i<HEIGHT;i++){
-            baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly,taskLL,false);
+            baseLL = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly,null);
             for(int j = 0;j<Randomize_number.WIDTH;j++){
                 TextView tv = (TextView) baseLL.getChildAt(j);
                 tv.setTextSize(Randomize_number.TEXT_SIZE);

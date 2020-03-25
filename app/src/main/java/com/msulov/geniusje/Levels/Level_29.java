@@ -66,7 +66,10 @@ public class Level_29 extends AppCompatActivity {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_29));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.icon));
+        TextView level_name = findViewById(R.id.level);
+        String level = "29";
+        level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
     }
 
 

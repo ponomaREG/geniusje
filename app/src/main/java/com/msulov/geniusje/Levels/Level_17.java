@@ -72,7 +72,10 @@ public class Level_17 extends AppCompatActivity {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_17));
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level2_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.icon));
+        TextView level_name = findViewById(R.id.level);
+        String level = "17";
+        level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
     }
 
 
@@ -112,7 +115,7 @@ public class Level_17 extends AppCompatActivity {
         View.OnClickListener ocl = getOclForCellsSudoku();
 
         for(int i =0 ; i<Sudoku.HEIGHT;i++){
-            baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_sudoku,taskLY,false);
+            baseLY = (LinearLayout) this.getLayoutInflater().inflate(R.layout.base_ly_sudoku,null);
             indexes_of_missing_numbers = Shaked_words.getRandomIndexes(random.nextInt(3)+Sudoku.EAZY-1,Sudoku.HEIGHT,false);
 
             for(int j = 0 ; j<Sudoku.HEIGHT;j++){

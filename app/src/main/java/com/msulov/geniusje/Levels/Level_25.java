@@ -56,26 +56,22 @@ public class Level_25 extends AppCompatActivity {
 
     /////BEGINNIG AND RESULTING CONSTANT BLOCKS
     private void showBeginningDialog() {
-
-        // Вызов диалогового окна - (Начало)
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.activity_dialog);
-        //Находим текст задания и устанавливаем его на свой
-        // Делаем задний фон прозрачным
         setIconAndTask();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // Убираем возможность закрывать системной кнопкой "Назад"
         dialog.setCancelable(false);
         dialog.show();
-        // Вызов диалогового окна - (Конец)
     }
 
     private void setIconAndTask() {
         TextView task = dialog.findViewById(R.id.dialogTask);
         task.setText(getResources().getString(R.string.startDialogWindowForLevel_25));
-        //Находим аватар задания и устанавливаем свой
         CircleImageView icon = dialog.findViewById(R.id.iconTask);
-        icon.setImageDrawable(getResources().getDrawable(R.drawable.level3_icon));
+        icon.setImageDrawable(getResources().getDrawable(R.drawable.icon));
+        TextView level_name = findViewById(R.id.level);
+        String level = "25";
+        level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
     }
 
 

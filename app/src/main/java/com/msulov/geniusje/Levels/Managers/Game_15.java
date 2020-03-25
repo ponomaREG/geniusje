@@ -5,7 +5,7 @@ import android.util.Log;
 public class Game_15 {
 
 
-    public static int SIZE = 3;
+    public static int SIZE = 4;
     private static int LENGTH = SIZE*SIZE;
 
 
