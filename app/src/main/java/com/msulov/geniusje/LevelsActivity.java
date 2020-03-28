@@ -74,7 +74,6 @@ public class LevelsActivity extends AppCompatActivity {
         c.close();
     }
 
-
     private View.OnClickListener getOclForCells(){
         return v -> {
             switch (v.getId()) {
