@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.Levels.Managers.Questions;
 import com.msulov.geniusje.Levels.Managers.Shaked_words;
 import com.msulov.geniusje.LevelsActivity;
@@ -235,16 +236,28 @@ public class four_choice extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(Integer.parseInt(level)+1,t.time);
+
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {
-                startActivity(new Intent(four_choice.this, LevelsActivity.class));
+                if(isWin) {
+                    startActivity(new Intent(four_choice.this, four_choice.class).putExtra("type",type)); //REPEAT
+                }else{
+                    startActivity(new Intent(four_choice.this, LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
+                }
                 finish();
             } else if (v.getId() == R.id.ContinueResultsDialog) {
                 Intent intent = null;
-                if(type.equals("Shaked_words")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_1");
-                if(type.equals("Question_1")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_2");
-                if(type.equals("Question_2")) intent = new Intent(four_choice.this,four_choice.class).putExtra("type","Question_3");
-                if(type.equals("Question_3")) intent = new Intent(four_choice.this,Level_16.class);
+                if(isWin) {
+                    if (type.equals("Shaked_words"))
+                        intent = new Intent(four_choice.this, four_choice.class).putExtra("type", "Question_1");
+                    if (type.equals("Question_1"))
+                        intent = new Intent(four_choice.this, four_choice.class).putExtra("type", "Question_2");
+                    if (type.equals("Question_2"))
+                        intent = new Intent(four_choice.this, four_choice.class).putExtra("type", "Question_3");
+                    if (type.equals("Question_3"))
+                        intent = new Intent(four_choice.this, Level_16.class);
+                 }else intent = new Intent(four_choice.this, four_choice.class).putExtra("type",type); //REPEAT
                 startActivity(intent);
                 finish();
             }
@@ -257,6 +270,17 @@ public class four_choice extends AppCompatActivity {
 
         TextView textResultsDialog = dialog.findViewById(R.id.textResultsDialog);
         setResultsOnResultsDialog(textResultsDialog,false,false,false,isWin);
+
+        if(!isWin){
+            continueButton.setText(getString(R.string.repeat));
+            repeatButton.setText(getString(R.string.back));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,false);
+
+        }else{
+            repeatButton.setText(getString(R.string.repeat));
+            repeatButton.setTextSize(getResources().getDimension(R.dimen.textSize_8));
+            setResultsOnResultsDialog(textResultsDialog,false,false,false,true);
+        }
 
     }
 

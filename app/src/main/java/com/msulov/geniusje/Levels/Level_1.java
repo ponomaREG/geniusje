@@ -3,6 +3,7 @@ package com.msulov.geniusje.Levels;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,8 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.LevelsActivity;
-import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
@@ -182,6 +183,8 @@ public class Level_1 extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.show();
+
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(2,t.time);
 
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {

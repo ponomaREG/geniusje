@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.Levels.Managers.Miner_manager;
 import com.msulov.geniusje.Levels.Managers.Nonogramm;
 import com.msulov.geniusje.LevelsActivity;
@@ -248,6 +249,8 @@ public class Level_23 extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.show();
+
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(24,t.time);
 
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {

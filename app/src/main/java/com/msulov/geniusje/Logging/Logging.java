@@ -14,5 +14,8 @@ public class Logging {
     public static void log(String tag,long text){
         Log.d(tag,text +"");
     }
+    public static void log(String tag,float text){
+        Log.d(tag,text +"");
+    }
 
 }

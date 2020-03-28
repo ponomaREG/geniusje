@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
@@ -290,6 +291,8 @@ public class RSL extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.show();
+
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(22,t.time);
 
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {

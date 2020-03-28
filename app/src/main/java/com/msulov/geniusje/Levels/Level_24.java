@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.Levels.Managers.Game_15;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.R;
@@ -192,6 +193,8 @@ public class Level_24 extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(25,t.time);
+
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {
                 if(isWin) {
@@ -267,9 +270,6 @@ public class Level_24 extends AppCompatActivity {
         textResultsDialog.setText(result);
     }
 
-
-
-    // Обработчик нажатия системной кнопки "Назад" - (Начало)
     @Override
     public void onBackPressed() {
 
@@ -282,8 +282,6 @@ public class Level_24 extends AppCompatActivity {
             toast = Toast.makeText(getBaseContext(), R.string.toastExit, Toast.LENGTH_SHORT);
             toast.show();
         }
-        //testCOMMIT234
-        // Получаем время нажатия системной кнопки - Назад
         pressedTime = System.currentTimeMillis();
     }
 

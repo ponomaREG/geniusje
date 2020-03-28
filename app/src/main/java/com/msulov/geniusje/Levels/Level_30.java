@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.Levels.Managers.Mensa;
 import com.msulov.geniusje.LevelsActivity;
 import com.msulov.geniusje.Logging.Logging;
@@ -212,6 +213,8 @@ public class Level_30 extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.show();
+
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(31,t.time);
 
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {

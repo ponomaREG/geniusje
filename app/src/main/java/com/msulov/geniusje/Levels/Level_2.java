@@ -3,6 +3,7 @@ package com.msulov.geniusje.Levels;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,8 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.LevelsActivity;
-import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
@@ -35,6 +36,7 @@ public class Level_2 extends AppCompatActivity {
     private long pressedTime;
     private int left, right, count, correctAnswer, mistakes = 0;
     private boolean isWin = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class Level_2 extends AppCompatActivity {
         TextView level_name = findViewById(R.id.level);
         String level = "2";
         level_name.setText(String.format("%s %s",level,getResources().getString(R.string.level)));
+
     }
 
 
@@ -182,6 +185,8 @@ public class Level_2 extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.show();
+
+        if(isWin) new DBHelper(this).setOpenTaskNumberIs(3,t.time);
 
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {
