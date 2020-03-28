@@ -73,7 +73,7 @@
     <string name="startDialogWindowForLevel_23">Реши нонограмму</string>
     <string name="startDialogWindowForLevel_24">Реши игру в 15</string>
     <string name="startDialogWindowForLevel_25">Пройди все поля конем(Конь может ходить только буквой Г)</string>
-    <string name="startDialogWindowForLevel_26">На каждой линии должно быть одно отмеченное поле</string>
+    <string name="startDialogWindowForLevel_26">Расставь 7 отметок.Нельзя , чтобы было пересечение по вертикали , горизонтали и диагонали</string>
     <string name="startDialogWindowForLevel_27">Сыграй в кости!Надо набрать 36 очков для победы</string>
     <string name="startDialogWindowForLevel_28">Реши кроссворд</string>
     <string name="startDialogWindowForLevel_29">Реши головоломку. Приоритеты АРИФМЕТИЧЕСКИХ ОПЕРАЦИЙ НЕ УЧИТЫВАЮТСЯ</string>

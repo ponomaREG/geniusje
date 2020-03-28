@@ -72,15 +72,11 @@ public class Shaked_words {
 
 
     static String getIndexOfRandomWord(String word, String[] array){
-        Log.d("WORD",word);
         for (int i = 0;i<array.length;i++){
-            Log.d("ARRAY WORD",array[i]);
-            Log.d("INDEX","1");
             if(array[i].equals(word)){
                 return String.valueOf(i);
             }
         }
-        Log.d("INDEX","0");
         return null;
     }
 

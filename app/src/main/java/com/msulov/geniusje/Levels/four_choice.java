@@ -17,6 +17,7 @@ import com.msulov.geniusje.DBHelper;
 import com.msulov.geniusje.Levels.Managers.Questions;
 import com.msulov.geniusje.Levels.Managers.Shaked_words;
 import com.msulov.geniusje.LevelsActivity;
+import com.msulov.geniusje.Logging.Logging;
 import com.msulov.geniusje.R;
 import com.msulov.geniusje.Time;
 
@@ -193,9 +194,11 @@ public class four_choice extends AppCompatActivity {
         } else {
             ocl = v -> {
                 count++;
+//                Logging.log("corr ans",(int) v.getTag(R.string.tagIsCorrect));
                 if ((int) v.getTag(R.string.tagIsCorrect) == 1) {
                     correctAnswer++;
                 }else mistakes++;
+                Logging.log("correct answer ",correctAnswer);
                 if(mistakes == 2) isWin = false;
                 if (count == 5) {
                     startResultsDialog();
@@ -204,7 +207,6 @@ public class four_choice extends AppCompatActivity {
         }
         for (int i = 1;i<(COUNT+1);i++){
             TextView textView = findViewById(getResources().getIdentifier("answer_"+i,"id",getPackageName()));
-            textView.setTextSize(getResources().getDimension(R.dimen.answerCellTextSize));
             textView.setOnClickListener(ocl);
         }
 
@@ -215,13 +217,16 @@ public class four_choice extends AppCompatActivity {
     private void setCellsTo(String[] answers,int index_of_random_word){
         for (int i = 0;i<COUNT;i++){
             int tag;
-            ((TextView) findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setText(answers[i]);
+            TextView answer_cell = findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()));
+            answer_cell.setText(answers[i]);
+            if(answers[i].length()>30) answer_cell.setTextSize(getResources().getDimension(R.dimen.textSize_8));
+            else answer_cell.setTextSize(getResources().getDimension(R.dimen.answerCellTextSize));
             tag = 0;
             if(index_of_random_word == i){
                 tag = 1;
-                (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
             }
-            (findViewById(getResources().getIdentifier("answer_"+(i+1),"id",getPackageName()))).setTag(R.string.tagIsCorrect,tag);
+            Logging.log("tag",tag);
+            answer_cell.setTag(R.string.tagIsCorrect,tag);
 
         }
     }

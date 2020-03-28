@@ -64,7 +64,6 @@ public class LevelsActivity extends AppCompatActivity {
         for(int i = 1;i<31;i++){
             TextView cell = findViewById(getResources().getIdentifier("level_"+i,"id",getPackageName()));
             int is_open = c.getInt(c.getColumnIndex("is_open"));
-//            cell.setOnClickListener(ocl);
             if(is_open == 1) {
                 cell.setOnClickListener(ocl);
                 cell.setText(String.valueOf(i));

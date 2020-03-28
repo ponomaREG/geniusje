@@ -145,7 +145,7 @@ public class Level_11 extends AppCompatActivity {
         View.OnClickListener OnClickListener = v -> {
             if (v.getId() == R.id.repeatResultsDialog) {
                 if(isWin) {
-                    startActivity(new Intent(getApplicationContext(), Level_10.class)); //REPEAT
+                    startActivity(new Intent(getApplicationContext(), Level_11.class)); //REPEAT
                 }else{
                     startActivity(new Intent(getApplicationContext(), LevelsActivity.class)); //MAIN SCREEN WITH LEVELS
                 }
@@ -153,9 +153,9 @@ public class Level_11 extends AppCompatActivity {
             } else if (v.getId() == R.id.ContinueResultsDialog) {
                 Intent intent;// = null;
                 if(isWin) {
-                    intent = new Intent(getApplicationContext(),Level_11.class);
+                    intent = new Intent(getApplicationContext(),four_choice.class);
                 }else{
-                    intent = new Intent(getApplicationContext(), Level_10.class); //REPEAT
+                    intent = new Intent(getApplicationContext(), Level_11.class); //REPEAT
                 }
                 startActivity(intent);
                 finish();
