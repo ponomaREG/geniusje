@@ -1,6 +1,4 @@
-MVP VERSION
-
-NEED CLEAN UP
+https://play.google.com/store/apps/details?id=com.msulov.geniusje
 
 ![levels](https://user-images.githubusercontent.com/42519654/77232829-8a3de000-6bcd-11ea-95e4-06c99c4fcc10.jpg)
 
